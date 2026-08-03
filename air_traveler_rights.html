@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Air Traveler Rights & Advocacy Tool</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body { background-color: #f8fafc; }
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 350px;
+    max-height: 400px;
+}
+.script-card.active {
+    border-color: #1A237E;
+    background-color: #E8EAF6;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Accordion Animation Styles */
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+.accordion-item.open .icon-rotate {
+    transform: rotate(180deg);
+}
+.icon-rotate {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Custom Scrollbar for sidebar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1; 
+    border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8; 
+}
+</style>
+</head>
+<body class="text-gray-800 font-sans antialiased">
+
+<header class="bg-[#1A237E] text-white py-12 px-6 shadow-lg mb-10">
+    <div class="max-w-6xl mx-auto text-center">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4">✈️ Air Traveler Bill of Rights</h1>
+        <p class="text-xl md:text-2xl font-light text-blue-200">The Essential Guide to Your Rights, Responsibilities, and Advocacy</p>
+    </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-4 md:px-8 space-y-16 pb-20">
+
+    <!-- SECTION: Know Your Fly Rights (Accordion) -->
+    <section class="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-[#1A237E]">
+        <div class="bg-blue-50 p-6 sm:p-10">
+            <div class="max-w-4xl mx-auto space-y-6">
+                <!-- Header Section -->
+                <header class="text-center space-y-4 mb-12">
+                    <div class="inline-flex items-center justify-center p-3 bg-blue-100 rounded-full mb-2">
+                        <svg class="w-8 h-8 text-[#1A237E]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-[#1A237E] tracking-tight">Know Your Fly Rights</h2>
+                    <p class="text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed">
+                        Click on the questions below to learn more about your rights and responsibilities as an air traveler based on US Department of Transportation guidelines.
+                    </p>
+                </header>
+
+                <main class="space-y-4">
+                    <div class="accordion-item rounded-xl shadow-sm bg-white border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
+                        <button class="accordion-header w-full flex justify-between items-center p-5 text-left focus:outline-none focus:bg-slate-50 hover:bg-slate-50 transition-colors group">
+                            <span class="font-semibold text-lg text-[#1A237E] group-hover:text-blue-700 transition-colors">What happens if my flight is delayed or canceled?</span>
+                            <svg class="w-6 h-6 icon-rotate text-[#2196F3] flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content px-5">
+                            <div class="pb-5 pt-2 text-slate-600 leading-relaxed border-t border-slate-100 mt-2">
+                                <p>Airlines don't guarantee their schedules. If your flight is canceled, most airlines will rebook you on their first flight to your destination on which space is available, at no additional charge. Contrary to popular belief, for domestic itineraries airlines are not required to compensate passengers whose flights are delayed or canceled. Each airline has its own policies about what it will do for delayed passengers waiting at the airport; there are no federal requirements.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item rounded-xl shadow-sm bg-white border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
+                        <button class="accordion-header w-full flex justify-between items-center p-5 text-left focus:outline-none focus:bg-slate-50 hover:bg-slate-50 transition-colors group">
+                            <span class="font-semibold text-lg text-[#1A237E] group-hover:text-blue-700 transition-colors">Am I entitled to compensation if my flight is overbooked and I am bumped?</span>
+                            <svg class="w-6 h-6 icon-rotate text-[#2196F3] flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content px-5">
+                            <div class="pb-5 pt-2 text-slate-600 leading-relaxed border-t border-slate-100 mt-2">
+                                <p>DOT rules require airlines to seek out people who are willing to give up their seats for compensation before bumping anyone involuntarily. Those travelers who don't get to fly are frequently entitled to denied boarding compensation in the form of a check or cash. To be eligible for compensation, you must have a confirmed reservation. However, no compensation is due if the airline arranges substitute transportation which is scheduled to arrive at your destination within one hour of your originally scheduled arrival time.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item rounded-xl shadow-sm bg-white border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
+                        <button class="accordion-header w-full flex justify-between items-center p-5 text-left focus:outline-none focus:bg-slate-50 hover:bg-slate-50 transition-colors group">
+                            <span class="font-semibold text-lg text-[#1A237E] group-hover:text-blue-700 transition-colors">What are my rights regarding lost or damaged baggage?</span>
+                            <svg class="w-6 h-6 icon-rotate text-[#2196F3] flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content px-5">
+                            <div class="pb-5 pt-2 text-slate-600 leading-relaxed border-t border-slate-100 mt-2">
+                                <p>If your suitcase arrives smashed or torn, the airline will usually pay for repairs. If it can't be fixed, they will negotiate a settlement to pay you its depreciated value. On domestic trips, the airline can invoke a liability ceiling that is regulated by DOT and that is adjusted for inflation every two years. That limit is currently $4,700 per passenger. Should an airline lose, damage, or destroy the wheelchair or other assistive device, the airline must provide compensation in an amount up to the original purchase price of the wheelchair or device.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item rounded-xl shadow-sm bg-white border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
+                        <button class="accordion-header w-full flex justify-between items-center p-5 text-left focus:outline-none focus:bg-slate-50 hover:bg-slate-50 transition-colors group">
+                            <span class="font-semibold text-lg text-[#1A237E] group-hover:text-blue-700 transition-colors">What are the fundamental rights for passengers with disabilities?</span>
+                            <svg class="w-6 h-6 icon-rotate text-[#2196F3] flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content px-5">
+                            <div class="pb-5 pt-2 text-slate-600 leading-relaxed border-t border-slate-100 mt-2">
+                                <p>The Bill of Rights describes the fundamental rights of air travelers with disabilities under the Air Carrier Access Act and its implementing regulation, 14 Code of Federal Regulations (CFR) Part 382. An airline, including its employees and contractors, may not discriminate against an individual with a disability because of his or her disability. Passengers with disabilities must be provided prompt and timely enplaning and deplaning assistance, upon request, from properly trained airline personnel. Furthermore, airlines must allow assistive devices as carry-ons in the cabin free of charge consistent with safety rules.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item rounded-xl shadow-sm bg-white border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
+                        <button class="accordion-header w-full flex justify-between items-center p-5 text-left focus:outline-none focus:bg-slate-50 hover:bg-slate-50 transition-colors group">
+                            <span class="font-semibold text-lg text-[#1A237E] group-hover:text-blue-700 transition-colors">Can I travel with my service animal?</span>
+                            <svg class="w-6 h-6 icon-rotate text-[#2196F3] flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content px-5">
+                            <div class="pb-5 pt-2 text-slate-600 leading-relaxed border-t border-slate-100 mt-2">
+                                <p>Airlines must permit a service dog to accompany a passenger with a disability in the aircraft cabin unless the dog poses a direct threat to the health or safety of others, or the dog causes a significant disruption or misbehaves in the cabin or at an airport gate area. A decision by airline personnel to refuse transportation of a service dog with the passenger must be based on an individualized and objective assessment of the dog that considers the nature of the risk and the likelihood that harm will actually, or continue to, occur.</p>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: 10 Fundamental Rights -->
+    <section>
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-[#1A237E] border-b-4 border-[#FFC107] pb-2 inline-block">The 10 Fundamental Rights</h2>
+            <p class="mt-4 text-lg">Under the Air Carrier Access Act (ACAA), passengers with disabilities are guaranteed specific protections. <span class="font-semibold text-[#2196F3]">Click on each right below</span> to learn more about the specific details.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Right 1 -->
+            <div class="right-card bg-white rounded-xl shadow-md p-6 border-t-4 border-[#2196F3] hover:shadow-lg transition-all cursor-pointer group" onclick="toggleRight(this)">
+                <div class="flex justify-between items-start">
+                    <div class="text-4xl mb-3">🤝</div>
+                    <svg class="w-6 h-6 text-gray-300 group-hover:text-[#2196F3] transition-transform duration-300 transform-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-[#009688]">1. Dignity & Respect</h3>
+                <p class="text-sm font-medium">Treated with dignity and respect by airline and airport personnel at all times.</p>
+                <div class="right-content max-h-0 overflow-hidden transition-all duration-300">
+                    <div class="pt-3 mt-3 border-t border-gray-100 text-sm text-slate-600 space-y-2">
+                        <p>• Protection from discrimination based on disability.</p>
+                        <p>• Personnel must not force you to accept special services (like a wheelchair) if you do not request them.</p>
+                        <p>• Staff must consult with you on the safest and best way to provide assistance.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right 2 -->
+            <div class="right-card bg-white rounded-xl shadow-md p-6 border-t-4 border-[#2196F3] hover:shadow-lg transition-all cursor-pointer group" onclick="toggleRight(this)">
+                <div class="flex justify-between items-start">
+                    <div class="text-4xl mb-3">ℹ️</div>
+                    <svg class="w-6 h-6 text-gray-300 group-hover:text-[#2196F3] transition-transform duration-300 transform-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-[#009688]">2. Information Access</h3>
+                <p class="text-sm font-medium">Information about services, aircraft capabilities, and potential limitations.</p>
+                <div class="right-content max-h-0 overflow-hidden transition-all duration-300">
+                    <div class="pt-3 mt-3 border-t border-gray-100 text-sm text-slate-600 space-y-2">
+                        <p>• The right to ask about the physical limitations of the aircraft (e.g., lavatory accessibility, aisle width).</p>
+                        <p>• Advance notice if a specific aircraft cannot accommodate your mobility device.</p>
+                        <p>• Access to properly trained reservation agents who can detail accommodations.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right 3 -->
+            <div class="right-card bg-white rounded-xl shadow-md p-6 border-t-4 border-[#2196F3] hover:shadow-lg transition-all cursor-pointer group" onclick="toggleRight(this)">
+                <div class="flex justify-between items-start">
+                    <div class="text-4xl mb-3">📄</div>
+                    <svg class="w-6 h-6 text-gray-300 group-hover:text-[#2196F3] transition-transform duration-300 transform-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-[#009688]">3. Accessible Formats</h3>
+                <p class="text-sm font-medium">Critical flight information provided in a format that is accessible to you.</p>
+                <div class="right-content max-h-0 overflow-hidden transition-all duration-300">
+                    <div class="pt-3 mt-3 border-t border-gray-100 text-sm text-slate-600 space-y-2">
+                        <p>• Primary airline websites must be accessible (WCAG 2.0 AA standard).</p>
+                        <p>• Gate agents must provide prompt access to the same info given to other passengers (e.g., boarding delays, gate changes) upon request for passengers with vision or hearing impairments.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right 4 -->
+            <div class="right-card bg-white rounded-xl shadow-md p-6 border-t-4 border-[#2196F3] hover:shadow-lg transition-all cursor-pointer group" onclick="toggleRight(this)">
+                <div class="flex justify-between items-start">
+                    <div class="text-4xl mb-3">🏢</div>
+                    <svg class="w-6 h-6 text-gray-300 group-hover:text-[#2196F3] transition-transform duration-300 transform-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-[#009688]">4. Accessible Facilities</h3>
+                <p class="text-sm font-medium">Navigate and utilize accessible airport facilities seamlessly.</p>
+                <div class="right-content max-h-0 overflow-hidden transition-all duration-300">
+                    <div class="pt-3 mt-3 border-t border-gray-100 text-sm text-slate-600 space-y-2">
+                        <p>• Terminal facilities owned/leased by airlines must be readily accessible.</p>
+                        <p>• Airports must provide designated Service Animal Relief Areas (SARAs) inside the sterile area of terminals.</p>
+                        <p>• Accessible automated kiosks (at least 25% of kiosks must be accessible).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right 5 -->
+            <div class="right-card bg-white rounded-xl shadow-md p-6 border-t-4 border-[#2196F3] hover:shadow-lg transition-all cursor-pointer group" onclick="toggleRight(this)">
+                <div class="flex justify-between items-start">
+                    <div class="text-4xl mb-3">🛄</div>
+                    <svg class="w-6 h-6 text-gray-300 group-hover:text-[#2196F3] transition-transform duration-300 transform-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-[#009688]">5. Airport Assistance</h3>
+                <p class="text-sm font-medium">Assistance moving through the airport and boarding upon request.</p>
+                <div class="right-content max-h-0 overflow-hidden transition-all duration-300">
+                    <div class="pt-3 mt-3 border-t border-gray-100 text-sm text-slate-600 space-y-2">
+                        <p>• Prompt wheelchair or guide assistance from terminal curbside to your gate.</p>
+                        <p>• Help making flight connections.</p>
+                        <p>• Staff cannot leave you unattended for more than 30 minutes in a wheelchair or other device.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right 6 -->
+            <div class="right-card bg-white rounded-xl shadow-md p-6 border-t-4 border-[#2196F3] hover:shadow-lg transition-all cursor-pointer group" onclick="toggleRight(this)">
+                <div class="flex justify-between items-start">
+                    <div class="text-4xl mb-3">💺</div>
+                    <svg class="w-6 h-6 text-gray-300 group-hover:text-[#2196F3] transition-transform duration-300 transform-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-[#009688]">6. Aircraft Assistance</h3>
+                <p class="text-sm font-medium">Moving to and from seats and stowing items on the aircraft.</p>
+                <div class="right-content max-h-0 overflow-hidden transition-all duration-300">
+                    <div class="pt-3 mt-3 border-t border-gray-100 text-sm text-slate-600 space-y-2">
+                        <p>• Assistance transferring between an aisle chair and your designated seat.</p>
+                        <p>• Help stowing and retrieving personal carry-on items and small assistive devices.</p>
+                        <p>• <i>Note:</i> Staff are not required to provide medical oxygen, help with eating, or help inside the lavatory.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right 7 -->
+            <div class="right-card bg-white rounded-xl shadow-md p-6 border-t-4 border-[#2196F3] hover:shadow-lg transition-all cursor-pointer group" onclick="toggleRight(this)">
+                <div class="flex justify-between items-start">
+                    <div class="text-4xl mb-3">🐕</div>
+                    <svg class="w-6 h-6 text-gray-300 group-hover:text-[#2196F3] transition-transform duration-300 transform-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-[#009688]">7. Devices & Animals</h3>
+                <p class="text-sm font-medium">Travel with personal assistive devices or approved service animals.</p>
+                <div class="right-content max-h-0 overflow-hidden transition-all duration-300">
+                    <div class="pt-3 mt-3 border-t border-gray-100 text-sm text-slate-600 space-y-2">
+                        <p>• Assistive devices do not count toward carry-on limits and cannot be charged baggage fees.</p>
+                        <p>• Priority cabin storage for at least one folding manual wheelchair (on aircraft with 100+ seats).</p>
+                        <p>• Right to travel with a recognized service dog in the cabin at no extra charge.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right 8 -->
+            <div class="right-card bg-white rounded-xl shadow-md p-6 border-t-4 border-[#2196F3] hover:shadow-lg transition-all cursor-pointer group" onclick="toggleRight(this)">
+                <div class="flex justify-between items-start">
+                    <div class="text-4xl mb-3">🪑</div>
+                    <svg class="w-6 h-6 text-gray-300 group-hover:text-[#2196F3] transition-transform duration-300 transform-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-[#009688]">8. Seating Accommodations</h3>
+                <p class="text-sm font-medium">Receive seating that meets your specific disability-related needs.</p>
+                <div class="right-content max-h-0 overflow-hidden transition-all duration-300">
+                    <div class="pt-3 mt-3 border-t border-gray-100 text-sm text-slate-600 space-y-2">
+                        <p>• Bulkhead seating for individuals traveling with a service animal or needing extra legroom for a fused/immobilized leg.</p>
+                        <p>• Adjoining seats for a required personal care attendant.</p>
+                        <p>• Aisle seats with movable armrests for easy transfer.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right 9 -->
+            <div class="right-card bg-white rounded-xl shadow-md p-6 border-t-4 border-[#2196F3] hover:shadow-lg transition-all cursor-pointer group" onclick="toggleRight(this)">
+                <div class="flex justify-between items-start">
+                    <div class="text-4xl mb-3">✈️</div>
+                    <svg class="w-6 h-6 text-gray-300 group-hover:text-[#2196F3] transition-transform duration-300 transform-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-[#009688]">9. Accessible Features</h3>
+                <p class="text-sm font-medium">Use accessible features like movable armrests and accessible lavatories.</p>
+                <div class="right-content max-h-0 overflow-hidden transition-all duration-300">
+                    <div class="pt-3 mt-3 border-t border-gray-100 text-sm text-slate-600 space-y-2">
+                        <p>• Twin-aisle aircraft must have at least one accessible lavatory.</p>
+                        <p>• Aircraft with more than 60 seats and an accessible lavatory must have an onboard wheelchair.</p>
+                        <p>• Half of all aisle seats must have movable armrests.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right 10 -->
+            <div class="right-card bg-white rounded-xl shadow-md p-6 border-t-4 border-[#2196F3] hover:shadow-lg transition-all cursor-pointer group" onclick="toggleRight(this)">
+                <div class="flex justify-between items-start">
+                    <div class="text-4xl mb-3">⚖️</div>
+                    <svg class="w-6 h-6 text-gray-300 group-hover:text-[#2196F3] transition-transform duration-300 transform-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-[#009688]">10. Issue Resolution</h3>
+                <p class="text-sm font-medium">Prompt resolution of disability issues via a Complaint Resolution Official (CRO).</p>
+                <div class="right-content max-h-0 overflow-hidden transition-all duration-300">
+                    <div class="pt-3 mt-3 border-t border-gray-100 text-sm text-slate-600 space-y-2">
+                        <p>• Right to speak immediately with a CRO in person or by phone at no cost.</p>
+                        <p>• If you file a written complaint regarding a disability issue, airlines must provide a written response.</p>
+                        <p>• You may file a complaint directly with the DOT if your issue is not resolved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: Complaint Script Generator (With AI) -->
+    <section class="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-[#1A237E]">
+        <div class="bg-[#1A237E] p-6 text-white">
+            <h2 class="text-3xl font-bold">What to Say: Advocacy Script Generator</h2>
+            <p class="mt-2 text-blue-100 italic">"I am exercising my rights under the Air Carrier Access Act."</p>
+        </div>
+        
+        <div class="p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-4 space-y-3 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar relative">
+                <h3 class="font-bold text-[#1A237E] uppercase text-sm tracking-wider mb-2 sticky top-0 bg-white pt-2 z-10 pb-2">Smart Tools</h3>
+                
+                <button onclick="updateScript('ai_draft', this)" class="script-card w-full text-left p-4 rounded-lg border-2 border-indigo-200 bg-indigo-50 hover:bg-indigo-100 transition-all flex items-center space-x-3 shadow-sm mb-2">
+                    <span class="text-2xl">✨</span>
+                    <span class="font-bold text-[#1A237E]">AI Custom Drafter</span>
+                </button>
+                <button onclick="updateScript('ai_analyze', this)" class="script-card w-full text-left p-4 rounded-lg border-2 border-teal-200 bg-teal-50 hover:bg-teal-100 transition-all flex items-center space-x-3 shadow-sm mb-6">
+                    <span class="text-2xl">🔍</span>
+                    <span class="font-bold text-[#009688]">AI Response Analyzer</span>
+                </button>
+
+                <h3 class="font-bold text-[#1A237E] uppercase text-sm tracking-wider mb-2 sticky top-0 bg-white pt-2 z-10 pb-2">Common Scenarios</h3>
+
+                <button onclick="updateScript('cancel', this)" class="script-card w-full text-left p-4 rounded-lg border-2 border-gray-100 hover:border-[#2196F3] transition-all flex items-center space-x-3">
+                    <span class="text-2xl">💸</span>
+                    <span class="font-medium">Refund for Cancellation</span>
+                </button>
+                <button onclick="updateScript('overnight', this)" class="script-card w-full text-left p-4 rounded-lg border-2 border-gray-100 hover:border-[#2196F3] transition-all flex items-center space-x-3">
+                    <span class="text-2xl">🏨</span>
+                    <span class="font-medium">Overnight Hotel Stay</span>
+                </button>
+                <button onclick="updateScript('bumping', this)" class="script-card w-full text-left p-4 rounded-lg border-2 border-gray-100 hover:border-[#2196F3] transition-all flex items-center space-x-3">
+                    <span class="text-2xl">🚫</span>
+                    <span class="font-medium">Involuntary Bumping</span>
+                </button>
+                <button onclick="updateScript('deplaning', this)" class="script-card w-full text-left p-4 rounded-lg border-2 border-gray-100 hover:border-[#2196F3] transition-all flex items-center space-x-3">
+                    <span class="text-2xl">⏳</span>
+                    <span class="font-medium">Delayed Deplaning</span>
+                </button>
+                <button onclick="updateScript('wheelchair', this)" class="script-card w-full text-left p-4 rounded-lg border-2 border-gray-100 hover:border-[#2196F3] transition-all flex items-center space-x-3">
+                    <span class="text-2xl">🦽</span>
+                    <span class="font-medium">Damaged Wheelchair</span>
+                </button>
+                <button onclick="updateScript('assistance', this)" class="script-card w-full text-left p-4 rounded-lg border-2 border-gray-100 hover:border-[#2196F3] transition-all flex items-center space-x-3">
+                    <span class="text-2xl">🤝</span>
+                    <span class="font-medium">Refused Assistance</span>
+                </button>
+                <button onclick="updateScript('seat', this)" class="script-card w-full text-left p-4 rounded-lg border-2 border-gray-100 hover:border-[#2196F3] transition-all flex items-center space-x-3">
+                    <span class="text-2xl">🪑</span>
+                    <span class="font-medium">Seating Accommodation</span>
+                </button>
+                <button onclick="updateScript('serviceAnimal', this)" class="script-card w-full text-left p-4 rounded-lg border-2 border-gray-100 hover:border-[#2196F3] transition-all flex items-center space-x-3">
+                    <span class="text-2xl">🐕</span>
+                    <span class="font-medium">Denied Service Animal</span>
+                </button>
+                <button onclick="updateScript('medicalDeviceFee', this)" class="script-card w-full text-left p-4 rounded-lg border-2 border-gray-100 hover:border-[#2196F3] transition-all flex items-center space-x-3">
+                    <span class="text-2xl">💳</span>
+                    <span class="font-medium">Assistive Device Fee</span>
+                </button>
+                <button onclick="updateScript('infoAccess', this)" class="script-card w-full text-left p-4 rounded-lg border-2 border-gray-100 hover:border-[#2196F3] transition-all flex items-center space-x-3">
+                    <span class="text-2xl">🔇</span>
+                    <span class="font-medium">Inaccessible Info</span>
+                </button>
+            </div>
+
+            <div class="lg:col-span-8 bg-[#f1f5f9] rounded-xl p-6 relative min-h-[300px] flex flex-col justify-center items-center overflow-hidden">
+                <div id="scriptDisplay" class="w-full h-full flex flex-col justify-center">
+                    <div class="text-center py-10 text-gray-500">
+                        <p class="text-5xl mb-4">📢</p>
+                        <p class="text-lg">Select a scenario on the left to generate a professional complaint script.</p>
+                        <p class="text-sm mt-4 text-[#1A237E] font-medium">✨ Try our new AI tools at the top of the list for complex situations!</p>
+                    </div>
+                </div>
+                <div id="copyAlert" class="hidden absolute top-4 right-4 bg-[#009688] text-white px-4 py-2 rounded shadow-lg transition-opacity duration-300 z-50">Copied!</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Visualizations -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h3 class="text-2xl font-bold text-[#1A237E] mb-4">Legal Resolution Deadlines</h3>
+            <p class="text-sm mb-6 text-gray-600">Comparison of critical windows for complaint filing and mandatory airline responses.</p>
+            <div class="chart-container">
+                <canvas id="deadlinesChart"></canvas>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h3 class="text-2xl font-bold text-[#1A237E] mb-4">Consumer Issue Categories</h3>
+            <p class="text-sm mb-6 text-gray-600">Breakdown of general air travel complaints by category according to DOT reporting standards.</p>
+            <div class="chart-container">
+                <canvas id="issuesChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="bg-gray-800 text-white text-center p-8 mt-20">
+    <div class="max-w-4xl mx-auto space-y-6">
+        <div>
+            <h4 class="text-lg font-bold text-blue-200 mb-3">Further Information & Official Resources</h4>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 text-sm">
+                <a href="https://www.transportation.gov/airconsumer/fly-rights" target="_blank" rel="noopener noreferrer" class="hover:text-[#FFC107] transition-colors underline decoration-gray-500 underline-offset-4">DOT Fly Rights Guide</a>
+                <a href="https://www.transportation.gov/sites/dot.gov/files/2022-07/508_Airline_Passengers_with_Disabilities_Bill_of_Rights_07132022_ADA.pdf" target="_blank" rel="noopener noreferrer" class="hover:text-[#FFC107] transition-colors underline decoration-gray-500 underline-offset-4">Passengers with Disabilities Bill of Rights (PDF)</a>
+            </div>
+        </div>
+        <p class="pt-6 border-t border-gray-700 text-gray-400 text-xs">&copy; 2026 Air Traveler Rights Advocacy Tool. Data based on DOT 14 CFR Part 382.</p>
+    </div>
+</footer>
+
+<textarea id="copyBuffer" class="absolute opacity-0 pointer-events-none"></textarea>
+
+<script>
+// --- Gemini API Configuration ---
+const apiKey = "";
+const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+// Exponential backoff fetch
+async function fetchWithRetry(url, options, maxRetries = 5) {
+    const delays = [1000, 2000, 4000, 8000, 16000];
+    for (let i = 0; i < maxRetries; i++) {
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return await response.json();
+        } catch (error) {
+            if (i === maxRetries - 1) throw error;
+            await new Promise(r => setTimeout(r, delays[i]));
+        }
+    }
+}
+
+// --- Fundamental Rights Card Logic ---
+function toggleRight(element) {
+    const content = element.querySelector('.right-content');
+    const icon = element.querySelector('.transform-icon');
+    const isOpen = element.classList.contains('open');
+
+    document.querySelectorAll('.right-card.open').forEach(card => {
+        if (card !== element) {
+            card.classList.remove('open');
+            card.querySelector('.right-content').style.maxHeight = null;
+            card.querySelector('.transform-icon').style.transform = 'rotate(0deg)';
+        }
+    });
+
+    if (isOpen) {
+        element.classList.remove('open');
+        content.style.maxHeight = null;
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        element.classList.add('open');
+        content.style.maxHeight = content.scrollHeight + "px";
+        icon.style.transform = 'rotate(180deg)';
+    }
+}
+
+// --- Accordion Logic ---
+document.addEventListener("DOMContentLoaded", () => {
+    const headers = document.querySelectorAll(".accordion-header");
+    headers.forEach(header => {
+        header.addEventListener("click", () => {
+            const item = header.parentElement;
+            const content = header.nextElementSibling;
+            const isOpen = item.classList.contains("open");
+
+            document.querySelectorAll(".accordion-item.open").forEach(openItem => {
+                if (openItem !== item) {
+                    openItem.classList.remove("open");
+                    openItem.querySelector(".accordion-content").style.maxHeight = null;
+                }
+            });
+
+            if (isOpen) {
+                item.classList.remove("open");
+                content.style.maxHeight = null;
+            } else {
+                item.classList.add("open");
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    });
+});
+
+// --- Script Generation Data & AI Integration ---
+const scripts = {
+    ai_draft: {
+        isAI: true,
+        type: 'draft',
+        title: "✨ AI Custom Complaint Drafter",
+        description: "Describe what happened on your trip. The AI will write a firm, formal complaint script citing the relevant DOT/ACAA regulations specifically tailored to your exact situation."
+    },
+    ai_analyze: {
+        isAI: true,
+        type: 'analyze',
+        title: "🔍 AI Airline Response Analyzer",
+        description: "Did the airline email you back? Paste their response below. The AI will break down what they are saying, check if they are dodging DOT rules, and tell you how to reply."
+    },
+    wheelchair: {
+        title: "Damage to Assistive Device",
+        body: "I am writing to file a formal complaint regarding damage to my wheelchair/assistive device on [Flight #] on [Date]. Under Right 7 of the Airline Passengers with Disabilities Bill of Rights and 14 CFR Part 382, airlines are liable for the original purchase price of damaged assistive devices on domestic flights. I expect full compensation for repair or replacement of my device to its original functional condition."
+    },
+    assistance: {
+        title: "Failure to Provide Airport Assistance",
+        body: "On [Date], I requested assistance at [Airport] for [Flight #] as per Right 5 of the Passengers with Disabilities Bill of Rights. This assistance was [refused/significantly delayed], causing me undue hardship. I wish to speak with your Complaint Resolution Official (CRO) to document this failure to meet ACAA requirements and ensure corrective action is taken."
+    },
+    cancel: {
+        title: "Refund Request for Canceled Flight",
+        body: "My flight [Flight #] on [Date] was canceled by the airline. As I have chosen not to be rebooked, I am exercising my right to a full refund to my original form of payment, including all ticket fees and baggage fees, as mandated by the U.S. Department of Transportation."
+    },
+    seat: {
+        title: "Denied Seating Accommodation",
+        body: "I am writing because I was denied a necessary seating accommodation on [Flight #] despite making my disability-related needs known. Under Right 8, airlines must provide seating accommodations (such as bulkhead or movable armrest seats) for passengers with certain disabilities. I am requesting a formal explanation for this denial from your CRO."
+    },
+    serviceAnimal: {
+        title: "Denial of Recognized Service Animal",
+        body: "I am formally contesting the denial of my recognized service dog on [Flight #] on [Date]. Under 14 CFR Part 382, airlines cannot refuse transport to a service dog unless there is an individualized assessment proving a direct threat to safety or severe disruption. I am requesting an immediate review of this decision by a Complaint Resolution Official (CRO)."
+    },
+    medicalDeviceFee: {
+        title: "Unlawful Fee for Assistive Device",
+        body: "On [Date], I was charged a baggage/carry-on fee for my [CPAP machine/medical device/folding walker] on [Flight #]. Under the Air Carrier Access Act, airlines are legally required to allow passengers to bring assistive devices into the cabin free of charge, provided they meet safety rules. I am requesting an immediate refund of this unlawful fee."
+    },
+    deplaning: {
+        title: "Failure to Provide Deplaning Assistance",
+        body: "Upon arriving on [Flight #] at [Airport] on [Date], I was left waiting on the aircraft for an unreasonable amount of time [or missed my connection] because the requested wheelchair assistance never arrived. This is a direct violation of Right 5 of the Passengers with Disabilities Bill of Rights, which mandates prompt and timely deplaning assistance. I would like this documented by a CRO."
+    },
+    infoAccess: {
+        title: "Failure to Provide Accessible Flight Info",
+        body: "During my time at the gate for [Flight #] on [Date], critical flight updates and boarding announcements were not provided to me in an accessible format, despite my disclosed [hearing/vision] disability. Under Right 3 of the Bill of Rights, airlines must ensure prompt access to the same information provided to other passengers. I am filing this complaint to ensure your staff receives proper training."
+    },
+    bumping: {
+        title: "Involuntary Denied Boarding Compensation",
+        body: "I held a confirmed reservation for [Flight #] on [Date] and was involuntarily denied boarding due to overbooking. Because you were unable to arrange substitute transportation to get me to my destination within one hour of my scheduled arrival, I am exercising my DOT-mandated right to Denied Boarding Compensation in the form of a check or cash, not a travel voucher."
+    },
+    overnight: {
+        title: "Hotel Accommodations for Controllable Cancellation",
+        body: "My connecting flight [Flight #] on [Date] was canceled due to a controllable delay (e.g., maintenance or crew availability), requiring an unexpected overnight stay. According to your airline's customer service commitments to the DOT, I am requesting a voucher for hotel accommodations and ground transportation. If you cannot provide a voucher right now, please document this refusal, as I expect full reimbursement for reasonable hotel costs I incur."
+    }
+};
+
+function updateScript(key, buttonElement) {
+    const script = scripts[key];
+    const display = document.getElementById('scriptDisplay');
+    
+    // Highlight active card
+    document.querySelectorAll('.script-card').forEach(c => c.classList.remove('active'));
+    if(buttonElement) {
+        buttonElement.classList.add('active');
+    }
+
+    if (script.isAI) {
+        const titleColor = script.type === 'draft' ? 'text-[#1A237E]' : 'text-[#009688]';
+        const ringColor = script.type === 'draft' ? 'focus:ring-[#1A237E]' : 'focus:ring-[#009688]';
+        const placeholderText = script.type === 'draft' ? "e.g., My flight was cancelled due to crew shortage and they refused to give me a hotel voucher..." : "Paste the airline's email here...";
+        const btnBg = script.type === 'draft' ? 'bg-[#1A237E] hover:bg-blue-900' : 'bg-[#009688] hover:bg-teal-800';
+        const btnText = script.type === 'draft' ? '✨ Generate Custom Script' : '✨ Analyze Response';
+        const borderColor = script.type === 'draft' ? 'border-[#1A237E]' : 'border-[#009688]';
+
+        display.innerHTML = `
+            <div class="transition-opacity duration-500 ease-in-out opacity-100 w-full flex flex-col h-full">
+                <h4 class="text-xl font-bold ${titleColor} mb-2">${script.title}</h4>
+                <p class="text-sm text-gray-600 mb-4">${script.description}</p>
+                <textarea id="aiInput" class="w-full p-4 border-2 border-gray-200 rounded-lg h-32 focus:ring-2 ${ringColor} focus:border-transparent outline-none resize-none mb-3" placeholder="${placeholderText}"></textarea>
+                
+                <button onclick="handleAIGenerate('${script.type}')" id="aiGenerateBtn" class="${btnBg} text-white px-6 py-3 rounded-lg font-bold transition-colors shadow w-full sm:w-auto self-start flex items-center justify-center">
+                    ${btnText}
+                </button>
+                <div id="aiError" class="text-red-500 text-sm mt-2 hidden font-medium"></div>
+
+                <div id="aiOutputArea" class="hidden mt-6 flex-1 flex flex-col">
+                    <h5 class="font-bold text-gray-700 mb-2">AI Result:</h5>
+                    <div id="aiResultText" class="bg-white p-5 rounded-lg border-2 border-dashed ${borderColor} text-gray-800 font-mono text-sm mb-4 leading-relaxed shadow-inner overflow-y-auto flex-1 max-h-64">
+                    </div>
+                    <button onclick="copyToClipboard(document.getElementById('aiResultText').innerText)" class="bg-[#2196F3] text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-600 transition-colors shadow flex items-center whitespace-nowrap self-start">
+                        📋 Copy Output
+                    </button>
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    // Safely embed the string body into the button by URI-encoding it to bypass all quotation and scoping issues
+    // We also replace single quotes with %27 to prevent breaking the inline onclick string
+    const safeBody = encodeURIComponent(script.body).replace(/'/g, "%27");
+    
+    display.innerHTML = `
+        <div class="transition-opacity duration-500 ease-in-out opacity-100">
+            <h4 class="text-xl font-bold text-[#1A237E] mb-4">${script.title}</h4>
+            <div class="bg-white p-5 rounded-lg border-2 border-dashed border-gray-300 text-gray-800 font-mono text-sm mb-4 leading-relaxed shadow-inner">
+                ${script.body}
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4 items-center">
+                <button onclick="copyToClipboard(decodeURIComponent('${safeBody}'))" class="bg-[#009688] text-white px-6 py-3 rounded-lg font-bold hover:bg-[#00796B] transition-colors shadow flex items-center whitespace-nowrap">
+                    📋 Copy Script
+                </button>
+                <p class="text-xs text-gray-500 italic">Note: Fill in the [Brackets] with your specific flight details before sending.</p>
+            </div>
+        </div>
+    `;
+}
+
+async function handleAIGenerate(type) {
+    const input = document.getElementById('aiInput').value;
+    const btn = document.getElementById('aiGenerateBtn');
+    const outputArea = document.getElementById('aiOutputArea');
+    const resultText = document.getElementById('aiResultText');
+    const errorBox = document.getElementById('aiError');
+
+    if (!input.trim()) {
+        errorBox.textContent = "Please provide some text in the box above first.";
+        errorBox.classList.remove('hidden');
+        return;
+    }
+
+    errorBox.classList.add('hidden');
+    btn.disabled = true;
+    btn.innerHTML = "⏳ Processing... Please wait.";
+    btn.classList.add('opacity-70', 'cursor-not-allowed');
+    outputArea.classList.add('hidden');
+
+    let systemPrompt = "";
+    if (type === 'draft') {
+        systemPrompt = "You are an expert aviation passenger rights advocate. Write a formal, legally grounded complaint script the user can send to an airline or read to a Complaint Resolution Official (CRO). Cite relevant US DOT rules or the Air Carrier Access Act (ACAA) based on the user's specific situation. Do not include generic placeholders for details they already provided. Keep it professional, firm, and ready to use.";
+    } else {
+        systemPrompt = "You are an expert aviation passenger rights advocate. Analyze the airline's response provided by the user. 1. Explain in plain English what the airline is saying. 2. Identify if they are violating any US DOT rules or the ACAA. 3. Suggest the exact next steps the user should take or provide a short rebuttal script.";
+    }
+
+    const payload = {
+        contents: [{ parts: [{ text: input }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] }
+    };
+
+    try {
+        const data = await fetchWithRetry(geminiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "Could not generate response.";
+        
+        // Convert basic markdown bolding/spacing to HTML
+        const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+        
+        resultText.innerHTML = formattedText;
+        outputArea.classList.remove('hidden');
+    } catch (err) {
+        console.error(err);
+        errorBox.textContent = "An error occurred while connecting to the AI. Please try again.";
+        errorBox.classList.remove('hidden');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = type === 'draft' ? '✨ Generate Custom Script' : '✨ Analyze Response';
+        btn.classList.remove('opacity-70', 'cursor-not-allowed');
+    }
+}
+
+function copyToClipboard(text) {
+    const buffer = document.getElementById('copyBuffer');
+    // For AI results, replace HTML breaks back to standard newlines for plain text clipboard
+    const cleanText = text.replace(/<br\s*[\/]?>/gi, "\n");
+    buffer.value = cleanText;
+    buffer.select();
+    document.execCommand('copy');
+    
+    const alert = document.getElementById('copyAlert');
+    alert.classList.remove('hidden');
+    setTimeout(() => alert.classList.add('hidden'), 2000);
+}
+
+// --- Chart.js Logic ---
+function wrapLabel(label) {
+    if (label.length <= 16) return label;
+    let words = label.split(' ');
+    let lines = [];
+    let currentLine = words[0];
+    for (let i = 1; i < words.length; i++) {
+        if (currentLine.length + words[i].length + 1 <= 16) {
+            currentLine += " " + words[i];
+        } else {
+            lines.push(currentLine);
+            currentLine = words[i];
+        }
+    }
+    lines.push(currentLine);
+    return lines;
+}
+
+const tooltipConfig = {
+    callbacks: {
+        title: function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            return Array.isArray(label) ? label.join(' ') : label;
+        }
+    }
+};
+
+window.onload = function() {
+    const ctxDeadlines = document.getElementById('deadlinesChart').getContext('2d');
+    new Chart(ctxDeadlines, {
+        type: 'bar',
+        data: {
+            labels: ["Airline Response Window", "Complaint Filing Deadline", "DOT Referral Limit"].map(wrapLabel),
+            datasets: [{
+                label: 'Days',
+                data: [30, 45, 180],
+                backgroundColor: ['#2196F3', '#FF9800', '#009688'],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: tooltipConfig },
+            scales: { y: { beginAtZero: true, title: { display: true, text: 'Days' } } }
+        }
+    });
+
+    const ctxIssues = document.getElementById('issuesChart').getContext('2d');
+    new Chart(ctxIssues, {
+        type: 'doughnut',
+        data: {
+            labels: ["Flight Delays", "Baggage Issues", "Fares/Ticketing", "Disability Rights", "Other"].map(wrapLabel),
+            datasets: [{
+                data: [40, 25, 15, 10, 10],
+                backgroundColor: ['#1A237E', '#2196F3', '#009688', '#FF9800', '#FFC107'],
+                borderWidth: 2,
+                borderColor: '#ffffff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { 
+                legend: { position: 'bottom' },
+                tooltip: tooltipConfig 
+            },
+            cutout: '70%'
+        }
+    });
+};
+</script>
+</body>
+</html>

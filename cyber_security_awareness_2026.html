@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Security Awareness 2026: Fundamentals & AI Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-indigo: #6366f1;
+            --color-pink: #ec4899;
+            --color-cyan: #22d3ee;
+            --color-amber: #fbbf24;
+            --color-slate-950: #020617;
+            --color-slate-900: #0f172a;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--color-slate-950);
+            color: #f1f5f9;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 350px;
+            overflow: hidden;
+        }
+        .card {
+            background-color: var(--color-slate-900);
+            border: 1px solid #1e293b;
+            border-radius: 1.25rem;
+            padding: 1.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        .card:hover {
+            border-color: var(--color-indigo);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .impact-stat {
+            background: linear-gradient(180deg, rgba(236, 72, 153, 0.1) 0%, rgba(236, 72, 153, 0) 100%);
+            border: 1px solid rgba(236, 72, 153, 0.2);
+        }
+        .step-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            background: #1e293b;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-cyan);
+            margin-bottom: 0.75rem;
+        }
+        .ai-glow {
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
+            border: 1px solid rgba(34, 211, 238, 0.4);
+        }
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .loading-pulse {
+            animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-indigo-500/30">
+
+    <header class="py-10 px-6 border-b border-slate-800 bg-slate-950/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+                <h1 class="text-3xl md:text-5xl font-extrabold tracking-tighter">
+                    CYBER<span class="gradient-text">DEFENSE</span> 2026
+                </h1>
+                <p class="text-slate-400 mt-2 font-medium">Core Fundamentals & Information Security Strategy</p>
+            </div>
+            <div class="flex gap-4">
+                <div class="bg-indigo-500/10 text-indigo-400 px-4 py-2 rounded-lg border border-indigo-500/20 text-sm font-bold">
+                    Awareness: HIGH
+                </div>
+                <div class="bg-cyan-500/10 text-cyan-400 px-4 py-2 rounded-lg border border-cyan-500/20 text-sm font-bold">
+                    ✨ AI LAB ENABLED
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-12 space-y-16">
+
+        <!-- SECTION: AI POWERED LAB -->
+        <section id="ai-lab">
+            <div class="max-w-4xl mb-10">
+                <span class="step-pill">✨ Interactive AI Lab</span>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Simulate & Learn with Gemini AI</h2>
+                <p class="text-slate-400 text-lg leading-relaxed">
+                    Test your defenses in a controlled environment. Generate real-world threats or consult our Security Mentor for instant expert guidance.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Phishing Simulator Card -->
+                <div class="card ai-glow flex flex-col">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-cyan-400">✨ Phishing Simulation Lab</h3>
+                            <p class="text-xs text-slate-500 mt-1">LLM-Generated Threat Analysis</p>
+                        </div>
+                        <span class="text-2xl">🎣</span>
+                    </div>
+                    
+                    <div class="space-y-4 mb-6 flex-grow">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest">Select Vector:</label>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="setVector('CEO Fraud / BEC')" class="vector-btn px-3 py-1.5 rounded-md bg-slate-800 text-xs border border-slate-700 hover:border-cyan-500 transition-colors">CEO Fraud</button>
+                            <button onclick="setVector('Urgent IT Alert')" class="vector-btn px-3 py-1.5 rounded-md bg-slate-800 text-xs border border-slate-700 hover:border-cyan-500 transition-colors">IT Alert</button>
+                            <button onclick="setVector('Quishing (QR Scam)')" class="vector-btn px-3 py-1.5 rounded-md bg-slate-800 text-xs border border-slate-700 hover:border-cyan-500 transition-colors">Quishing</button>
+                        </div>
+                        
+                        <div id="phishing-output" class="bg-slate-950 p-4 rounded-lg border border-slate-800 min-h-[180px] text-sm text-slate-300 overflow-y-auto max-h-[300px]">
+                            <p class="text-slate-600 italic">Select a vector and click generate to see a realistic simulation.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button id="generate-phish-btn" onclick="generatePhishing()" class="flex-grow bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-indigo-500/20 active:scale-95 disabled:opacity-50">
+                            ✨ Generate Simulation
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Security Mentor Card -->
+                <div class="card flex flex-col border-cyan-500/20">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-indigo-400">✨ Security Mentor Q&A</h3>
+                            <p class="text-xs text-slate-500 mt-1">24/7 Expert Consultation</p>
+                        </div>
+                        <span class="text-2xl">🧠</span>
+                    </div>
+
+                    <div id="mentor-history" class="bg-slate-950 p-4 rounded-lg border border-slate-800 flex-grow mb-4 overflow-y-auto max-h-[350px] space-y-4">
+                        <div class="text-xs bg-indigo-500/10 border border-indigo-500/20 p-3 rounded-lg text-indigo-300">
+                            Hello! I can explain CIA triads, help with password hygiene, or discuss compliance like GDPR. What would you like to know?
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <input type="text" id="mentor-input" placeholder="Ask about security..." class="flex-grow bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500">
+                        <button id="ask-mentor-btn" onclick="askMentor()" class="bg-cyan-600 hover:bg-cyan-500 text-white p-3 rounded-xl transition-all shadow-lg shadow-cyan-500/20">
+                            ✨
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 1: INTRODUCTION (FROM ORIGINAL) -->
+        <section>
+            <div class="max-w-4xl mb-10">
+                <span class="step-pill">Phase 01: Foundations</span>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Introduction to Cyber Security</h2>
+                <p class="text-slate-400 text-lg leading-relaxed">
+                    Cyber security involves protecting hardware, software, and data. The "CIA Triad" remains the gold standard for prioritizing protection efforts.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+                <div class="card lg:col-span-2">
+                    <h3 class="text-xl font-bold mb-6 text-indigo-400">The CIA Triad</h3>
+                    <div class="chart-container">
+                        <canvas id="ciaChart"></canvas>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4 mt-8">
+                        <div class="text-center">
+                            <span class="block text-indigo-400 font-bold">Confidentiality</span>
+                            <span class="text-[10px] text-slate-500">Protection of data privacy</span>
+                        </div>
+                        <div class="text-center border-x border-slate-800 px-2">
+                            <span class="block text-pink-400 font-bold">Integrity</span>
+                            <span class="text-[10px] text-slate-500">Accuracy and consistency</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-cyan-400 font-bold">Availability</span>
+                            <span class="text-[10px] text-slate-500">Reliable access to data</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    <div class="card impact-stat">
+                        <h4 class="text-sm font-bold uppercase text-pink-400 mb-1">Impact Factor</h4>
+                        <div class="text-4xl font-black mb-2">$4.88M</div>
+                        <p class="text-xs text-slate-400">Avg. breach cost in 2024. Security isn't an expense; it's insurance.</p>
+                    </div>
+                    <div class="card bg-indigo-500/5 border-indigo-500/20">
+                        <h4 class="text-sm font-bold uppercase text-indigo-300 mb-2">Compliance Map</h4>
+                        <ul class="space-y-2 text-xs text-slate-400">
+                            <li class="flex items-center gap-2"><span>🛡️</span> GDPR </li>
+                            <li class="flex items-center gap-2"><span>🏥</span> HIPAA </li>
+                            <li class="flex items-center gap-2"><span>💳</span> PCI DSS </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: THREAT LANDSCAPE -->
+        <section>
+            <div class="max-w-4xl mb-10">
+                <span class="step-pill">Phase 02: Threat Landscape</span>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Vectors & Attack Strategies</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card border-l-4 border-l-amber-500">
+                    <div class="text-2xl mb-4">🧠</div>
+                    <h4 class="font-bold text-slate-200 mb-2">Social Engineering</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">Exploiting human nature (trust, fear, greed) to gain access.</p>
+                </div>
+                <div class="card border-l-4 border-l-indigo-500">
+                    <div class="text-2xl mb-4">🎣</div>
+                    <h4 class="font-bold text-slate-200 mb-2">Phishing</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">Targeted deception via email, text, or voice calls.</p>
+                </div>
+                <div class="card border-l-4 border-l-cyan-500">
+                    <div class="text-2xl mb-4">🤖</div>
+                    <h4 class="font-bold text-slate-200 mb-2">Deepfakes</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">AI-generated media used to impersonate high-level authority.</p>
+                </div>
+                <div class="card border-l-4 border-l-pink-500">
+                    <div class="text-2xl mb-4">🔳</div>
+                    <h4 class="font-bold text-slate-200 mb-2">Quishing</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">Malicious QR codes hiding scripts or credential harvesters.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12">
+                <div class="card">
+                    <h3 class="text-xl font-bold mb-4 text-cyan-400">Prevalence Index</h3>
+                    <div class="chart-container">
+                        <canvas id="threatBarChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-bold mb-4 text-pink-400">Physical Hazards</h3>
+                    <div class="space-y-4">
+                        <div class="p-3 bg-slate-800/50 rounded-lg border border-slate-700 text-xs">
+                            <strong>Tailgating:</strong> Physically following users into secure zones.
+                        </div>
+                        <div class="p-3 bg-slate-800/50 rounded-lg border border-slate-700 text-xs">
+                            <strong>Infected USBs:</strong> "Baiting" targets with found drives.
+                        </div>
+                        <div class="p-3 bg-slate-800/50 rounded-lg border border-slate-700 text-xs">
+                            <strong>Insider Misconduct:</strong> Employees mishandling data (intentional/accidental).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: SECURITY CONTROLS -->
+        <section>
+            <div class="max-w-4xl mb-10">
+                <span class="step-pill">Phase 03: Controls</span>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Identity & Defense Controls</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="card lg:col-span-1">
+                    <h3 class="text-lg font-bold mb-6 text-amber-400">Multi-Factor Auth</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">🔑</span>
+                            <div class="text-xs text-slate-400"><strong>Know:</strong> Passwords</div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">📱</span>
+                            <div class="text-xs text-slate-400"><strong>Have:</strong> Token/App</div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">🧬</span>
+                            <div class="text-xs text-slate-400"><strong>Are:</strong> Biometrics</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card lg:col-span-2">
+                    <h3 class="text-xl font-bold mb-4 text-indigo-400">Password Entropy</h3>
+                    <div class="chart-container">
+                        <canvas id="passwordChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-slate-800 py-12 px-6 bg-slate-950 text-center">
+        <h5 class="font-black text-xl mb-1 tracking-tighter uppercase">Cyber<span class="gradient-text">Defense</span></h5>
+        <p class="text-slate-500 text-[10px] uppercase tracking-widest mt-4">AI Enhanced Training Platform 2026. Powered by Gemini.</p>
+    </footer>
+
+    <script>
+        const apiKey = "";
+        let selectedVector = "CEO Fraud / BEC";
+
+        function setVector(v) {
+            selectedVector = v;
+            document.querySelectorAll('.vector-btn').forEach(btn => {
+                btn.classList.toggle('border-cyan-500', btn.innerText.includes(v.split(' ')[0]));
+            });
+        }
+
+        async function fetchGemini(prompt, systemInstruction = "") {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: systemInstruction }] }
+            };
+
+            for (let i = 0; i < 5; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await response.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text;
+                } catch (e) {
+                    await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
+                }
+            }
+            throw new Error("Failed to reach Gemini API after retries.");
+        }
+
+        async function generatePhishing() {
+            const out = document.getElementById('phishing-output');
+            const btn = document.getElementById('generate-phish-btn');
+            
+            out.innerHTML = '<div class="loading-pulse">Generating simulation and forensic breakdown...</div>';
+            btn.disabled = true;
+
+            const prompt = `Generate a realistic phishing email using the vector: ${selectedVector}. 
+            Format:
+            [MOCK EMAIL]
+            From: [Spoofed/Lookalike address]
+            Subject: [Urgent Subject]
+            Body: [Realistic phishing content]
+            
+            [FORENSIC ANALYSIS]
+            - Red Flag 1: ...
+            - Red Flag 2: ...
+            - Psychological Trigger: ...`;
+
+            const sys = "You are a cyber security training bot. Your goal is to generate phishing simulations for education and then explain exactly why they are dangerous using technical terms like 'authority bias', 'lookalike domains', and 'obfuscated links'. Use markdown for formatting.";
+
+            try {
+                const result = await fetchGemini(prompt, sys);
+                out.innerHTML = result.replace(/\n/g, '<br>').replace(/\[(.*?)\]/g, '<strong class="text-cyan-400">$1</strong>');
+            } catch (err) {
+                out.innerHTML = `<span class="text-pink-500">Error generating simulation. Please try again later.</span>`;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function askMentor() {
+            const input = document.getElementById('mentor-input');
+            const history = document.getElementById('mentor-history');
+            const btn = document.getElementById('ask-mentor-btn');
+            const query = input.value.trim();
+
+            if (!query) return;
+
+            const userMsg = document.createElement('div');
+            userMsg.className = "text-xs bg-slate-800 p-3 rounded-lg text-slate-300 text-right ml-8";
+            userMsg.innerText = query;
+            history.appendChild(userMsg);
+            
+            input.value = "";
+            const botMsg = document.createElement('div');
+            botMsg.className = "text-xs bg-indigo-500/10 border border-indigo-500/20 p-3 rounded-lg text-indigo-300 loading-pulse";
+            botMsg.innerText = "...Consulting expert knowledge base...";
+            history.appendChild(botMsg);
+            history.scrollTop = history.scrollHeight;
+
+            const sys = "You are a Cyber Security Expert Mentor. Provide concise, high-impact security advice based on industry standards (NIST, GDPR, CIS). Keep responses under 100 words. Focus on the human element and actionable steps.";
+
+            try {
+                const result = await fetchGemini(query, sys);
+                botMsg.classList.remove('loading-pulse');
+                botMsg.innerText = result;
+            } catch (err) {
+                botMsg.classList.remove('loading-pulse');
+                botMsg.innerText = "Error retrieving mentor advice. Check connection.";
+            } finally {
+                history.scrollTop = history.scrollHeight;
+            }
+        }
+
+        // Charts Initialization
+        function wrapLabel(text, maxLength = 16) {
+            if (typeof text !== 'string') return text;
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > maxLength) {
+                    if (currentLine.length > 0) lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            });
+            if (currentLine.trim().length > 0) lines.push(currentLine.trim());
+            return lines;
+        }
+
+        const tooltipConfig = {
+            plugins: {
+                tooltip: {
+                    backgroundColor: '#0f172a',
+                    padding: 12,
+                    callbacks: {
+                        title: (items) => Array.isArray(items[0].chart.data.labels[items[0].dataIndex]) ? items[0].chart.data.labels[items[0].dataIndex].join(' ') : items[0].chart.data.labels[items[0].dataIndex]
+                    }
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const ciaCtx = document.getElementById('ciaChart').getContext('2d');
+            new Chart(ciaCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: [wrapLabel('Confidentiality'), wrapLabel('Integrity'), wrapLabel('Availability')],
+                    datasets: [{
+                        data: [33, 33, 34],
+                        backgroundColor: ['#6366f1', '#ec4899', '#22d3ee'],
+                        borderWidth: 0,
+                        hoverOffset: 15
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: { ...tooltipConfig.plugins, legend: { position: 'right' } }
+                }
+            });
+
+            const threatCtx = document.getElementById('threatBarChart').getContext('2d');
+            new Chart(threatCtx, {
+                type: 'bar',
+                data: {
+                    labels: [wrapLabel('Phishing Campaigns'), wrapLabel('Ransomware'), wrapLabel('BEC Fraud'), wrapLabel('Insider Risk')],
+                    datasets: [{
+                        label: 'Impact Score',
+                        data: [90, 85, 70, 50],
+                        backgroundColor: '#22d3ee',
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { x: { grid: { color: '#1e293b' } }, y: { grid: { display: false } } },
+                    plugins: { ...tooltipConfig.plugins, legend: { display: false } }
+                }
+            });
+
+            const passCtx = document.getElementById('passwordChart').getContext('2d');
+            new Chart(passCtx, {
+                type: 'bar',
+                data: {
+                    labels: [wrapLabel('8 Char Complex'), wrapLabel('12 Char Common'), wrapLabel('14 Char Phrase'), wrapLabel('20+ Char Phrase')],
+                    datasets: [{
+                        label: 'Crack Resistance %',
+                        data: [10, 5, 75, 98],
+                        backgroundColor: (c) => c.raw > 70 ? '#22d3ee' : '#ec4899',
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, grid: { color: '#1e293b' } }, x: { grid: { display: false } } },
+                    plugins: { ...tooltipConfig.plugins, legend: { display: false } }
+                }
+            });
+
+            // Enter key support for mentor
+            document.getElementById('mentor-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') askMentor();
+            });
+        });
+    </script>
+</body>
+</html>

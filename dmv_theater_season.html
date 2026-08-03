@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-2027 DMV Regional Theater Season</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<style>
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 350px;
+    max-height: 400px;
+}
+@media (min-width: 768px) {
+    .chart-container {
+        height: 400px;
+    }
+}
+body {
+    background-color: #F8FAFC;
+    color: #1E293B;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+.card {
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 1.5rem;
+}
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f5f9; 
+    border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1; 
+    border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8; 
+}
+</style>
+</head>
+<body class="antialiased">
+
+<!-- Chosen Palette: Energetic & Playful (#4A148C, #D81B60, #FF9800, #00BCD4, #CDDC39) -->
+<!-- Explicit Confirmation: I explicitly confirm that NEITHER Mermaid JS NOR SVG were used anywhere in the output. -->
+
+<header class="bg-[#4A148C] text-white py-16 px-6 shadow-xl relative overflow-hidden border-b-8 border-[#D81B60]">
+    <div class="max-w-6xl mx-auto relative z-10 text-center">
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight">The DMV's Monumental Stage</h1>
+        <p class="text-xl md:text-2xl font-light max-w-3xl mx-auto text-indigo-100">The Ultimate Guide to the 2026-2027 Regional Theater Season</p>
+    </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-6 py-12 space-y-16">
+
+    <section>
+        <div class="mb-8 text-center max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold text-[#4A148C] mb-4">A Season of Scale and Ambition</h2>
+            <p class="text-lg text-gray-600 leading-relaxed">The 2026-2027 theatrical season across Washington D.C., Maryland, and Virginia represents a massive resurgence of live performance. Theaters are balancing high-stakes world premieres with guaranteed crowd-pleasing blockbusters. This quantitative overview highlights the sheer volume of artistic output planned for the year.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="card border-t-4 border-[#D81B60] text-center">
+                <div class="text-5xl font-black text-[#D81B60] mb-2">35</div>
+                <div class="text-sm font-bold uppercase tracking-wide text-gray-500">Major Venues & Orgs</div>
+            </div>
+            <div class="card border-t-4 border-[#00BCD4] text-center">
+                <div class="text-5xl font-black text-[#00BCD4] mb-2">120+</div>
+                <div class="text-sm font-bold uppercase tracking-wide text-gray-500">Announced Productions</div>
+            </div>
+            <div class="card border-t-4 border-[#FF9800] text-center">
+                <div class="text-5xl font-black text-[#FF9800] mb-2">29</div>
+                <div class="text-sm font-bold uppercase tracking-wide text-gray-500">World & US Premieres</div>
+            </div>
+            <div class="card border-t-4 border-[#4A148C] text-center">
+                <div class="text-5xl font-black text-[#4A148C] mb-2">2</div>
+                <div class="text-sm font-bold uppercase tracking-wide text-gray-500">Massive Co-Productions</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="card border-l-8 border-[#FF9800]">
+        <div class="mb-6">
+            <h2 class="text-3xl font-bold text-[#4A148C] mb-4">Milestone Anniversaries: The Heartbeat of the DMV</h2>
+            <p class="text-gray-600 leading-relaxed">The 2026-2027 calendar is defined by historic longevity. Two of the region's most prominent producing organizations are celebrating massive milestones, proving the resilience of the local arts ecosystem. These anniversaries are being marked by massive community initiatives and premiere-heavy programming.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+            <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 relative overflow-hidden">
+                <div class="text-8xl font-black text-gray-200 absolute -right-4 -top-4 select-none">75</div>
+                <h3 class="text-2xl font-black text-[#D81B60] mb-1 relative z-10">Arena Stage</h3>
+                <h4 class="text-md font-bold text-gray-800 mb-3 relative z-10">Diamond Anniversary</h4>
+                <p class="text-gray-700 text-sm relative z-10">Celebrating 75 years as a pioneer of the regional theater movement. Under Artistic Director Hana S. Sharif, their season features a massive New Play Festival, a revival of <i>Damn Yankees</i>, and the world premiere of <i>Fremont Ave.</i></p>
+            </div>
+            
+            <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 relative overflow-hidden">
+                <div class="text-8xl font-black text-gray-200 absolute -right-4 -top-4 select-none">50</div>
+                <h3 class="text-2xl font-black text-[#00BCD4] mb-1 relative z-10">Round House Theatre</h3>
+                <h4 class="text-md font-bold text-gray-800 mb-3 relative z-10">Golden Anniversary</h4>
+                <p class="text-gray-700 text-sm relative z-10">Marking 50 years since their 1977 debut, Round House is launching the "50 for 50" initiative—providing 50 free theatrical experiences to the community alongside major mainstage hits like August Wilson's <i>Ma Rainey's Black Bottom</i>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXISTING SECTION: Explore by Theater (MOVED UP) -->
+    <section class="card border-l-8 border-[#D81B60]">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-[#4A148C] mb-4">Explore Theatre Schedules</h2>
+            <p class="text-gray-600 leading-relaxed mb-6">Dive into the specific programming for the 2026-2027 season. Select a regional powerhouse below to view their fully extracted lineup, detailed production descriptions, and a direct link to their official box office.</p>
+            <div class="max-w-md relative">
+                <select id="theaterSelect" class="w-full p-4 pr-10 rounded-lg border-2 border-gray-200 focus:border-[#D81B60] focus:ring-0 text-lg font-bold text-[#4A148C] appearance-none bg-gray-50 cursor-pointer transition-colors outline-none shadow-sm">
+                    <option value="" disabled selected>Select a Theatre...</option>
+                    <option value="1stStage">1st Stage</option>
+                    <option value="Adventure">Adventure Theatre MTC</option>
+                    <option value="Arena">Arena Stage</option>
+                    <option value="BaltimoreCenter">Baltimore Center Stage</option>
+                    <option value="Cockpit">Cockpit in Court</option>
+                    <option value="CompassRose">Compass Rose Theater</option>
+                    <option value="Constellation">Constellation Theatre Company</option>
+                    <option value="Everyman">Everyman Theatre</option>
+                    <option value="Folger">Folger Theatre</option>
+                    <option value="Fords">Ford's Theatre</option>
+                    <option value="FScott">F. Scott Fitzgerald Theatre (VLOC)</option>
+                    <option value="Hylton">Hylton Performing Arts Center</option>
+                    <option value="Imagination">Imagination Stage</option>
+                    <option value="INseries">INseries Opera</option>
+                    <option value="Keegan">The Keegan Theatre</option>
+                    <option value="LTA">Little Theatre of Alexandria</option>
+                    <option value="MET">Maryland Ensemble Theatre</option>
+                    <option value="Mosaic">Mosaic Theater Company</option>
+                    <option value="National">National Theatre</option>
+                    <option value="NextStop">NextStop Theatre Company</option>
+                    <option value="NuSass">Nu Sass Productions</option>
+                    <option value="Olney">Olney Theatre Center</option>
+                    <option value="Prologue">Prologue Theatre</option>
+                    <option value="RoundHouse">Round House Theatre</option>
+                    <option value="STC">Shakespeare Theatre Company</option>
+                    <option value="Signature">Signature Theatre</option>
+                    <option value="SilverSpring">Silver Spring Stage</option>
+                    <option value="Spotlighters">Spotlighters Theatre</option>
+                    <option value="Studio">Studio Theatre</option>
+                    <option value="TheaterAlliance">Theater Alliance</option>
+                    <option value="TheaterJ">Theater J</option>
+                    <option value="ThirdWall">Third Wall Productions</option>
+                    <option value="Tobys">Toby's Dinner Theater</option>
+                    <option value="Vagabond">Vagabond Players</option>
+                    <option value="WashingtonStage">Washington Stage Guild</option>
+                    <option value="WoollyMammoth">Woolly Mammoth Theatre Company</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#4A148C] font-bold">
+                    &#9662;
+                </div>
+            </div>
+        </div>
+        <div id="scheduleDisplay" class="hidden mt-8 transition-opacity duration-300">
+            <div class="mb-6 pb-4 border-b border-gray-100 flex flex-col items-start">
+                <h3 id="displayTheaterName" class="text-3xl font-black"></h3>
+                <p id="displayTheaterDesc" class="text-gray-500 font-medium mt-2 text-lg"></p>
+                <a id="displayTheaterLink" href="#" target="_blank" class="inline-flex items-center mt-3 px-4 py-2 rounded bg-gray-100 text-sm font-bold uppercase tracking-wider hover:bg-gray-200 transition-colors gap-1 shadow-sm">
+                    Visit Official Website <span class="text-lg leading-none">&rsaquo;</span>
+                </a>
+            </div>
+            <div id="displayShowsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Browse by Genre (MOVED DOWN) -->
+    <section class="card border-l-8 border-[#00BCD4]">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-[#4A148C] mb-4">Discover Shows by Genre</h2>
+            <p class="text-gray-600 leading-relaxed mb-6">In the mood for a laugh, a sweeping score, or a gripping drama? Filter the entire season's announcements by category to find your perfect night out.</p>
+            
+            <div class="flex flex-wrap gap-3 mb-8" id="genreFilters">
+                <button class="genre-btn px-5 py-2 rounded-full font-bold text-sm uppercase tracking-wider transition-colors shadow-sm bg-[#4A148C] text-white" data-genre="All">All Shows</button>
+                <button class="genre-btn px-5 py-2 rounded-full font-bold text-sm uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-[#D81B60] hover:text-white transition-colors shadow-sm" data-genre="Musical">Musicals</button>
+                <button class="genre-btn px-5 py-2 rounded-full font-bold text-sm uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-[#FF9800] hover:text-white transition-colors shadow-sm" data-genre="Drama">Drama</button>
+                <button class="genre-btn px-5 py-2 rounded-full font-bold text-sm uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-[#00BCD4] hover:text-white transition-colors shadow-sm" data-genre="Comedy">Comedy</button>
+                <button class="genre-btn px-5 py-2 rounded-full font-bold text-sm uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-[#CDDC39] hover:text-white transition-colors shadow-sm" data-genre="Classic">Classics</button>
+                <button class="genre-btn px-5 py-2 rounded-full font-bold text-sm uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-[#D81B60] hover:text-white transition-colors shadow-sm" data-genre="Family">Family</button>
+                <button class="genre-btn px-5 py-2 rounded-full font-bold text-sm uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-[#4A148C] hover:text-white transition-colors shadow-sm" data-genre="Thriller">Thriller</button>
+                <button class="genre-btn px-5 py-2 rounded-full font-bold text-sm uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-[#FF9800] hover:text-white transition-colors shadow-sm" data-genre="Cabaret">Solo / Cabaret</button>
+            </div>
+
+            <div id="genreShowsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar pb-4">
+                <!-- Dynamically populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div class="card">
+            <h3 class="text-2xl font-bold text-[#4A148C] mb-2">Programming Landscape</h3>
+            <p class="text-gray-600 mb-6 text-sm">An analysis of the announced programming reveals a theatrical ecosystem balancing risk with guaranteed revenue. Contemporary dramas and ambitious world premieres dominate the count, subsidized by major Broadway musicals and reliable holiday traditions.</p>
+            <div class="chart-container">
+                <canvas id="genreChart"></canvas>
+            </div>
+            <p class="text-xs text-gray-400 mt-4 text-center">Data represents aggregated production categories from 2026/27 press releases.</p>
+        </div>
+
+        <div class="card">
+            <h3 class="text-2xl font-bold text-[#4A148C] mb-2">Theatrical Matrix: Risk vs. Tradition</h3>
+            <p class="text-gray-600 mb-6 text-sm">This matrix visualizes the programming strategies of key theaters. The X-axis tracks the number of new works/premieres, while the Y-axis tracks established classics and revivals. The bubble size represents the overall scale of the theater's announced season.</p>
+            <div class="chart-container" id="plotlyMatrix"></div>
+            <p class="text-xs text-gray-400 mt-4 text-center">Plotly WebGL Scatter Plot. Bubble size indicates relative season volume.</p>
+        </div>
+    </section>
+
+</main>
+
+<footer class="bg-[#1E293B] text-gray-400 py-12 text-center mt-8 border-t-8 border-[#4A148C]">
+    <div class="max-w-4xl mx-auto px-6">
+        <h2 class="text-2xl font-bold text-white mb-4">DMV Theater Infographic</h2>
+        <p class="text-sm mb-4">Data synthesized from official 2026-2027 press releases and regional briefings spanning all major and mid-sized producing organizations across DC, MD, and VA.</p>
+        <p class="text-xs text-gray-500 uppercase tracking-widest">Designed for Data Visualization & Analysis</p>
+    </div>
+</footer>
+
+<script>
+    function wrapLabel(label, limit) {
+        if (label.length <= limit) return label;
+        const words = label.split(' ');
+        let lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + word).length > limit) {
+                if (currentLine.trim()) lines.push(currentLine.trim());
+                currentLine = word + ' ';
+            } else {
+                currentLine += word + ' ';
+            }
+        });
+        if (currentLine.trim()) lines.push(currentLine.trim());
+        return lines;
+    }
+
+    const genreCtx = document.getElementById('genreChart').getContext('2d');
+    const genreLabelsRaw = ['Contemporary Dramas & Comedies', 'World & U.S. Premieres', 'Major Broadway Musicals', 'Classic Adaptations', 'Holiday Traditions'];
+    const genreLabels = genreLabelsRaw.map(label => wrapLabel(label, 16));
+
+    new Chart(genreCtx, {
+        type: 'bar',
+        data: {
+            labels: genreLabels,
+            datasets: [{
+                label: 'Estimated Productions',
+                data: [35, 29, 28, 12, 8],
+                backgroundColor: [
+                    '#4A148C',
+                    '#D81B60',
+                    '#FF9800',
+                    '#00BCD4',
+                    '#CDDC39'
+                ],
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            } else {
+                              return label;
+                            }
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: '#F1F5F9' },
+                    title: {
+                        display: true,
+                        text: 'Number of Productions',
+                        font: { weight: 'bold' }
+                    }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { family: 'system-ui' } }
+                }
+            }
+        }
+    });
+
+    const plotlyData = [{
+        x: [7, 4, 3, 2, 0, 0, 5], 
+        y: [3, 2, 5, 4, 2, 14, 0], 
+        mode: 'markers+text',
+        type: 'scattergl', 
+        text: ['Olney Theatre', 'Arena Stage', 'Mosaic', 'Shakespeare Theatre', 'Constellation', 'National Theatre', 'Woolly Mammoth'],
+        textposition: ['top center', 'bottom center', 'top center', 'bottom center', 'right', 'top center', 'top center'],
+        marker: {
+            size: [45, 40, 25, 35, 15, 60, 30],
+            color: ['#D81B60', '#4A148C', '#00BCD4', '#FF9800', '#CDDC39', '#D81B60', '#FF9800'],
+            line: { color: '#ffffff', width: 2 },
+            opacity: 0.9
+        }
+    }];
+
+    const plotlyLayout = {
+        margin: { t: 20, b: 50, l: 50, r: 20 },
+        xaxis: {
+            title: 'Number of Premieres (New Works)',
+            range: [-0.5, 9],
+            gridcolor: '#F1F5F9',
+            zerolinecolor: '#CBD5E1'
+        },
+        yaxis: {
+            title: 'Classics, Musicals & Revivals',
+            range: [-0.5, 15],
+            gridcolor: '#F1F5F9',
+            zerolinecolor: '#CBD5E1'
+        },
+        plot_bgcolor: 'transparent',
+        paper_bgcolor: 'transparent',
+        font: { family: 'system-ui' },
+        hovermode: 'closest'
+    };
+
+    const plotlyConfig = {
+        displayModeBar: false,
+        responsive: true
+    };
+
+    Plotly.newPlot('plotlyMatrix', plotlyData, plotlyLayout, plotlyConfig);
+
+    // Exhaustive Schedule Data Extracted From Briefing & Mind Map - ENHANCED WITH GENRES
+    const theaterSchedules = {
+        "1stStage": {
+            name: "1st Stage", website: "https://1ststage.org", desc: "Exceptional, intimate theater in Tysons, Virginia.", color: "text-[#FF9800]", border: "border-[#FF9800]",
+            shows: [
+                { title: "Birthday Candles", dates: "Season Production", genre: "Drama", details: "A poignant and funny play taking its audience through the highlights and heartbreaks of one woman's ordinary life." },
+                { title: "Young Americans", dates: "Season Production", genre: "Drama", details: "A heartfelt road trip following immigrants on their journey across the country." },
+                { title: "Indecent", dates: "Season Production", genre: "Drama", details: "A deeply moving play with music, inspired by the true events surrounding Sholem Asch's controversial play 'God of Vengeance'." },
+                { title: "Fair Play", dates: "Season Production", genre: "Drama", details: "A gripping exploration of competitive sports and the female athlete." },
+                { title: "Between Riverside and Crazy", dates: "Season Production", genre: "Comedy", details: "A Pulitzer Prize-winning dark comedy about a retired police officer fighting to keep his rent-controlled apartment." },
+                { title: "Logan Festival of Solo Performance", dates: "Summer", genre: "Cabaret", details: "An annual celebration featuring captivating solo performances from across the nation." }
+            ]
+        },
+        "Adventure": {
+            name: "Adventure Theatre MTC", website: "https://adventuretheatre-mtc.org", desc: "Inspiring the next generation of theatergoers in Glen Echo Park.", color: "text-[#00BCD4]", border: "border-[#00BCD4]",
+            shows: [
+                { title: "Sleeping Beauty: The Time Traveler", dates: "Season Production", genre: "Family", details: "A fun, family-friendly, sci-fi twist on the classic fairytale." },
+                { title: "Charlotte's Web", dates: "Season Production", genre: "Family", details: "The beloved children's classic about a pig and a spider brought to life on stage." }
+            ]
+        },
+        "Arena": {
+            name: "Arena Stage", website: "https://www.arenastage.org", desc: "Celebrating 75 years of championing American voices.", color: "text-[#00BCD4]", border: "border-[#00BCD4]",
+            shows: [
+                { title: "A Good Day to Me Not to You", dates: "Mar 27 – May 3, 2026", genre: "Cabaret", details: "A solo performance." },
+                { title: "Voices of Now Festival", dates: "Apr 25, 2026", genre: "Family", details: "Youth-devised theater featuring four ensembles." },
+                { title: "The Motion", dates: "May 6 – Jun 14, 2026", genre: "Drama", details: "By Christopher Chen; directed by Hana S. Sharif." },
+                { title: "Pal Joey", dates: "Jan 30 – Mar 15, 2026", genre: "Musical", details: "Reimagined musical co-directed by Savion Glover." },
+                { title: "75th Anniversary New Play Festival", dates: "Feb 27 – Mar 1, 2026", genre: "Drama", details: "Featured Readings Listed Below:" },
+                { title: "The Treatment", dates: "Feb 27, 2026", genre: "Drama", details: "By Amy Berryman; directed by Reggie D. White." },
+                { title: "Emalani", dates: "Feb 28, 2026", genre: "Drama", details: "By Lee Cataluna; directed by Mina Morita." },
+                { title: "Code Red", dates: "Feb 28, 2026", genre: "Drama", details: "By Emily Mann; directed by Molly Smith." },
+                { title: "Bunk Johnson… A Blues Poem", dates: "Mar 1, 2026", genre: "Drama", details: "By Ifa Bayeza; directed by Hana S. Sharif." }
+            ]
+        },
+        "BaltimoreCenter": {
+            name: "Baltimore Center Stage", website: "https://www.centerstage.org", desc: "A national incubator of new work and cultural home for Baltimore.", color: "text-[#D81B60]", border: "border-[#D81B60]",
+            shows: [
+                { title: "Bocking", dates: "Aug 14 – Sep 6, 2026", genre: "Comedy", details: "A World Premiere satire by Preston Crowder." },
+                { title: "Laura Benanti: Nobody Cares", dates: "Sep 17 – 26, 2026", genre: "Cabaret", details: "A one-woman comedy show with music." },
+                { title: "Mama I'm A Big Girl Now", dates: "Oct 2 – 4, 2026", genre: "Musical", details: "Featuring original Hairspray stars Butler, Bundy, and Winokur." },
+                { title: "Pete the Cat", dates: "Oct 31 – Nov 1, 2026", genre: "Family", details: "A family adventure based on the book series." },
+                { title: "CHARMZ: The Other Reindeer", dates: "Nov 13 – Dec 27, 2026", genre: "Musical", details: "A Motown-inspired holiday musical." },
+                { title: "Liberation", dates: "Jan 16 – Feb 7, 2027", genre: "Drama", details: "A new work by Bess Wohl, directed by Taibi Magar." },
+                { title: "Betty Buckley in Concert", dates: "Jan 22 – 23, 2027", genre: "Cabaret", details: "An intimate concert by the Tony Award winner." },
+                { title: "King Hedley II", dates: "Mar 11 – Apr 11, 2027", genre: "Drama", details: "August Wilson's classic directed by Ken-Matt Martin." },
+                { title: "Don't Let the Pigeon Drive the Bus!", dates: "Apr 3 – 4, 2027", genre: "Family", details: "A musical by Mo Willems and Deborah Wicks La Puma." },
+                { title: "XTRAVAGANZA", dates: "May 7 – Jun 13, 2027", genre: "Musical", details: "A World Premiere musical set to the sounds of Ballroom, House, and iconic '80s and '90s pop." }
+            ]
+        },
+        "Cockpit": {
+            name: "Cockpit in Court", website: "https://www.ccbcmd.edu/cockpitincourt", desc: "Summer theater in residence at CCBC Essex.", color: "text-[#4A148C]", border: "border-[#4A148C]",
+            shows: [
+                { title: "God of Carnage", dates: "Summer", genre: "Comedy", details: "A brutally funny comedy of manners (without the manners) by Yasmina Reza." }
+            ]
+        },
+        "CompassRose": {
+            name: "Compass Rose Theater", website: "https://www.compassrosetheater.org", desc: "Professional theater and educational studio.", color: "text-[#D81B60]", border: "border-[#D81B60]",
+            shows: [
+                { title: "Compass Rose Cabaret", dates: "Season Production", genre: "Cabaret", details: "A special musical revue presented at Unity by the Bay." }
+            ]
+        },
+        "Constellation": {
+            name: "Constellation Theatre Company", website: "https://www.constellationtheatre.org", desc: "Epic theatre in an intimate space at the Atlas Performing Arts Center.", color: "text-[#4A148C]", border: "border-[#4A148C]",
+            shows: [
+                { title: "Dracula: A Comedy of Terrors", dates: "Jan-Feb 2026", genre: "Comedy", details: "A madcap, laugh-out-loud comedy full of camp and hilarious physical spectacle." },
+                { title: "OR,", dates: "May-Jun 2026", genre: "Comedy", details: "A whip-smart theatrical romp of power, passion, and playwriting." }
+            ]
+        },
+        "Everyman": {
+            name: "Everyman Theatre", website: "https://everymantheatre.org", desc: "Accessible, high-quality plays in Baltimore featuring a resident ensemble.", color: "text-[#00BCD4]", border: "border-[#00BCD4]",
+            shows: [
+                { title: "Kim's Convenience", dates: "Aug 30 – Sep 27, 2026", genre: "Comedy", details: "A heartwarming comedy about a Korean immigrant family by Ins Choi." },
+                { title: "Different Words for Happiness", dates: "Oct 18 – Nov 15, 2026", genre: "Drama", details: "A bold new World Premiere by Katie Kleiger." },
+                { title: "Agatha Christie's The Mirror Crack'd", dates: "Nov 29, 2026 – Jan 3, 2027", genre: "Thriller", details: "The Mid-Atlantic Premiere adapted by Rachel Wagstaff." },
+                { title: "The Mountaintop", dates: "Jan 31 – Feb 28, 2027", genre: "Drama", details: "Katori Hall's reimagining of MLK's final night." },
+                { title: "Agnes of God", dates: "Mar 28 – Apr 25, 2027", genre: "Drama", details: "The tense psychological drama by John Pielmeier." },
+                { title: "Rope", dates: "May 23 – Jun 20, 2027", genre: "Thriller", details: "A gripping, high-stakes suspense thriller by Patrick Hamilton that inspired Alfred Hitchcock's classic film." }
+            ]
+        },
+        "Folger": {
+            name: "Folger Theatre", website: "https://www.folger.edu/theatre", desc: "Transformational performances bridging the arts and humanities.", color: "text-[#FF9800]", border: "border-[#FF9800]",
+            shows: [
+                { title: "Measure for Measure", dates: "Sep 22 – Oct 25, 2026", genre: "Classic", details: "Directed by Karen Ann Daniels." },
+                { title: "Reading Room Festival", dates: "Late Jan 2027", genre: "Drama", details: "The fifth year of contemporary plays responding to Shakespeare." },
+                { title: "Hamlet", dates: "Mar 2 – Apr 4, 2027", genre: "Classic", details: "The first Folger production of the tragedy in over a decade." },
+                { title: "Shakespeare Comedy (TBD)", dates: "May – Jun 2027", genre: "Classic", details: "A concluding classical comedy to be announced." }
+            ]
+        },
+        "Fords": {
+            name: "Ford's Theatre", website: "https://www.fords.org", desc: "Celebrating American history and the legacy of Abraham Lincoln.", color: "text-[#D81B60]", border: "border-[#D81B60]",
+            shows: [
+                { title: "Come From Away", dates: "Sep 10 – Oct 18, 2026", genre: "Musical", details: "Directed by Kevin McAllister." },
+                { title: "A Christmas Carol", dates: "Nov 19 – Dec 31, 2026", genre: "Family", details: "Featuring Craig Wallace as Ebenezer Scrooge." },
+                { title: "Legacy Commissions: A First Look", dates: "Jan 2027", genre: "Drama", details: "Readings of new plays in development." },
+                { title: "The 25th Annual Putnam County Spelling Bee", dates: "Mar 12 – May 15, 2027", genre: "Musical", details: "Directed by Alan Paul." }
+            ]
+        },
+        "FScott": {
+            name: "Victorian Lyric Opera Company", website: "https://www.vloc.org", desc: "Presenting high-quality light opera at the F. Scott Fitzgerald Theatre.", color: "text-[#CDDC39]", border: "border-[#CDDC39]",
+            shows: [
+                { title: "Patience", dates: "Summer", genre: "Musical", details: "A classic, witty Gilbert and Sullivan operetta." }
+            ]
+        },
+        "Hylton": {
+            name: "Hylton Performing Arts Center", website: "https://hyltoncenter.org", desc: "A premier destination for the arts in Prince William County.", color: "text-[#00BCD4]", border: "border-[#00BCD4]",
+            shows: [
+                { title: "Disney's The Lion King JR", dates: "Summer", genre: "Family", details: "A spectacular, family-friendly musical adventure." }
+            ]
+        },
+        "Imagination": {
+            name: "Imagination Stage", website: "https://imaginationstage.org", desc: "Empowering young people through theater arts.", color: "text-[#FF9800]", border: "border-[#FF9800]",
+            shows: [
+                { title: "Good Morning, Good Night", dates: "Spring", genre: "Family", details: "An engaging and gentle theatrical experience designed specifically for very young audiences." }
+            ]
+        },
+        "INseries": {
+            name: "INseries Opera", website: "https://inseries.org", desc: "Audacious operatic reimaginings spanning history.", color: "text-[#4A148C]", border: "border-[#4A148C]",
+            shows: [
+                { title: "THE MAKADO", dates: "Oct 10 – 25, 2026", genre: "Musical", details: "A political reimagining of The Mikado." },
+                { title: "(N)O King(S)", dates: "Jan 23 – Feb 7, 2027", genre: "Musical", details: "Melding works by Judith Weir and Peter Maxwell Davies." },
+                { title: "THEODORA", dates: "Apr 10 – 25, 2027", genre: "Musical", details: "Music by G.F. Handel; INseries' largest production." },
+                { title: "THE TRIUMPH OF F.A.U.V.E.L.", dates: "Jun 5 – 26, 2025", genre: "Musical", details: "Immersive site-specific summer arts happening." }
+            ]
+        },
+        "Keegan": {
+            name: "The Keegan Theatre", website: "https://keegantheatre.com", desc: "Extraordinary artists in an intimate setting in Dupont Circle.", color: "text-[#CDDC39]", border: "border-[#CDDC39]",
+            shows: [
+                { title: "EVERYTHING IS WONDERFUL", dates: "Sep-Oct 2025", genre: "Drama", details: "A poignant drama kicking off the season." },
+                { title: "LIZZIE", dates: "Oct-Nov 2025", genre: "Musical", details: "A rock musical exploring the infamous Lizzie Borden." },
+                { title: "AN IRISH CAROL", dates: "Dec 2025", genre: "Family", details: "An annual, critically acclaimed modern holiday tradition." },
+                { title: "JOHN DOE", dates: "Jan-Feb 2026", genre: "Drama", details: "A World Premiere play." },
+                { title: "MIDICULOUS", dates: "Feb-Mar 2026", genre: "Comedy", details: "A fresh and exciting World Premiere production." },
+                { title: "THE MINUTES", dates: "Apr-May 2026", genre: "Comedy", details: "A searing dark comedy exploring the hypocrisy of small-town politics and history." },
+                { title: "THE PLAY THAT GOES WRONG", dates: "Jun-Jul 2026", genre: "Comedy", details: "The smash hit physical comedy." }
+            ]
+        },
+        "LTA": {
+            name: "Little Theatre of Alexandria", website: "https://thelittletheatre.com", desc: "Historic community theater in Old Town Alexandria.", color: "text-[#00BCD4]", border: "border-[#00BCD4]",
+            shows: [
+                { title: "Catch Me If You Can", dates: "Jul-Aug 2026", genre: "Musical", details: "The high-flying musical comedy based on the hit film." },
+                { title: "Blithe Spirit", dates: "Aug-Sep 2026", genre: "Comedy", details: "Noël Coward's classic supernatural comedy." },
+                { title: "A Classic Musical", dates: "Oct-Nov 2026", genre: "Musical", details: "A beloved golden age musical to be announced." },
+                { title: "A Christmas Carol", dates: "Dec 2026", genre: "Family", details: "A community holiday tradition." },
+                { title: "Once on This Island", dates: "Feb 2027", genre: "Musical", details: "The vibrant Caribbean-infused musical." },
+                { title: "The Pitmen Painters", dates: "Apr 2027", genre: "Drama", details: "A fascinating play by Lee Hall." },
+                { title: "Calendar Girls", dates: "May-Jun 2027", genre: "Comedy", details: "A heartwarming, funny play about women raising money for a good cause." }
+            ]
+        },
+        "MET": {
+            name: "Maryland Ensemble Theatre", website: "https://marylandensemble.org", desc: "Professional, collaborative theater in Frederick, MD.", color: "text-[#D81B60]", border: "border-[#D81B60]",
+            shows: [
+                { title: "Oh Crit!", dates: "Season Production", genre: "Comedy", details: "A highly interactive, fantasy-themed tabletop theatrical experience." }
+            ]
+        },
+        "Mosaic": {
+            name: "Mosaic Theater Company", website: "https://mosaictheater.org", desc: "Washington, DC's home for bold, culturally diverse theater.", color: "text-[#FF9800]", border: "border-[#FF9800]",
+            shows: [
+                { title: "Somewhere over the Border", dates: "Sep-Oct 2026", genre: "Musical", details: "A compelling new work featured in the first slate of programming for Season 12." },
+                { title: "Natural History", dates: "Jan-Feb 2027", genre: "Drama", details: "A World Premiere offering insightful reflections on the complexities of American identity." },
+                { title: "7th Street Echo", dates: "Mar-Apr 2027", genre: "Drama", details: "A dynamic part of the upcoming premiere-heavy subscription season." }
+            ]
+        },
+        "National": {
+            name: "National Theatre", website: "https://www.broadwayatthenational.com", desc: "The historic home for Broadway in Washington, D.C.", color: "text-[#D81B60]", border: "border-[#D81B60]",
+            shows: [
+                { title: "Dirty Dancing", dates: "Begins Sep 29, 2026", genre: "Musical", details: "The classic romantic story returns as a 26-27 Season Package Show." },
+                { title: "Maybe Happy Ending", dates: "Begins Oct 6, 2026", genre: "Musical", details: "A fresh and beautiful new musical. A 26-27 Season Package Show." },
+                { title: "Mamma Mia!", dates: "Begins Oct 27, 2026", genre: "Musical", details: "The ultimate feel-good ABBA musical. A 26-27 Season Special." },
+                { title: "The Hip Hop Nutcracker", dates: "Begins Nov 17, 2026", genre: "Family", details: "A contemporary holiday dance spectacle. A 26-27 Season Special." },
+                { title: "Hell's Kitchen", dates: "Begins Nov 24, 2026", genre: "Musical", details: "The hit Broadway musical featuring the music of Alicia Keys. A 26-27 Season Package Show." },
+                { title: "Waitress", dates: "Begins Dec 8, 2026", genre: "Musical", details: "The beloved musical with music by Sara Bareilles. A 26-27 Season Special." },
+                { title: "Hamilton", dates: "Dec 16, 2026 – Feb 7, 2027", genre: "Musical", details: "The revolutionary, multi-award-winning hip-hop musical. A 26-27 Season Package Show." },
+                { title: "Oh, Mary!", dates: "Feb 9 – 21, 2027", genre: "Comedy", details: "The irreverent, smash-hit Broadway comedy. D.C. Premiere; Season Special." },
+                { title: "A Beautiful Noise", dates: "Mar 2 – 7, 2027", genre: "Musical", details: "The uplifting Neil Diamond musical. A 26-27 Season Special." },
+                { title: "The Who's Tommy", dates: "Apr 20 – 25, 2027", genre: "Musical", details: "The electrifying rock opera revival. A 26-27 Season Special." },
+                { title: "Jersey Boys", dates: "Apr 27 – May 9, 2027", genre: "Musical", details: "The story of Frankie Valli and The Four Seasons. A 26-27 Season Special." },
+                { title: "The Bodyguard", dates: "May 18 – 23, 2027", genre: "Musical", details: "The romantic thriller featuring the songs of Whitney Houston. A 26-27 Season Package Show." },
+                { title: "Operation Mincemeat", dates: "Jun 8 – 20, 2027", genre: "Musical", details: "The fast-paced, critically acclaimed British musical comedy. D.C. Premiere; Season Package Show." },
+                { title: "Just In Time", dates: "Jul 20 – Aug 1, 2027", genre: "Musical", details: "Closing the season package with this highly anticipated D.C. Premiere." }
+            ]
+        },
+        "NextStop": {
+            name: "NextStop Theatre Company", website: "https://www.nextstoptheatre.org", desc: "Professional, regional theatre in Herndon, Virginia.", color: "text-[#4A148C]", border: "border-[#4A148C]",
+            shows: [
+                { title: "Guards at the Taj", dates: "Mar-Apr 2026", genre: "Comedy", details: "A dark, intense comedy exploring beauty, duty, and deep friendship." },
+                { title: "Once", dates: "May-Jun 2026", genre: "Musical", details: "The multi-award-winning, captivating musical about an unexpected musical romance." }
+            ]
+        },
+        "NuSass": {
+            name: "Nu Sass Productions", website: "https://www.nusass.com", desc: "Striking productions creating inclusive spaces in DC.", color: "text-[#CDDC39]", border: "border-[#CDDC39]",
+            shows: [
+                { title: "The H Twins", dates: "Feb 21 – Mar 22, 2026", genre: "Drama", details: "Variety show set in 1940s Germany." },
+                { title: "Everything, Devoured", dates: "Apr 17 – May 10, 2026", genre: "Comedy", details: "Features Ronald Reagan as a demon." },
+                { title: "OPEN", dates: "Apr 28 – May 27, 2026", genre: "Drama", details: "A queer love story told via magic." },
+                { title: "Brönte Sister House Party", dates: "Aug 28 – Sep 20, 2026", genre: "Comedy", details: "A fresh, wild take on the literary history of the famous sisters." },
+                { title: "The Importance of Being Earnest", dates: "Nov 2026", genre: "Comedy", details: "A fresh take on the classic Wilde comedy." }
+            ]
+        },
+        "Olney": {
+            name: "Olney Theatre Center", website: "https://www.olneytheatre.org", desc: "A cultural anchor offering diverse and premiere-heavy programming.", color: "text-[#FF9800]", border: "border-[#FF9800]",
+            shows: [
+                { title: "La Cage Aux Folles", dates: "Sep 18 – Nov 8, 2026", genre: "Musical", details: "The classic, heartwarming, and hilarious Harvey Fierstein and Jerry Herman musical." },
+                { title: "Les Misérables", dates: "Oct 30, 2026 – Jan 17, 2027", genre: "Musical", details: "The epic, sweeping tale of redemption and revolution in 19th-century France." },
+                { title: "A Christmas Carol", dates: "Nov 28 – Dec 28, 2026", genre: "Family", details: "Paul Morella’s acclaimed solo adaptation." },
+                { title: "Musical (Title TBD)", dates: "Mar 18 – Apr 25, 2027", genre: "Musical", details: "To be announced June 2026." },
+                { title: "Peter and the Starcatcher", dates: "Apr 30 – Jun 13, 2027", genre: "Family", details: "A magical prequel to Peter Pan." },
+                { title: "El Huracán", dates: "May 20 – Jun 20, 2027", genre: "Drama", details: "A powerful new play navigating family and magic." },
+                { title: "Million Dollar Quartet", dates: "Jul 1 – Aug 29, 2027", genre: "Musical", details: "An electrifying musical that re-enacts the legendary 1956 Sun Records jam session." }
+            ]
+        },
+        "Prologue": {
+            name: "Prologue Theatre", website: "https://www.prologuetheatre.org", desc: "Sparking conversations through thought-provoking theatre.", color: "text-[#FF9800]", border: "border-[#FF9800]",
+            shows: [
+                { title: "A Mirror", dates: "Apr 16 - May 17", genre: "Drama", details: "A compelling, thought-provoking theatrical experience challenging audience perspectives." }
+            ]
+        },
+        "RoundHouse": {
+            name: "Round House Theatre", website: "https://www.roundhousetheatre.org", desc: "Celebrating 50 years of bold theatre in Montgomery County.", color: "text-[#D81B60]", border: "border-[#D81B60]",
+            shows: [
+                { title: "Ma Rainey's Black Bottom", dates: "Sep 9 – Oct 11, 2026", genre: "Drama", details: "August Wilson's powerful masterpiece kicks off the theater's monumental 50th anniversary." },
+                { title: "Cult of Love", dates: "Nov 18 – Dec 27, 2026", genre: "Drama", details: "A Regional Premiere by Leslye Headland." },
+                { title: "Chinese Republicans", dates: "Jan 27 – Feb 21, 2027", genre: "Drama", details: "A Regional Premiere by Alex Lin." },
+                { title: "The Camp Silver Lake Jamboree Massacre", dates: "Mar 5 – 7, 2027", genre: "Comedy", details: "A World Premiere by Naysan Mojgani for the Sarah Metzger Memorial Play." },
+                { title: "Baby Shower Katie", dates: "Apr 14 – May 9, 2027", genre: "Comedy", details: "A World Premiere comedy by Beth Hyland." },
+                { title: "The White Chip", dates: "Jun 2 – Jul 3, 2027", genre: "Drama", details: "A Regional Premiere directed by Sean Daniels." }
+            ]
+        },
+        "STC": {
+            name: "Shakespeare Theatre Company", website: "https://www.shakespearetheatre.org", desc: "World-class classical theatre in the nation's capital.", color: "text-[#4A148C]", border: "border-[#4A148C]",
+            shows: [
+                { title: "The Score", dates: "Sep 11 – Oct 18, 2026", genre: "Drama", details: "The U.S. Premiere starring Golden Globe winner Brian Cox as Johann Sebastian Bach." },
+                { title: "Frida…A Self-Portrait", dates: "Oct 8 – Nov 8, 2026", genre: "Cabaret", details: "Created by and starring Vanessa Severo, exploring the pain and passion of the iconic artist." },
+                { title: "A Midsummer Night's Dream", dates: "Dec 4, 2026 – Jan 10, 2027", genre: "Classic", details: "Directed by Simon Godwin with puppets by Basil Twist." },
+                { title: "A Raisin in the Sun", dates: "Jan 23 – Feb 28, 2027", genre: "Classic", details: "Directed by Tim Bond; co-pro with Oregon Shakespeare Festival." },
+                { title: "Romeo and Juliet", dates: "Apr 13 – May 16, 2027", genre: "Classic", details: "Returns to the mainstage for the first time in a decade." },
+                { title: "Follies", dates: "May 18 – Jun 20, 2027", genre: "Musical", details: "A monumental, must-see co-production with Signature Theatre of Sondheim's legendary masterpiece." }
+            ]
+        },
+        "Signature": {
+            name: "Signature Theatre", website: "https://www.sigtheatre.org", desc: "Tony Award-winning theater in Arlington known for musical theater.", color: "text-[#00BCD4]", border: "border-[#00BCD4]",
+            shows: [
+                { title: "I'm Here: Black Broadway", dates: "Mar 17 – 29, 2026", genre: "Cabaret", details: "A vibrant cabaret featuring Awa Sal Secka." },
+                { title: "The Monsters", dates: "Feb 2 – Mar 21, 2027", genre: "Drama", details: "A sibling story set in the world of MMA." },
+                { title: "A Mountain for Elodie", dates: "Mar 16 – Apr 18, 2027", genre: "Musical", details: "A poignant show by Benjamin Scheuer." },
+                { title: "Latin History for Morons", dates: "Apr 27 – Jun 13, 2027", genre: "Cabaret", details: "The hit one-man play by John Leguizamo." },
+                { title: "Urinetown", dates: "Jun 1 – Aug 8, 2027", genre: "Musical", details: "The satirical musical directed by Matthew Gardiner." }
+            ]
+        },
+        "SilverSpring": {
+            name: "Silver Spring Stage", website: "https://www.ssstage.org", desc: "An award-winning community theater.", color: "text-[#CDDC39]", border: "border-[#CDDC39]",
+            shows: [
+                { title: "Coriolanus", dates: "Season Production", genre: "Classic", details: "A fresh, compelling take on Shakespeare's searing political tragedy." }
+            ]
+        },
+        "Spotlighters": {
+            name: "Spotlighters Theatre", website: "https://www.spotlighters.org", desc: "Intimate, theater-in-the-round in Baltimore.", color: "text-[#FF9800]", border: "border-[#FF9800]",
+            shows: [
+                { title: "The Crayon King, or Learning How to Share", dates: "Jun 12 - Jul 5", genre: "Family", details: "A delightful, educational, and colorful production designed for audiences of all ages." }
+            ]
+        },
+        "Studio": {
+            name: "Studio Theatre", website: "https://www.studiotheatre.org", desc: "Provocative, uncompromising plays exploring our common humanity.", color: "text-[#FF9800]", border: "border-[#FF9800]",
+            shows: [
+                { title: "Jonah", dates: "Mar-Apr 2026", genre: "Drama", details: "A thrillingly unpredictable and twisting play by Rachel Bonds." },
+                { title: "Purlie Victorious", dates: "May 2026", genre: "Comedy", details: "A classic, rip-roaring comedy brilliantly directed by Psalmayene 24." },
+                { title: "Feeling Afraid As If Something Terrible Is Going To Happen", dates: "Jun 2026", genre: "Comedy", details: "A biting, fast-paced dark comedy by Marcelo Dos Santos." }
+            ]
+        },
+        "TheaterAlliance": {
+            name: "Theater Alliance", website: "https://theateralliance.com", desc: "Socially conscious, thought-provoking theatre.", color: "text-[#00BCD4]", border: "border-[#00BCD4]",
+            shows: [
+                { title: "2025-26 Season in Southwest Pop-Up Venue", dates: "2025-2026 Season", genre: "Drama", details: "Continuing to ignite DC with a bold new season of productions in a unique venue." }
+            ]
+        },
+        "TheaterJ": {
+            name: "Theater J", website: "https://theaterj.org", desc: "Nationally-renowned theater celebrating the Jewish experience.", color: "text-[#D81B60]", border: "border-[#D81B60]",
+            shows: [
+                { title: "The Flying Lovers of Vitebsk", dates: "Oct 7 – Nov 1, 2026", genre: "Drama", details: "The story of Bella and Marc Chagall." },
+                { title: "Tropical Secrets", dates: "Dec 2 – 27, 2026", genre: "Drama", details: "A powerful childhood refugee story set in Havana, Cuba." },
+                { title: "Avaaz", dates: "Jan 27 – Feb 14, 2027", genre: "Comedy", details: "An Iranian New Year celebration/dinner party play." },
+                { title: "American Girls", dates: "Mar 17 – Apr 11, 2027", genre: "Drama", details: "A World Premiere coming-of-age story." },
+                { title: "Becoming Eve", dates: "Jun 2 – 20, 2027", genre: "Drama", details: "An exploration of trans identity and Hasidic family dynamics." }
+            ]
+        },
+        "ThirdWall": {
+            name: "Third Wall Productions", website: "https://thirdwall.org", desc: "Community theater in Baltimore County.", color: "text-[#4A148C]", border: "border-[#4A148C]",
+            shows: [
+                { title: "Young Frankenstein", dates: "Season Production", genre: "Musical", details: "A raucous staging of the classic Mel Brooks musical comedy." }
+            ]
+        },
+        "Tobys": {
+            name: "Toby's Dinner Theater", website: "https://tobysdinnertheatre.com", desc: "Award-winning musical theater in-the-round with a buffet.", color: "text-[#FF9800]", border: "border-[#FF9800]",
+            shows: [
+                { title: "The Wizard of Oz", dates: "Season Production", genre: "Musical", details: "Follow the yellow brick road in this classic, family-favorite musical adaptation." }
+            ]
+        },
+        "Vagabond": {
+            name: "Vagabond Players", website: "https://www.vagabondplayers.org", desc: "America's oldest continuously operating little theater.", color: "text-[#D81B60]", border: "border-[#D81B60]",
+            shows: [
+                { title: "The Heidi Chronicles", dates: "Apr 10 - May 3", genre: "Drama", details: "A revival of Wendy Wasserstein's masterful Pulitzer Prize-winning play." }
+            ]
+        },
+        "WashingtonStage": {
+            name: "Washington Stage Guild", website: "https://stageguild.org", desc: "Producing eloquent plays of world literature.", color: "text-[#00BCD4]", border: "border-[#00BCD4]",
+            shows: [
+                { title: "caesar and cleopatra", dates: "Apr 9 - May 3", genre: "Classic", details: "A sharp adaptation by Bill Largess from the iconic play by George Bernard Shaw." }
+            ]
+        },
+        "WoollyMammoth": {
+            name: "Woolly Mammoth Theatre Company", website: "https://www.woollymammoth.net", desc: "Bold, wildly original, and uniquely theatrical plays.", color: "text-[#FF9800]", border: "border-[#FF9800]",
+            shows: [
+                { title: "Venus", dates: "Sep 9 - Oct 4, 2026", genre: "Comedy", details: "By Steve Yockey. Directed by Reggie D. White. A star-gazing dark comedy following two women whose romance spirals into fear as they are haunted by a woman in a red raincoat." },
+                { title: "Hanukkah Spectacular", dates: "Nov 14 - Dec 13, 2026", genre: "Comedy", details: "By Max Posner. Directed by David Cromer. A comedy exploring what happens when Jewish artists attempt to create a commercially viable Hanukkah hit." },
+                { title: "Ten Grand", dates: "Feb 1 - 28, 2027", genre: "Drama", details: "By Kate Cortesi. Directed by Reggie D. White. Set in a Goodwill store, highlighting community care that escalates into life-or-death stakes." },
+                { title: "Bobby Robotowitz", dates: "Mar 29 - Apr 25, 2027", genre: "Comedy", details: "By Matt Schatz. Directed by Jared Mezzocchi. A sharp comedy exploring creativity and codependency when a struggling novelist turns to a chatbot." },
+                { title: "Love I Awethu Further", dates: "Jun 1 - 27, 2027", genre: "Drama", details: "By a.k. payne. Directed by Tamilla Woodard. An explosive, poetic adaptation of Julius Caesar centering on women wrestling with the cost of freedom." }
+            ]
+        }
+    };
+
+    // Genre Filtering Logic
+    const allShowsFlat = [];
+    Object.keys(theaterSchedules).forEach(key => {
+        const theater = theaterSchedules[key];
+        theater.shows.forEach(show => {
+            allShowsFlat.push({
+                ...show,
+                theaterName: theater.name,
+                theaterColor: theater.color,
+                theaterBorder: theater.border,
+                theaterWebsite: theater.website
+            });
+        });
+    });
+
+    // Sort shows alphabetically by title
+    allShowsFlat.sort((a, b) => a.title.localeCompare(b.title));
+
+    const genreShowsGrid = document.getElementById('genreShowsGrid');
+    const genreBtns = document.querySelectorAll('.genre-btn');
+
+    function renderGenreShows(genre) {
+        genreShowsGrid.innerHTML = '';
+        
+        let filteredShows = allShowsFlat;
+        if (genre !== 'All') {
+            filteredShows = allShowsFlat.filter(show => show.genre === genre);
+        }
+
+        if (filteredShows.length === 0) {
+            genreShowsGrid.innerHTML = `<p class="col-span-full text-gray-500 italic p-4">No shows found for this genre.</p>`;
+            return;
+        }
+
+        filteredShows.forEach(show => {
+            const card = document.createElement('div');
+            card.className = `bg-gray-50 p-5 rounded-xl border-t-4 shadow-sm hover:shadow-md transition-shadow ${show.theaterBorder} flex flex-col h-full`;
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-2">
+                    <div class="text-xs font-bold uppercase tracking-wider text-gray-500">${show.dates}</div>
+                    <span class="text-xs font-bold bg-gray-200 text-gray-700 px-2 py-1 rounded-full">${show.genre}</span>
+                </div>
+                <h4 class="text-xl font-bold text-gray-900 mb-1">${show.title}</h4>
+                <p class="text-sm font-semibold ${show.theaterColor} mb-2">${show.theaterName}</p>
+                <p class="text-sm text-gray-600 leading-relaxed mb-4 flex-grow">${show.details}</p>
+                <a href="${show.theaterWebsite}" target="_blank" class="text-xs font-bold uppercase tracking-wider hover:underline ${show.theaterColor} inline-flex items-center gap-1 mt-auto">
+                    Visit Site <span class="text-sm leading-none">&rsaquo;</span>
+                </a>
+            `;
+            genreShowsGrid.appendChild(card);
+        });
+    }
+
+    // Initialize Genre Grid
+    renderGenreShows('All');
+
+    genreBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Reset button styles
+            genreBtns.forEach(b => {
+                b.classList.remove('bg-[#4A148C]', 'text-white', 'bg-[#00BCD4]', 'bg-[#D81B60]', 'bg-[#FF9800]', 'bg-[#CDDC39]');
+                b.classList.add('bg-gray-100', 'text-gray-700');
+            });
+
+            // Set active button style based on its data-genre
+            this.classList.remove('bg-gray-100', 'text-gray-700');
+            const selectedGenre = this.getAttribute('data-genre');
+            
+            let activeBgClass = 'bg-[#4A148C]'; // Default
+            if(selectedGenre === 'Musical' || selectedGenre === 'Family') activeBgClass = 'bg-[#D81B60]';
+            if(selectedGenre === 'Drama' || selectedGenre === 'Thriller') activeBgClass = 'bg-[#4A148C]';
+            if(selectedGenre === 'Comedy' || selectedGenre === 'Cabaret') activeBgClass = 'bg-[#FF9800]';
+            if(selectedGenre === 'Classic') activeBgClass = 'bg-[#CDDC39]';
+            if(selectedGenre === 'All') activeBgClass = 'bg-[#00BCD4]';
+
+            this.classList.add(activeBgClass, 'text-white');
+
+            renderGenreShows(selectedGenre);
+        });
+    });
+
+    // Theater Schedule Explorer Logic
+    const theaterSelect = document.getElementById('theaterSelect');
+    const scheduleDisplay = document.getElementById('scheduleDisplay');
+    const displayTheaterName = document.getElementById('displayTheaterName');
+    const displayTheaterDesc = document.getElementById('displayTheaterDesc');
+    const displayTheaterLink = document.getElementById('displayTheaterLink');
+    const displayShowsGrid = document.getElementById('displayShowsGrid');
+
+    theaterSelect.addEventListener('change', function() {
+        const selectedId = this.value;
+        const data = theaterSchedules[selectedId];
+        
+        if (data) {
+            displayTheaterName.textContent = data.name;
+            displayTheaterName.className = `text-3xl font-black ${data.color}`;
+            displayTheaterDesc.textContent = data.desc;
+            
+            displayTheaterLink.href = data.website;
+            displayTheaterLink.className = `inline-flex items-center mt-3 px-4 py-2 rounded bg-gray-100 text-sm font-bold uppercase tracking-wider hover:bg-gray-200 transition-colors gap-1 shadow-sm ${data.color}`;
+            
+            displayShowsGrid.innerHTML = '';
+            
+            data.shows.forEach(show => {
+                const showCard = document.createElement('div');
+                showCard.className = `bg-white p-6 rounded-xl border-t-4 shadow-sm hover:shadow-md transition-shadow ${data.border}`;
+                showCard.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="text-xs font-bold uppercase tracking-wider text-gray-500">${show.dates}</div>
+                        <span class="text-xs font-bold bg-gray-100 text-gray-600 px-2 py-1 rounded-full">${show.genre}</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">${show.title}</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed">${show.details}</p>
+                `;
+                displayShowsGrid.appendChild(showCard);
+            });
+            
+            scheduleDisplay.classList.remove('hidden');
+        } else {
+            scheduleDisplay.classList.add('hidden');
+        }
+    });
+</script>
+</body>
+</html>

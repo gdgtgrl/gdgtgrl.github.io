@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFR Studio - Notice of Findings & Recommendations Assistant</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: { 800: '#1e293b', 900: '#0f172a' },
+                        gold: { 500: '#d97706', 600: '#b45309' },
+                        audit: {
+                            condition: '#0284c7', // Sky blue
+                            criteria: '#7c3aed', // Purple
+                            cause: '#ea580c', // Orange
+                            effect: '#dc2626', // Red
+                            recommendation: '#16a34a' // Green
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e1b4b 100%);
+        }
+        .element-card {
+            transition: all 0.25s ease-in-out;
+        }
+        .element-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white; color: black; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 ease-in-out bg-slate-900 text-white px-5 py-3 rounded-lg shadow-2xl flex items-center space-x-3 border-l-4 border-emerald-500">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toast-message" class="text-sm font-medium">Notification message</span>
+    </div>
+
+    <!-- Top Header Banner -->
+    <header class="gradient-header text-white border-b border-slate-700 shadow-lg no-print">
+        <div class="max-w-7xl mx-mx-auto px-4 sm:px-6 lg:px-8 py-5">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <div class="flex items-center space-x-3">
+                        <span class="bg-amber-500/20 text-amber-400 text-xs font-semibold px-2.5 py-1 rounded border border-amber-500/30">GAO / NIST / FISCAM Compliant</span>
+                        <span class="text-slate-400 text-xs">GAGAS Yellow Book Standard</span>
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-white mt-1 flex items-center gap-2">
+                        <i class="fa-solid fa-file-shield text-amber-400"></i> NFR Studio
+                        <span class="text-xs font-normal text-slate-300 bg-slate-800 px-2 py-0.5 rounded border border-slate-700">v2.5</span>
+                    </h1>
+                    <p class="text-slate-300 text-sm mt-0.5">Notice of Findings and Recommendations Assistant for Federal IT & Cybersecurity Audits</p>
+                </div>
+                <div class="flex items-center space-x-3 self-start md:self-auto">
+                    <button onclick="switchTab('builder')" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold px-4 py-2 rounded-lg text-sm shadow-md transition flex items-center space-x-2">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>Draft New NFR</span>
+                    </button>
+                    <button onclick="switchTab('templates')" class="bg-slate-800 hover:bg-slate-700 text-white px-3.5 py-2 rounded-lg text-sm border border-slate-600 transition flex items-center space-x-2">
+                        <i class="fa-solid fa-folder-open text-amber-400"></i>
+                        <span>Samples</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="flex space-x-1 sm:space-x-4 mt-6 border-b border-slate-700/80 overflow-x-auto custom-scrollbar text-sm font-medium">
+                <button id="tab-btn-infographic" onclick="switchTab('infographic')" class="tab-btn px-4 py-3 text-amber-400 border-b-2 border-amber-400 flex items-center space-x-2 whitespace-nowrap">
+                    <i class="fa-solid fa-diagram-project"></i>
+                    <span>5 Elements Infographic</span>
+                </button>
+                <button id="tab-btn-builder" onclick="switchTab('builder')" class="tab-btn px-4 py-3 text-slate-400 hover:text-slate-200 border-b-2 border-transparent flex items-center space-x-2 whitespace-nowrap">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Interactive NFR Builder</span>
+                </button>
+                <button id="tab-btn-criteria" onclick="switchTab('criteria')" class="tab-btn px-4 py-3 text-slate-400 hover:text-slate-200 border-b-2 border-transparent flex items-center space-x-2 whitespace-nowrap">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                    <span>NIST & FISCAM Criteria Explorer</span>
+                </button>
+                <button id="tab-btn-templates" onclick="switchTab('templates')" class="tab-btn px-4 py-3 text-slate-400 hover:text-slate-200 border-b-2 border-transparent flex items-center space-x-2 whitespace-nowrap">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span>Audit Templates</span>
+                </button>
+                <button id="tab-btn-guide" onclick="switchTab('guide')" class="tab-btn px-4 py-3 text-slate-400 hover:text-slate-200 border-b-2 border-transparent flex items-center space-x-2 whitespace-nowrap">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                    <span>GAGAS Writing Rubric</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+
+        <!-- ================= TAB 1: INTERACTIVE INFOGRAPHIC ================= -->
+        <section id="tab-infographic" class="tab-content space-y-6">
+            <!-- Banner introduction -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div class="max-w-3xl">
+                    <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-sitemap text-amber-500"></i> The Anatomy of a Federal Audit Finding
+                    </h2>
+                    <p class="text-slate-600 text-sm mt-1 leading-relaxed">
+                        Under Generally Accepted Government Auditing Standards (GAGAS / Yellow Book) and the GAO Financial Audit Manual (FAM) / FISCAM frameworks, a complete audit finding must clearly articulate <strong>five essential elements</strong>. Click any element below to explore writing criteria, examples, and common pitfalls.
+                    </p>
+                </div>
+
+                <!-- Visual Element Flow Pipeline -->
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-3 mt-6">
+                    <!-- Condition Card -->
+                    <button onclick="showElementDetail('condition')" class="element-card text-left bg-sky-50 hover:bg-sky-100/80 border-2 border-sky-300 rounded-xl p-4 relative group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold uppercase tracking-wider text-sky-700 bg-sky-200/60 px-2 py-0.5 rounded">Element 1</span>
+                            <i class="fa-solid fa-eye text-sky-600 text-lg"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-sky-950 mt-2">Condition</h3>
+                        <p class="text-xs text-sky-800 font-medium mt-1">"What Is"</p>
+                        <p class="text-xs text-slate-600 mt-2 line-clamp-2">The factual state observed during the audit evaluation.</p>
+                        <span class="text-[11px] font-semibold text-sky-700 mt-3 inline-block group-hover:underline">Explore Rules &rarr;</span>
+                    </button>
+
+                    <!-- Criteria Card -->
+                    <button onclick="showElementDetail('criteria')" class="element-card text-left bg-purple-50 hover:bg-purple-100/80 border-2 border-purple-300 rounded-xl p-4 relative group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold uppercase tracking-wider text-purple-700 bg-purple-200/60 px-2 py-0.5 rounded">Element 2</span>
+                            <i class="fa-solid fa-scale-balanced text-purple-600 text-lg"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-purple-950 mt-2">Criteria</h3>
+                        <p class="text-xs text-purple-800 font-medium mt-1">"What Should Be"</p>
+                        <p class="text-xs text-slate-600 mt-2 line-clamp-2">The benchmark (NIST 800-53, FIPS, FISCAM, OMB).</p>
+                        <span class="text-[11px] font-semibold text-purple-700 mt-3 inline-block group-hover:underline">Explore Rules &rarr;</span>
+                    </button>
+
+                    <!-- Cause Card -->
+                    <button onclick="showElementDetail('cause')" class="element-card text-left bg-orange-50 hover:bg-orange-100/80 border-2 border-orange-300 rounded-xl p-4 relative group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold uppercase tracking-wider text-orange-700 bg-orange-200/60 px-2 py-0.5 rounded">Element 3</span>
+                            <i class="fa-solid fa-lightbulb text-orange-600 text-lg"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-orange-950 mt-2">Cause</h3>
+                        <p class="text-xs text-orange-800 font-medium mt-1">"Why It Happened"</p>
+                        <p class="text-xs text-slate-600 mt-2 line-clamp-2">The underlying root reason for the variance.</p>
+                        <span class="text-[11px] font-semibold text-orange-700 mt-3 inline-block group-hover:underline">Explore Rules &rarr;</span>
+                    </button>
+
+                    <!-- Effect Card -->
+                    <button onclick="showElementDetail('effect')" class="element-card text-left bg-red-50 hover:bg-red-100/80 border-2 border-red-300 rounded-xl p-4 relative group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold uppercase tracking-wider text-red-700 bg-red-200/60 px-2 py-0.5 rounded">Element 4</span>
+                            <i class="fa-solid fa-triangle-exclamation text-red-600 text-lg"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-red-950 mt-2">Effect</h3>
+                        <p class="text-xs text-red-800 font-medium mt-1">"So What / Impact"</p>
+                        <p class="text-xs text-slate-600 mt-2 line-clamp-2">Potential or actual risk, exposure, or disruption.</p>
+                        <span class="text-[11px] font-semibold text-red-700 mt-3 inline-block group-hover:underline">Explore Rules &rarr;</span>
+                    </button>
+
+                    <!-- Recommendation Card -->
+                    <button onclick="showElementDetail('recommendation')" class="element-card text-left bg-emerald-50 hover:bg-emerald-100/80 border-2 border-emerald-300 rounded-xl p-4 relative group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-200/60 px-2 py-0.5 rounded">Element 5</span>
+                            <i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-emerald-950 mt-2">Recommendation</h3>
+                        <p class="text-xs text-emerald-800 font-medium mt-1">"What To Do"</p>
+                        <p class="text-xs text-slate-600 mt-2 line-clamp-2">Actionable guidance targeting the root cause.</p>
+                        <span class="text-[11px] font-semibold text-emerald-700 mt-3 inline-block group-hover:underline">Explore Rules &rarr;</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dynamic Detail Modal / Card -->
+            <div id="element-detail-box" class="bg-white rounded-xl shadow-md border border-slate-200 p-6 transition-all duration-300">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <!-- Interactive Logic & Flow Alignment Guide -->
+            <div class="bg-slate-900 text-white rounded-xl p-6 shadow-md border border-slate-800">
+                <h3 class="text-lg font-bold flex items-center gap-2 text-amber-400">
+                    <i class="fa-solid fa-diagram-next"></i> Structural Logical Alignment Rule
+                </h3>
+                <p class="text-slate-300 text-sm mt-1">
+                    An NFR fails if the 5 elements are disconnected. Use this interactive matrix to test the logical cohesion of your finding:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
+                    <div class="bg-slate-800/80 p-4 rounded-lg border border-slate-700">
+                        <div class="flex items-center space-x-2 text-sky-400 font-semibold text-sm mb-2">
+                            <i class="fa-solid fa-link"></i>
+                            <span>1. Condition &harr; Criteria Pair</span>
+                        </div>
+                        <p class="text-xs text-slate-300">
+                            The <strong>Condition</strong> must directly measure against the specific requirement set in the <strong>Criteria</strong>. If criteria requires 30-day patching (NIST SI-2), condition must show patches past 30 days.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-800/80 p-4 rounded-lg border border-slate-700">
+                        <div class="flex items-center space-x-2 text-orange-400 font-semibold text-sm mb-2">
+                            <i class="fa-solid fa-arrows-split-up-and-left"></i>
+                            <span>2. Cause &harr; Recommendation Link</span>
+                        </div>
+                        <p class="text-xs text-slate-300">
+                            The <strong>Recommendation</strong> must directly address the <strong>Root Cause</strong>. If the cause is lack of automated monitoring tools, recommending a policy rewrite will not fix the finding.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-800/80 p-4 rounded-lg border border-slate-700">
+                        <div class="flex items-center space-x-2 text-red-400 font-semibold text-sm mb-2">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>3. Condition &harr; Effect Realism</span>
+                        </div>
+                        <p class="text-xs text-slate-300">
+                            The <strong>Effect</strong> must reflect realistic impact based on the <strong>Condition</strong> scale. Avoid sensationalizing minor administrative gaps as catastrophic cyber attacks.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= TAB 2: INTERACTIVE NFR BUILDER ================= -->
+        <section id="tab-builder" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                <!-- Left Column: Form Inputs (7 Cols) -->
+                <div class="lg:col-span-7 space-y-5">
+
+                    <!-- Metadata Header Form -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-sliders text-amber-500"></i> Finding Metadata
+                            </h2>
+                            <button onclick="loadSampleFinding('mfa')" class="text-xs text-amber-600 hover:text-amber-700 font-semibold flex items-center gap-1">
+                                <i class="fa-solid fa-wand-magic"></i> Load Sample
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Audit Finding Title *</label>
+                                <input type="text" id="nfr-title" oninput="updatePreview()" placeholder="e.g. Inadequate Multi-Factor Authentication for Privileged Accounts" class="w-full text-sm px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">System / Program Name *</label>
+                                <input type="text" id="nfr-system" oninput="updatePreview()" placeholder="e.g. Core Financial Management System (CFMS)" class="w-full text-sm px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Audit Domain / Type</label>
+                                <select id="nfr-domain" onchange="updatePreview()" class="w-full text-sm px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500">
+                                    <option value="Access Control (AC)">Access Control (FISCAM AC / NIST AC)</option>
+                                    <option value="Configuration Management (CM)">Configuration Management (FISCAM CM / NIST CM)</option>
+                                    <option value="System & Information Integrity (SI)">System & Info Integrity (NIST SI)</option>
+                                    <option value="Contingency Planning (CP)">Contingency Planning (FISCAM CP / NIST CP)</option>
+                                    <option value="Security Management (SM)">Security Governance (FISCAM SM)</option>
+                                    <option value="Segregation of Duties (SD)">Segregation of Duties (FISCAM SD)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Risk / Impact Rating</label>
+                                <select id="nfr-risk" onchange="updatePreview()" class="w-full text-sm px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500">
+                                    <option value="High Risk">High Risk / Material Weakness</option>
+                                    <option value="Moderate Risk">Moderate Risk / Significant Deficiency</option>
+                                    <option value="Low Risk">Low Risk / Control Defect</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5 Core Components Form -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 space-y-5">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-list-check text-amber-500"></i> Core Finding Elements
+                            </h2>
+                            <span class="text-xs text-slate-500">Provide clear, objective details</span>
+                        </div>
+
+                        <!-- 1. Condition -->
+                        <div class="space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold uppercase tracking-wide text-sky-700 flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-sky-500"></span> 1. Condition (What Is)
+                                </label>
+                                <span class="text-[11px] text-slate-400">Include metrics, numbers, dates</span>
+                            </div>
+                            <textarea id="nfr-condition" rows="3" oninput="updatePreview()" placeholder="State the current situation as observed during audit testing (e.g., During testing of 45 domain administrator accounts, 14 accounts did not enforce multi-factor authentication...)" class="w-full text-sm p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500"></textarea>
+                        </div>
+
+                        <!-- 2. Criteria -->
+                        <div class="space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold uppercase tracking-wide text-purple-700 flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-purple-500"></span> 2. Criteria (What Should Be)
+                                </label>
+                                <button onclick="openCriteriaPickerModal()" class="text-xs text-purple-600 hover:text-purple-800 font-semibold flex items-center gap-1">
+                                    <i class="fa-solid fa-magnifying-glass"></i> Insert NIST/FISCAM Criteria
+                                </button>
+                            </div>
+                            <textarea id="nfr-criteria" rows="3" oninput="updatePreview()" placeholder="Cite relevant standards, e.g., NIST SP 800-53 Rev. 5 control IA-2 requiring multi-factor authentication for network access to privileged accounts, and FIPS 200..." class="w-full text-sm p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"></textarea>
+                        </div>
+
+                        <!-- 3. Cause -->
+                        <div class="space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold uppercase tracking-wide text-orange-700 flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-orange-500"></span> 3. Cause (Why It Happened)
+                                </label>
+                                <span class="text-[11px] text-slate-400">Target underlying root cause</span>
+                            </div>
+                            <textarea id="nfr-cause" rows="3" oninput="updatePreview()" placeholder="Explain the root cause (e.g., System administrators lacked detailed operating procedures for configuring MFA on legacy service accounts, and quarterly access reviews did not verify MFA enforcement settings...)" class="w-full text-sm p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"></textarea>
+                        </div>
+
+                        <!-- 4. Effect -->
+                        <div class="space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold uppercase tracking-wide text-red-700 flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-red-500"></span> 4. Effect (Risk / Impact)
+                                </label>
+                                <span class="text-[11px] text-slate-400">Consequences & exposure</span>
+                            </div>
+                            <textarea id="nfr-effect" rows="3" oninput="updatePreview()" placeholder="State impact (e.g., Exposes privileged accounts to credential theft and unauthorized access, compromising system confidentiality and financial data integrity...)" class="w-full text-sm p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"></textarea>
+                        </div>
+
+                        <!-- 5. Recommendation -->
+                        <div class="space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold uppercase tracking-wide text-emerald-700 flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 5. Recommendation (Action Plan)
+                                </label>
+                                <span class="text-[11px] text-slate-400">Actionable SMART corrective steps</span>
+                            </div>
+                            <textarea id="nfr-recommendation" rows="3" oninput="updatePreview()" placeholder="Provide actionable recommendation (e.g., We recommend that management: 1. Immediately enforce phishing-resistant MFA across all privileged domain accounts; 2. Update Standard Operating Procedures...)" class="w-full text-sm p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Right Column: Real-time Rubric & Live Preview (5 Cols) -->
+                <div class="lg:col-span-5 space-y-5">
+
+                    <!-- Quality & Rubric Evaluation Card -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-chart-pie text-amber-500"></i> NFR Quality Evaluator
+                            </h3>
+                            <div class="flex items-center space-x-1">
+                                <span id="quality-score-badge" class="text-sm font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">0%</span>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div>
+                            <div class="w-full bg-slate-200 rounded-full h-2.5">
+                                <div id="quality-progress-bar" class="bg-amber-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Rubric Checklist -->
+                        <div id="rubric-checklist" class="space-y-2 text-xs">
+                            <div id="check-condition" class="flex items-center justify-between text-slate-500">
+                                <span><i class="fa-regular fa-circle text-slate-300 mr-1.5"></i> Condition has quantitative evidence</span>
+                                <span class="font-mono">0 pts</span>
+                            </div>
+                            <div id="check-criteria" class="flex items-center justify-between text-slate-500">
+                                <span><i class="fa-regular fa-circle text-slate-300 mr-1.5"></i> Cites specific NIST or FISCAM standard</span>
+                                <span class="font-mono">0 pts</span>
+                            </div>
+                            <div id="check-cause" class="flex items-center justify-between text-slate-500">
+                                <span><i class="fa-regular fa-circle text-slate-300 mr-1.5"></i> Identifies root cause (not just condition)</span>
+                                <span class="font-mono">0 pts</span>
+                            </div>
+                            <div id="check-effect" class="flex items-center justify-between text-slate-500">
+                                <span><i class="fa-regular fa-circle text-slate-300 mr-1.5"></i> Articulates risk / financial / cyber impact</span>
+                                <span class="font-mono">0 pts</span>
+                            </div>
+                            <div id="check-recommendation" class="flex items-center justify-between text-slate-500">
+                                <span><i class="fa-regular fa-circle text-slate-300 mr-1.5"></i> SMART Actionable Recommendation</span>
+                                <span class="font-mono">0 pts</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Document Live Preview -->
+                    <div class="bg-white rounded-xl shadow-md border border-slate-300 overflow-hidden">
+                        <div class="bg-slate-800 px-4 py-3 border-b border-slate-700 flex items-center justify-between text-white">
+                            <span class="text-xs font-semibold flex items-center gap-1.5">
+                                <i class="fa-solid fa-file-pdf text-amber-400"></i> Formatted NFR Document Preview
+                            </span>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="copyFullNFR()" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-2.5 py-1 rounded transition flex items-center gap-1">
+                                    <i class="fa-solid fa-copy"></i> Copy Text
+                                </button>
+                                <button onclick="window.print()" class="text-xs bg-amber-500 hover:bg-amber-600 text-slate-950 px-2.5 py-1 rounded font-semibold transition flex items-center gap-1">
+                                    <i class="fa-solid fa-print"></i> Print
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="preview-container" class="p-6 bg-white text-slate-900 text-xs leading-relaxed space-y-4 max-h-[550px] overflow-y-auto custom-scrollbar font-sans border-t">
+                            <!-- Injected Live Preview via JS -->
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ================= TAB 3: NIST & FISCAM CRITERIA EXPLORER ================= -->
+        <section id="tab-criteria" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-book-bookmark text-purple-600"></i> Federal Audit Criteria Reference Library
+                        </h2>
+                        <p class="text-slate-600 text-sm mt-1">Search NIST SP 800-53 Rev 5, FIPS 200, OMB Directives, and FISCAM controls for criteria citations.</p>
+                    </div>
+
+                    <!-- Search Box -->
+                    <div class="relative w-full md:w-80">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-sm"></i>
+                        <input type="text" id="criteria-search" oninput="filterCriteriaDatabase()" placeholder="Search controls (e.g. AC-2, MFA, patch)..." class="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500">
+                    </div>
+                </div>
+
+                <!-- Filter Badges -->
+                <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-100 text-xs">
+                    <button onclick="filterCriteriaFamily('ALL')" class="criteria-filter-btn px-3 py-1 rounded-full bg-purple-600 text-white font-medium">All Frameworks</button>
+                    <button onclick="filterCriteriaFamily('NIST-AC')" class="criteria-filter-btn px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700">Access Control (AC)</button>
+                    <button onclick="filterCriteriaFamily('NIST-CM')" class="criteria-filter-btn px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700">Config Mgmt (CM)</button>
+                    <button onclick="filterCriteriaFamily('NIST-SI')" class="criteria-filter-btn px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700">Integrity (SI)</button>
+                    <button onclick="filterCriteriaFamily('NIST-CP')" class="criteria-filter-btn px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700">Contingency (CP)</button>
+                    <button onclick="filterCriteriaFamily('FISCAM')" class="criteria-filter-btn px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700">FISCAM Framework</button>
+                    <button onclick="filterCriteriaFamily('OMB')" class="criteria-filter-btn px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700">OMB M-22-09 / M-21-31</button>
+                </div>
+            </div>
+
+            <!-- Criteria Grid -->
+            <div id="criteria-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Injected via JavaScript -->
+            </div>
+        </section>
+
+
+        <!-- ================= TAB 4: AUDIT TEMPLATES ================= -->
+        <section id="tab-templates" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-amber-500"></i> Pre-Built Real-World Federal Audit Templates
+                </h2>
+                <p class="text-slate-600 text-sm mt-1">Select any template below to inspect its 5 elements and load it directly into the Interactive NFR Builder.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="templates-grid">
+                <!-- Injected via JavaScript -->
+            </div>
+        </section>
+
+
+        <!-- ================= TAB 5: GAGAS WRITING GUIDE & CHECKLIST ================= -->
+        <section id="tab-guide" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
+                <div class="border-b border-slate-200 pb-4">
+                    <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-clipboard-check text-emerald-600"></i> GAO Yellow Book Audit Writing & Review Checklist
+                    </h2>
+                    <p class="text-slate-600 text-sm mt-1">Quality control principles based on Generally Accepted Government Auditing Standards (GAGAS 2021/2024 revisions).</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Rule 1: Objectivity & Tone -->
+                    <div class="border border-slate-200 rounded-lg p-5 bg-slate-50 space-y-2">
+                        <div class="flex items-center space-x-2 text-slate-900 font-bold text-sm">
+                            <i class="fa-solid fa-balance-scale text-amber-500"></i>
+                            <span>1. Objective & Non-Inflammatory Tone</span>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Findings must present facts neutrally without accusatory language. Use passive/objective descriptions of system states rather than attacking individuals.
+                        </p>
+                        <div class="text-xs bg-white p-2.5 rounded border border-slate-200 space-y-1">
+                            <p class="text-red-600 font-semibold">&cross; Bad: "The incompetent system team recklessly failed to patch servers."</p>
+                            <p class="text-emerald-600 font-semibold">&check; Good: "System patches were not applied within the mandated 30-day window for 14 servers."</p>
+                        </div>
+                    </div>
+
+                    <!-- Rule 2: Root Cause vs Condition -->
+                    <div class="border border-slate-200 rounded-lg p-5 bg-slate-50 space-y-2">
+                        <div class="flex items-center space-x-2 text-slate-900 font-bold text-sm">
+                            <i class="fa-solid fa-crosshairs text-orange-500"></i>
+                            <span>2. Root Cause vs. Restating Condition</span>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Do not simply restate the Condition as the Cause. Ask "Why did this happen?" multiple times to find governance or operational gaps.
+                        </p>
+                        <div class="text-xs bg-white p-2.5 rounded border border-slate-200 space-y-1">
+                            <p class="text-red-600 font-semibold">&cross; Bad: "The cause was that users did not turn on MFA."</p>
+                            <p class="text-emerald-600 font-semibold">&check; Good: "The cause was lack of technical policy enforcement in Active Directory and missing automated compliance monitoring."</p>
+                        </div>
+                    </div>
+
+                    <!-- Rule 3: Specific Criteria -->
+                    <div class="border border-slate-200 rounded-lg p-5 bg-slate-50 space-y-2">
+                        <div class="flex items-center space-x-2 text-slate-900 font-bold text-sm">
+                            <i class="fa-solid fa-bookmark text-purple-500"></i>
+                            <span>3. Exact Criteria Citation</span>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Vague criteria weaken the finding. Always cite specific section numbers, control identifiers, or policy paragraphs.
+                        </p>
+                        <div class="text-xs bg-white p-2.5 rounded border border-slate-200 space-y-1">
+                            <p class="text-red-600 font-semibold">&cross; Bad: "Security policy requires systems to be safe."</p>
+                            <p class="text-emerald-600 font-semibold">&check; Good: "NIST SP 800-53 Rev. 5 Control AC-2(1) requires automated notification upon account termination."</p>
+                        </div>
+                    </div>
+
+                    <!-- Rule 4: Actionable Recommendations -->
+                    <div class="border border-slate-200 rounded-lg p-5 bg-slate-50 space-y-2">
+                        <div class="flex items-center space-x-2 text-slate-900 font-bold text-sm">
+                            <i class="fa-solid fa-bullseye text-emerald-500"></i>
+                            <span>4. Actionable & SMART Recommendations</span>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Recommendations must tell management what outcome is needed without dictating exact proprietary tool purchases unless required.
+                        </p>
+                        <div class="text-xs bg-white p-2.5 rounded border border-slate-200 space-y-1">
+                            <p class="text-red-600 font-semibold">&cross; Bad: "Fix security as soon as possible."</p>
+                            <p class="text-emerald-600 font-semibold">&check; Good: "Implement automated access review workflows to ensure quarterly account verification by system owners."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Senior Reviewer Quality Rubric -->
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-5 space-y-3">
+                    <h3 class="text-sm font-bold text-amber-900 flex items-center gap-2">
+                        <i class="fa-solid fa-clipboard-list"></i> Senior Auditor Pre-Issuance Quality Checklist
+                    </h3>
+                    <ul class="text-xs text-amber-950 space-y-1.5 list-disc list-inside">
+                        <li>Is the finding title descriptive, concise, and reflective of the core deficiency?</li>
+                        <li>Does the Condition contain specific sample sizes, error rates, or dates tested?</li>
+                        <li>Is the Criteria active and applicable to the audit period under review?</li>
+                        <li>Does the Cause explain <em>why</em> controls failed (e.g., personnel, policy, monitoring)?</li>
+                        <li>Is the Effect realistic and framed appropriately for the system's FIPS 199 impact categorization?</li>
+                        <li>Does the Recommendation provide a practical path to full remediation and POA&M closure?</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal for Criteria Selector -->
+    <div id="criteria-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl border border-slate-200 w-full max-w-2xl overflow-hidden flex flex-col max-h-[85vh]">
+            <div class="bg-slate-900 px-5 py-4 text-white flex items-center justify-between">
+                <h3 class="font-bold text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-book-bookmark text-purple-400"></i> Select NIST / FISCAM Criteria
+                </h3>
+                <button onclick="closeCriteriaPickerModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-4 border-b border-slate-100">
+                <input type="text" id="modal-criteria-search" oninput="filterModalCriteria()" placeholder="Search control catalog (e.g., AC-2, SI-2, MFA, Log)..." class="w-full text-sm px-3.5 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+            </div>
+            <div id="modal-criteria-list" class="p-4 overflow-y-auto space-y-3 custom-scrollbar flex-grow text-xs">
+                <!-- Injected via JavaScript -->
+            </div>
+            <div class="bg-slate-50 px-5 py-3 border-t border-slate-200 flex justify-end">
+                <button onclick="closeCriteriaPickerModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-lg text-xs font-semibold">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-5 border-t border-slate-800 mt-12 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-shield-halved text-amber-400"></i>
+                <span class="font-medium text-slate-300">NFR Studio - Audit Finding & Recommendation Assistant</span>
+            </div>
+            <p class="text-slate-400">Supports FISCAM, NIST SP 800-53 Rev. 5, FIPS 200 & GAO FAM Standards</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // ================= DATA STRUCTURES =================
+        const elementDetails = {
+            condition: {
+                title: "Element 1: Condition (What Is)",
+                subtitle: "The actual situation observed by the auditor",
+                color: "sky",
+                gagasQuote: "Condition is a situation that exists. It is determined and documented during the audit.",
+                details: "The condition describes the factual state of affairs found during testing. It answers 'What is happening?' or 'What was found?' It should be supported by clear, verifiable evidence, quantitative data, sample sizes, and specific observations.",
+                writingRules: [
+                    "Be specific: Include exact numbers, percentages, system names, or sample dates.",
+                    "Remain objective: State facts observed without exaggeration or emotional adjectives.",
+                    "Document scope: Mention how many items were tested out of total population."
+                ],
+                exampleGood: "During audit testing of 50 active user accounts in the Financial ERP System, 12 accounts (24%) belonging to terminated employees remained active for more than 30 days after separation.",
+                exampleBad: "User access management in the financial application is completely terrible and totally non-compliant."
+            },
+            criteria: {
+                title: "Element 2: Criteria (What Should Be)",
+                subtitle: "The required standard, law, or policy benchmark",
+                color: "purple",
+                gagasQuote: "Criteria are the laws, regulations, standards, plans, or expectations that provide the benchmark against which performance is compared.",
+                details: "Criteria establish the baseline requirement. In federal information system audits, criteria typically derive from NIST SP 800-53 Rev. 5, FIPS 200, FISCAM, OMB Circular A-130, or agency internal SOPs.",
+                writingRules: [
+                    "Cite exact control IDs: Refer explicitly to NIST SP 800-53 controls (e.g., AC-2, SI-2).",
+                    "State the baseline mandate: Quote or summarize the required operational standard.",
+                    "Ensure applicability: Confirm the criteria was active and binding during the audit period."
+                ],
+                exampleGood: "NIST SP 800-53 Rev. 5 Control AC-2(3) requires the organization to disable user accounts within an organization-defined time period upon notification of employee termination.",
+                exampleBad: "The agency should follow good security practices."
+            },
+            cause: {
+                title: "Element 3: Cause (Why It Happened)",
+                subtitle: "The underlying root reason for the control failure",
+                color: "orange",
+                gagasQuote: "Cause is the underlying reason for the condition, or the factor that brought about the condition.",
+                details: "The cause explains why the deficiency occurred. Identifying the true root cause (lack of training, policy ambiguity, missing automation, resource constraints) is critical because recommendations must directly fix the cause.",
+                writingRules: [
+                    "Avoid restating the condition: 'They didn't patch because patches weren't installed' is NOT a cause.",
+                    "Identify governance gaps: Look for missing standard operating procedures, lack of oversight, or system limitations.",
+                    "Ask 'Why' 5 times: Drill down to systemic management or process root causes."
+                ],
+                exampleGood: "Human Resources failed to issue automated off-boarding notifications to IT security administrators, and quarterly access reconciliations were not enforced by system owners.",
+                exampleBad: "The cause was that accounts were not disabled."
+            },
+            effect: {
+                title: "Element 4: Effect (Risk / Impact)",
+                subtitle: "The clear exposure, vulnerability, or harm caused",
+                color: "red",
+                gagasQuote: "Effect is a clear demonstration of the impact or potential impact of the condition.",
+                details: "Effect answers 'So what?' It details the tangible risk, potential security compromise, financial loss, regulatory non-compliance, or operational disruption resulting from the condition.",
+                writingRules: [
+                    "Quantify impact when possible: Mention dollar exposure, record counts, or threat vectors.",
+                    "Match FIPS 199 categorizations: Connect risk directly to Confidentiality, Integrity, or Availability.",
+                    "Be realistic: Frame risks accurately without alarmist language."
+                ],
+                exampleGood: "Un-disabled accounts of separated staff expose system financial data to unauthorized access, potential data exfiltration, and fraudulent transaction entries.",
+                exampleBad: "This could lead to total destruction of the entire government network."
+            },
+            recommendation: {
+                title: "Element 5: Recommendation (What To Do)",
+                subtitle: "Actionable, SMART corrective guidance",
+                color: "emerald",
+                gagasQuote: "Recommendations recommend actions to correct the condition and address the root cause.",
+                details: "Recommendations state what management should do to solve the root cause and prevent recurrence. They should be constructive, practical, feasible, and actionable for POA&M tracking.",
+                writingRules: [
+                    "Target the root cause: Ensure the action fixes the underlying governance or technical issue.",
+                    "Make it SMART: Specific, Measurable, Actionable, Relevant, and Time-bound.",
+                    "Avoid vendor mandates: Specify functional requirements rather than specific proprietary products."
+                ],
+                exampleGood: "We recommend that the Chief Information Officer: 1. Implement automated HR-to-Active Directory termination triggers; 2. Enforce mandatory quarterly user access reviews.",
+                exampleBad: "Fix user management immediately."
+            }
+        };
+
+        const nistCriteriaDB = [
+            { id: "AC-2", family: "NIST-AC", title: "NIST SP 800-53 Rev. 5: AC-2 Account Management", text: "NIST SP 800-53 Rev. 5, Control AC-2 requires organizations to manage information system accounts, including establishing, activating, modifying, reviewing, disabling, and removing accounts in accordance with organizational procedures." },
+            { id: "AC-6", family: "NIST-AC", title: "NIST SP 800-53 Rev. 5: AC-6 Least Privilege", text: "NIST SP 800-53 Rev. 5, Control AC-6 requires the organization to employ the principle of least privilege, allowing only authorized access for users which are necessary to accomplish assigned tasks." },
+            { id: "AC-8", family: "NIST-AC", title: "NIST SP 800-53 Rev. 5: AC-8 System Use Notification", text: "NIST SP 800-53 Rev. 5, Control AC-8 requires information systems to display an approved system use notification banner before granting access, warning users regarding authorized use and audit monitoring." },
+            { id: "IA-2", family: "NIST-AC", title: "NIST SP 800-53 Rev. 5: IA-2 Multi-Factor Authentication", text: "NIST SP 800-53 Rev. 5, Control IA-2 requires information systems to implement multi-factor authentication (MFA) for network access to privileged and non-privileged accounts." },
+            { id: "CM-2", family: "NIST-CM", title: "NIST SP 800-53 Rev. 5: CM-2 Baseline Configuration", text: "NIST SP 800-53 Rev. 5, Control CM-2 requires organizations to develop, document, and maintain under configuration control, a current baseline configuration of the information system." },
+            { id: "CM-8", family: "NIST-CM", title: "NIST SP 800-53 Rev. 5: CM-8 System Component Inventory", text: "NIST SP 800-53 Rev. 5, Control CM-8 requires organizations to develop and maintain an accurate, up-to-date inventory of all system components." },
+            { id: "SI-2", family: "NIST-SI", title: "NIST SP 800-53 Rev. 5: SI-2 Flaw Remediation (Patching)", text: "NIST SP 800-53 Rev. 5, Control SI-2 requires organizations to identify, report, and correct system flaws (patches/vulnerabilities) within organization-defined timeframes." },
+            { id: "SI-4", family: "NIST-SI", title: "NIST SP 800-53 Rev. 5: SI-4 Information System Monitoring", text: "NIST SP 800-53 Rev. 5, Control SI-4 requires continuous monitoring of the information system to detect inbound and outbound attacks and indicators of potential compromises." },
+            { id: "CP-4", family: "NIST-CP", title: "NIST SP 800-53 Rev. 5: CP-4 Contingency Plan Testing", text: "NIST SP 800-53 Rev. 5, Control CP-4 requires organizations to test system contingency plans annually to determine plan effectiveness and operational readiness." },
+            { id: "FISCAM-AC", family: "FISCAM", title: "FISCAM Domain AC: Access Controls Baseline", text: "GAO FISCAM Section 3.2 Access Controls requires logical access controls to be properly designed and operating effectively to prevent unauthorized system access and modification." },
+            { id: "FISCAM-CM", family: "FISCAM", title: "FISCAM Domain CM: Configuration Management", text: "GAO FISCAM Section 3.3 Configuration Management requires baseline settings, change authorization, and patch management processes to maintain system integrity." },
+            { id: "FISCAM-SD", family: "FISCAM", title: "FISCAM Domain SD: Segregation of Duties", text: "GAO FISCAM Section 3.4 Segregation of Duties requires incompatible duties (e.g., development vs. production deployment, voucher entry vs. approval) to be separated." },
+            { id: "OMB-M2209", family: "OMB", title: "OMB Memorandum M-22-09: Federal Zero Trust Strategy", text: "OMB Memorandum M-22-09 requires federal agencies to enforce phishing-resistant Multi-Factor Authentication (MFA) across all enterprise applications and staff accounts." },
+            { id: "OMB-M2131", family: "OMB", title: "OMB Memorandum M-21-31: Log Management Maturity", text: "OMB Memorandum M-21-31 sets mandatory requirements for logging, central log retention, and event monitoring to support cyber incident response capabilities." }
+        ];
+
+        const sampleFindings = {
+            mfa: {
+                title: "Inadequate Multi-Factor Authentication Enforcement for Privileged Domain Accounts",
+                system: "Enterprise Active Directory & Server Infrastructure",
+                domain: "Access Control (AC)",
+                risk: "High Risk",
+                condition: "During audit testing of 45 domain administrator accounts across the enterprise network, 14 accounts (31%) were configured without mandatory multi-factor authentication (MFA) enforcement during remote and local logons.",
+                criteria: "NIST SP 800-53 Rev. 5 Control IA-2(1) requires the organization to implement multi-factor authentication for network access to privileged accounts. Furthermore, OMB Memorandum M-22-09 mandates phishing-resistant MFA across all federal enterprise systems.",
+                cause: "System administrators exempted legacy service accounts during a system migration in FY 2024 and did not conduct subsequent access configuration reviews or re-enforce technical MFA policies in Active Directory.",
+                effect: "Disabling MFA on privileged administrator accounts significantly increases the risk of credential theft, lateral threat movement, and unauthorized access to critical agency information assets.",
+                recommendation: "We recommend that Information Technology management: 1. Immediately enforce phishing-resistant MFA settings for all 14 identified administrator accounts; 2. Establish a quarterly automated audit script to verify MFA compliance across all privileged group accounts."
+            },
+            patch: {
+                title: "Flaw Remediation and Critical Vulnerability Patching Delays",
+                system: "General Support Network (GSN)",
+                domain: "System & Information Integrity (SI)",
+                risk: "High Risk",
+                condition: "Automated vulnerability scan results indicated that 120 critical-severity Common Vulnerabilities and Exposures (CVEs) remained unpatched on 38 production servers for an average of 94 days beyond the agency's mandatory 30-day SLA.",
+                criteria: "NIST SP 800-53 Rev. 5 Control SI-2 (Flaw Remediation) and FISCAM CM-03 require the organization to identify, report, and correct system software flaws within 30 days of release for critical vulnerabilities.",
+                cause: "The agency lacked a dedicated staging environment to pre-test security patches prior to production deployment, leading system owners to delay patching due to operational downtime concerns.",
+                effect: "Exposing unpatched servers to known critical vulnerabilities increases susceptibility to remote code execution, ransomware exploitation, and compromise of system confidentiality and availability.",
+                recommendation: "We recommend that IT Management: 1. Allocate resources to establish a staging environment for patch validation; 2. Remediate the 120 overdue vulnerabilities immediately; 3. Track patch deployment SLAs in weekly executive dashboards."
+            },
+            iscp: {
+                title: "Incomplete Information System Contingency Plan (ISCP) Annual Functional Testing",
+                system: "Core Accounting & Financial System (CAFS)",
+                domain: "Contingency Planning (CP)",
+                risk: "Moderate Risk",
+                condition: "The agency failed to perform an annual functional exercise or full alternate site recovery failover test for the CAFS system during Fiscal Year 2025. Only a paper tabletop discussion was conducted.",
+                criteria: "NIST SP 800-53 Rev. 5 Control CP-4 (Contingency Plan Testing) and FISCAM CP.02 require annual testing of system contingency plans using functional exercises to demonstrate operational recovery capabilities.",
+                cause: "Key IT operations personnel experienced turnover, and management prioritized application software updates over scheduling alternate site failover testing.",
+                effect: "Without functional failover testing, the agency cannot verify that financial data can be restored within established Recovery Time Objectives (RTO) during an actual system disruption or disaster.",
+                recommendation: "We recommend that the Contingency Officer: 1. Schedule and execute a full functional failover test of CAFS to the secondary cloud processing site; 2. Update the ISCP with documented lessons learned."
+            }
+        };
+
+        // ================= APP INITIALIZATION =================
+        window.onload = function() {
+            showElementDetail('condition');
+            renderCriteriaGrid(nistCriteriaDB);
+            renderTemplatesGrid();
+            renderModalCriteriaList(nistCriteriaDB);
+            updatePreview();
+        };
+
+        // ================= TAB SWITCHING =================
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('text-amber-400', 'border-amber-400');
+                btn.classList.add('text-slate-400', 'border-transparent');
+            });
+
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+            if(activeBtn) {
+                activeBtn.classList.remove('text-slate-400', 'border-transparent');
+                activeBtn.classList.add('text-amber-400', 'border-amber-400');
+            }
+        }
+
+        // ================= TAB 1: INFOGRAPHIC DETAIL DISPLAY =================
+        function showElementDetail(key) {
+            const data = elementDetails[key];
+            if (!data) return;
+
+            const box = document.getElementById('element-detail-box');
+            box.innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-3 gap-2">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-${data.color}-700 bg-${data.color}-100 px-2.5 py-0.5 rounded">Selected Guidance</span>
+                            <h3 class="text-xl font-bold text-slate-900 mt-1">${data.title}</h3>
+                            <p class="text-xs text-slate-500">${data.subtitle}</p>
+                        </div>
+                        <button onclick="switchTab('builder')" class="text-xs bg-${data.color}-600 hover:bg-${data.color}-700 text-white font-semibold px-3 py-1.5 rounded-lg shadow-sm transition flex items-center space-x-1.5 self-start sm:self-auto">
+                            <i class="fa-solid fa-pen"></i>
+                            <span>Write ${key.toUpperCase()} in Builder</span>
+                        </button>
+                    </div>
+
+                    <div class="bg-slate-50 border-l-4 border-${data.color}-500 p-3 rounded text-xs italic text-slate-700">
+                        <i class="fa-solid fa-quote-left text-${data.color}-500 mr-1.5"></i> ${data.gagasQuote}
+                    </div>
+
+                    <p class="text-xs text-slate-700 leading-relaxed">${data.details}</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                        <div class="space-y-2">
+                            <h4 class="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                                <i class="fa-solid fa-check-double text-emerald-600"></i> Key Writing Rules
+                            </h4>
+                            <ul class="text-xs text-slate-600 space-y-1 list-disc list-inside bg-slate-50 p-3 rounded border border-slate-200">
+                                ${data.writingRules.map(r => `<li>${r}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h4 class="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                                <i class="fa-solid fa-vial text-amber-500"></i> Practical Example Comparison
+                            </h4>
+                            <div class="space-y-1.5 text-xs">
+                                <div class="bg-emerald-50 border border-emerald-200 p-2.5 rounded text-emerald-950">
+                                    <span class="font-bold text-emerald-800 uppercase text-[10px] block">&check; Compliant Draft:</span>
+                                    ${data.exampleGood}
+                                </div>
+                                <div class="bg-red-50 border border-red-200 p-2.5 rounded text-red-950">
+                                    <span class="font-bold text-red-800 uppercase text-[10px] block">&cross; Weak Draft:</span>
+                                    ${data.exampleBad}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+
+        // ================= TAB 2: LIVE PREVIEW & QUALITY RUBRIC =================
+        function updatePreview() {
+            const title = document.getElementById('nfr-title').value.trim() || "Untitled Notice of Findings and Recommendations";
+            const system = document.getElementById('nfr-system').value.trim() || "[Target System / Entity Name]";
+            const domain = document.getElementById('nfr-domain').value;
+            const risk = document.getElementById('nfr-risk').value;
+
+            const condition = document.getElementById('nfr-condition').value.trim();
+            const criteria = document.getElementById('nfr-criteria').value.trim();
+            const cause = document.getElementById('nfr-cause').value.trim();
+            const effect = document.getElementById('nfr-effect').value.trim();
+            const recommendation = document.getElementById('nfr-recommendation').value.trim();
+
+            const previewBox = document.getElementById('preview-container');
+
+            previewBox.innerHTML = `
+                <div class="border-b border-slate-300 pb-3 mb-3">
+                    <div class="flex items-center justify-between text-[11px] text-slate-500 uppercase tracking-wider font-semibold">
+                        <span>NOTICE OF FINDINGS AND RECOMMENDATIONS (NFR)</span>
+                        <span class="px-2 py-0.5 rounded ${risk.includes('High') ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}">${risk}</span>
+                    </div>
+                    <h2 class="text-base font-bold text-slate-900 mt-1">${title}</h2>
+                    <div class="flex flex-wrap gap-x-4 text-xs text-slate-600 mt-1">
+                        <span><strong>System/Program:</strong> ${system}</span>
+                        <span><strong>Domain:</strong> ${domain}</span>
+                    </div>
+                </div>
+
+                <div class="space-y-3 text-xs text-slate-800">
+                    <div>
+                        <h4 class="font-bold uppercase text-sky-800 text-[11px] tracking-wide mb-1 border-b border-sky-100 pb-0.5">1. CONDITION</h4>
+                        <p class="text-slate-700 leading-relaxed">${condition || "<span class='text-slate-400 italic'>[Condition text pending...]</span>"}</p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold uppercase text-purple-800 text-[11px] tracking-wide mb-1 border-b border-purple-100 pb-0.5">2. CRITERIA</h4>
+                        <p class="text-slate-700 leading-relaxed">${criteria || "<span class='text-slate-400 italic'>[Criteria text pending...]</span>"}</p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold uppercase text-orange-800 text-[11px] tracking-wide mb-1 border-b border-orange-100 pb-0.5">3. CAUSE</h4>
+                        <p class="text-slate-700 leading-relaxed">${cause || "<span class='text-slate-400 italic'>[Cause text pending...]</span>"}</p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold uppercase text-red-800 text-[11px] tracking-wide mb-1 border-b border-red-100 pb-0.5">4. EFFECT / RISK</h4>
+                        <p class="text-slate-700 leading-relaxed">${effect || "<span class='text-slate-400 italic'>[Effect text pending...]</span>"}</p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold uppercase text-emerald-800 text-[11px] tracking-wide mb-1 border-b border-emerald-100 pb-0.5">5. RECOMMENDATION</h4>
+                        <p class="text-slate-700 leading-relaxed">${recommendation || "<span class='text-slate-400 italic'>[Recommendation text pending...]</span>"}</p>
+                    </div>
+                </div>
+            `;
+
+            evaluateRubric(condition, criteria, cause, effect, recommendation);
+        }
+
+        function evaluateRubric(cond, crit, cause, eff, rec) {
+            let score = 0;
+
+            // Check condition quantitative data
+            const condHasNumbers = /\d+/.test(cond) && cond.length > 20;
+            updateCheckUI('check-condition', condHasNumbers, 20);
+            if (condHasNumbers) score += 20;
+
+            // Check criteria specific citations
+            const critHasNist = /(NIST|FISCAM|FIPS|OMB|AC-|SI-|CM-|CP-|IA-)/i.test(crit) && crit.length > 20;
+            updateCheckUI('check-criteria', critHasNist, 20);
+            if (critHasNist) score += 20;
+
+            // Check cause root depth
+            const causeHasDepth = cause.length > 25 && !(cause.toLowerCase().includes(cond.toLowerCase().substring(0, 15)));
+            updateCheckUI('check-cause', causeHasDepth, 20);
+            if (causeHasDepth) score += 20;
+
+            // Check effect impact statement
+            const effHasRisk = /(risk|exposure|compromise|unauthorized|loss|vulnerability)/i.test(eff) && eff.length > 20;
+            updateCheckUI('check-effect', effHasRisk, 20);
+            if (effHasRisk) score += 20;
+
+            // Check recommendation actionability
+            const recHasAction = /(recommend|implement|enforce|establish|update|remediate)/i.test(rec) && rec.length > 25;
+            updateCheckUI('check-recommendation', recHasAction, 20);
+            if (recHasAction) score += 20;
+
+            // Update Total Score UI
+            const scoreBadge = document.getElementById('quality-score-badge');
+            const progressBar = document.getElementById('quality-progress-bar');
+
+            scoreBadge.textContent = `${score}%`;
+            progressBar.style.width = `${score}%`;
+
+            if (score >= 80) {
+                scoreBadge.className = "text-sm font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800";
+                progressBar.className = "bg-emerald-500 h-2.5 rounded-full transition-all duration-500";
+            } else if (score >= 40) {
+                scoreBadge.className = "text-sm font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800";
+                progressBar.className = "bg-amber-500 h-2.5 rounded-full transition-all duration-500";
+            } else {
+                scoreBadge.className = "text-sm font-bold px-2.5 py-0.5 rounded-full bg-red-100 text-red-800";
+                progressBar.className = "bg-red-500 h-2.5 rounded-full transition-all duration-500";
+            }
+        }
+
+        function updateCheckUI(id, isPassed, pts) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (isPassed) {
+                el.className = "flex items-center justify-between text-emerald-700 font-medium";
+                el.children[0].innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1.5"></i> ${el.children[0].innerText.replace(/^.*?  /, '')}`;
+                el.children[1].textContent = `+${pts} pts`;
+            } else {
+                el.className = "flex items-center justify-between text-slate-400";
+                el.children[0].innerHTML = `<i class="fa-regular fa-circle text-slate-300 mr-1.5"></i> ${el.children[0].innerText.replace(/^.*?  /, '')}`;
+                el.children[1].textContent = `0 pts`;
+            }
+        }
+
+        function copyFullNFR() {
+            const title = document.getElementById('nfr-title').value.trim() || "NFR Finding";
+            const system = document.getElementById('nfr-system').value.trim() || "Target System";
+            const domain = document.getElementById('nfr-domain').value;
+            const risk = document.getElementById('nfr-risk').value;
+
+            const cond = document.getElementById('nfr-condition').value.trim();
+            const crit = document.getElementById('nfr-criteria').value.trim();
+            const cause = document.getElementById('nfr-cause').value.trim();
+            const eff = document.getElementById('nfr-effect').value.trim();
+            const rec = document.getElementById('nfr-recommendation').value.trim();
+
+            const fullText = `NOTICE OF FINDINGS AND RECOMMENDATIONS (NFR)
+Title: ${title}
+System: ${system}
+Domain: ${domain} | Risk Level: ${risk}
+
+1. CONDITION:
+${cond}
+
+2. CRITERIA:
+${crit}
+
+3. CAUSE:
+${cause}
+
+4. EFFECT:
+${eff}
+
+5. RECOMMENDATION:
+${rec}`;
+
+            copyToClipboard(fullText, "Full NFR draft copied to clipboard!");
+        }
+
+        // ================= TAB 3: CRITERIA EXPLORER =================
+        function renderCriteriaGrid(data) {
+            const grid = document.getElementById('criteria-grid');
+            if (data.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-8 text-slate-500 text-sm">No criteria standards match your search.</div>`;
+                return;
+            }
+
+            grid.innerHTML = data.map(c => `
+                <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-3">
+                    <div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">${c.id}</span>
+                            <span class="text-[10px] text-slate-400">${c.family}</span>
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-900 mt-2">${c.title}</h4>
+                        <p class="text-xs text-slate-600 mt-1 line-clamp-3 leading-relaxed">${c.text}</p>
+                    </div>
+                    <button onclick="insertCriteriaFromExplorer('${c.id}')" class="w-full text-xs bg-purple-50 hover:bg-purple-100 text-purple-800 font-semibold py-1.5 rounded-lg border border-purple-200 transition flex items-center justify-center space-x-1">
+                        <i class="fa-solid fa-plus text-[10px]"></i>
+                        <span>Use as Criteria in Builder</span>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function filterCriteriaDatabase() {
+            const term = document.getElementById('criteria-search').value.toLowerCase();
+            const filtered = nistCriteriaDB.filter(c => c.id.toLowerCase().includes(term) || c.title.toLowerCase().includes(term) || c.text.toLowerCase().includes(term));
+            renderCriteriaGrid(filtered);
+        }
+
+        function filterCriteriaFamily(fam) {
+            document.querySelectorAll('.criteria-filter-btn').forEach(b => {
+                b.className = "criteria-filter-btn px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700";
+            });
+            event.target.className = "criteria-filter-btn px-3 py-1 rounded-full bg-purple-600 text-white font-medium";
+
+            if (fam === 'ALL') {
+                renderCriteriaGrid(nistCriteriaDB);
+            } else {
+                const filtered = nistCriteriaDB.filter(c => c.family === fam || c.id.startsWith(fam.replace('NIST-', '')));
+                renderCriteriaGrid(filtered);
+            }
+        }
+
+        function insertCriteriaFromExplorer(id) {
+            const found = nistCriteriaDB.find(c => c.id === id);
+            if (found) {
+                document.getElementById('nfr-criteria').value = found.text;
+                switchTab('builder');
+                updatePreview();
+                showToast(`Inserted criteria ${id} into Builder!`);
+            }
+        }
+
+        // Modal Logic
+        function openCriteriaPickerModal() {
+            document.getElementById('criteria-modal').classList.remove('hidden');
+        }
+        function closeCriteriaPickerModal() {
+            document.getElementById('criteria-modal').classList.add('hidden');
+        }
+        function renderModalCriteriaList(data) {
+            const list = document.getElementById('modal-criteria-list');
+            list.innerHTML = data.map(c => `
+                <div class="p-3 border border-slate-200 rounded-lg hover:bg-purple-50/50 cursor-pointer flex justify-between items-start gap-3" onclick="selectModalCriteria('${c.id}')">
+                    <div>
+                        <span class="text-[10px] font-bold bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded">${c.id}</span>
+                        <h4 class="font-bold text-slate-900 mt-1">${c.title}</h4>
+                        <p class="text-slate-600 mt-0.5 leading-tight text-[11px]">${c.text}</p>
+                    </div>
+                    <button class="bg-purple-600 text-white px-2.5 py-1 rounded text-[11px] font-semibold hover:bg-purple-700 shrink-0">Select</button>
+                </div>
+            `).join('');
+        }
+        function filterModalCriteria() {
+            const term = document.getElementById('modal-criteria-search').value.toLowerCase();
+            const filtered = nistCriteriaDB.filter(c => c.id.toLowerCase().includes(term) || c.title.toLowerCase().includes(term) || c.text.toLowerCase().includes(term));
+            renderModalCriteriaList(filtered);
+        }
+        function selectModalCriteria(id) {
+            insertCriteriaFromExplorer(id);
+            closeCriteriaPickerModal();
+        }
+
+
+        // ================= TAB 4: TEMPLATES =================
+        function renderTemplatesGrid() {
+            const grid = document.getElementById('templates-grid');
+            grid.innerHTML = Object.keys(sampleFindings).map(key => {
+                const item = sampleFindings[key];
+                return `
+                    <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded ${item.risk.includes('High') ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}">${item.risk}</span>
+                                <span class="text-[11px] text-slate-400 font-medium">${item.domain}</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-900 leading-snug">${item.title}</h3>
+                            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">${item.condition}</p>
+                        </div>
+                        <button onclick="loadSampleFinding('${key}')" class="w-full text-xs bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold py-2 rounded-lg transition flex items-center justify-center space-x-1.5">
+                            <i class="fa-solid fa-file-import"></i>
+                            <span>Load Template into Builder</span>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function loadSampleFinding(key) {
+            const item = sampleFindings[key];
+            if (!item) return;
+
+            document.getElementById('nfr-title').value = item.title;
+            document.getElementById('nfr-system').value = item.system;
+            document.getElementById('nfr-domain').value = item.domain;
+            document.getElementById('nfr-risk').value = item.risk;
+
+            document.getElementById('nfr-condition').value = item.condition;
+            document.getElementById('nfr-criteria').value = item.criteria;
+            document.getElementById('nfr-cause').value = item.cause;
+            document.getElementById('nfr-effect').value = item.effect;
+            document.getElementById('nfr-recommendation').value = item.recommendation;
+
+            switchTab('builder');
+            updatePreview();
+            showToast(`Loaded sample finding: "${item.title.substring(0, 30)}..."`);
+        }
+
+
+        // ================= UTILITIES & TOAST =================
+        function copyToClipboard(text, msg) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => showToast(msg));
+            } else {
+                // Fallback execCommand
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast(msg);
+                } catch (err) {
+                    showToast("Failed to copy text", true);
+                }
+                document.body.removeChild(textArea);
+            }
+        }
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toast-icon');
+            const msg = document.getElementById('toast-message');
+
+            msg.textContent = message;
+            if (isError) {
+                toast.className = toast.className.replace('border-emerald-500', 'border-red-500');
+                icon.className = "fa-solid fa-triangle-exclamation text-red-400";
+            } else {
+                toast.className = toast.className.replace('border-red-500', 'border-emerald-500');
+                icon.className = "fa-solid fa-circle-check text-emerald-400";
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

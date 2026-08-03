@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lives Lost, Movements Born: Interactive Remembrance</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            scroll-behavior: smooth;
+        }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+        }
+
+        .glass-card {
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .modal-overlay {
+            background-color: rgba(2, 6, 23, 0.9);
+            backdrop-filter: blur(8px);
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Search Styling */
+        .search-input:focus {
+            box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.4);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Detail Modal -->
+    <div id="info-modal" class="modal-overlay fixed inset-0 z-50 items-center justify-center p-4" onclick="closeModal(event)">
+        <div class="glass-card w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl relative flex flex-col md:flex-row" onclick="event.stopPropagation()">
+            <button onclick="hideModal()" class="absolute top-6 right-6 text-white/50 hover:text-white transition-colors text-3xl z-10">×</button>
+            
+            <div class="w-full md:w-2/5 h-64 md:h-auto bg-slate-800 overflow-hidden">
+                <img id="modal-img" src="" alt="" class="w-full h-full object-cover">
+            </div>
+
+            <div class="w-full md:w-3/5 p-8 md:p-12 flex flex-col">
+                <div class="mb-8">
+                    <span id="modal-year" class="text-xs font-mono bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-full border border-cyan-500/30 uppercase tracking-widest mb-4 inline-block"></span>
+                    <h2 id="modal-name" class="text-3xl md:text-5xl font-black text-white mb-2 leading-tight"></h2>
+                    <p id="modal-location" class="text-slate-400 font-medium"></p>
+                </div>
+
+                <div class="space-y-8 flex-grow">
+                    <section>
+                        <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">The Circumstances</h3>
+                        <p id="modal-desc" class="text-slate-200 leading-relaxed text-lg italic"></p>
+                    </section>
+                    
+                    <section class="bg-slate-900/40 p-6 rounded-2xl border border-slate-800/50">
+                        <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-rose-500 mb-3">Aftermath & Legacy</h3>
+                        <p id="modal-aftermath" class="text-slate-400 leading-relaxed text-sm"></p>
+                    </section>
+
+                    <button id="share-btn" class="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 text-sm font-bold uppercase tracking-widest transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                        </svg>
+                        Share Legacy
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="pt-20 pb-16 px-6 max-w-7xl mx-auto w-full">
+        <div class="inline-block px-4 py-1.5 rounded-full bg-slate-800 text-cyan-400 text-xs font-bold tracking-widest mb-8 uppercase border border-cyan-900 shadow-sm">Interactive Historical Record</div>
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight text-white leading-tight">Lives Lost, <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Movements Born</span></h1>
+        <p class="text-xl md:text-2xl text-slate-400 max-w-4xl leading-relaxed">
+            Documenting high-profile tragedies from 2009 to 2023. Each record represents a catalyst for change. Use the dashboard below to explore the data and narratives.
+        </p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-6 space-y-16 pb-20">
+
+        <!-- KPI Section -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+            <div class="glass-card rounded-2xl p-8 text-center border-t-2 border-t-cyan-500 shadow-lg">
+                <div class="text-5xl font-black text-white mb-2" id="kpi-total">0</div>
+                <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Individuals</div>
+            </div>
+            <div class="glass-card rounded-2xl p-8 text-center border-t-2 border-t-rose-500 shadow-lg">
+                <div class="text-5xl font-black text-white mb-2">14</div>
+                <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Years Spanned</div>
+            </div>
+            <div class="glass-card rounded-2xl p-8 text-center border-t-2 border-t-amber-500 shadow-lg">
+                <div class="text-5xl font-black text-white mb-2">18</div>
+                <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">States Affected</div>
+            </div>
+            <div class="glass-card rounded-2xl p-8 text-center border-t-2 border-t-purple-500 shadow-lg">
+                <div class="text-5xl font-black text-white mb-2">PWA</div>
+                <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Mobile Ready</div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="glass-card rounded-3xl p-8 flex flex-col shadow-xl">
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold mb-2 text-white">Timeline of Incidents</h3>
+                    <p class="text-slate-400 text-sm">Case frequency by year. <span class="text-cyan-400">Click a bar to filter.</span></p>
+                </div>
+                <div class="chart-container flex-grow">
+                    <canvas id="timelineChart"></canvas>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-3xl p-8 flex flex-col shadow-xl">
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold mb-2 text-white">Regional Analysis</h3>
+                    <p class="text-slate-400 text-sm">Distribution across states. <span class="text-cyan-400">Click a slice to filter.</span></p>
+                </div>
+                <div class="chart-container flex-grow">
+                    <canvas id="geographyChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Registry -->
+        <section id="registry-section" class="scroll-mt-10">
+            <div class="mb-12 border-b border-slate-800 pb-8 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                <div>
+                    <h2 class="text-4xl font-bold mb-2 text-white">The Remembrance Registry</h2>
+                    <p class="text-slate-400">Filtering <span id="record-count" class="text-cyan-400 font-bold">0</span> records</p>
+                </div>
+                
+                <div class="flex flex-wrap gap-4 items-center">
+                    <!-- NEW SEARCH BAR -->
+                    <div class="relative w-full md:w-64">
+                        <span class="absolute inset-y-0 left-3 flex items-center text-slate-500">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </span>
+                        <input type="text" id="name-search" placeholder="Search name..." class="w-full bg-slate-800 border border-slate-700 text-white text-sm rounded-xl py-3 pl-10 pr-4 outline-none transition-all search-input">
+                    </div>
+
+                    <select id="year-filter" class="bg-slate-800 border border-slate-700 text-white text-sm rounded-xl p-3 outline-none focus:ring-2 focus:ring-cyan-500 transition-all min-w-[120px]">
+                        <option value="All">All Years</option>
+                    </select>
+                    <select id="state-filter" class="bg-slate-800 border border-slate-700 text-white text-sm rounded-xl p-3 outline-none focus:ring-2 focus:ring-cyan-500 transition-all min-w-[150px]">
+                        <option value="All">All States</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="registry-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+            
+            <div id="empty-state" class="hidden text-center py-20 glass-card rounded-2xl">
+                <div class="text-5xl mb-6">🔍</div>
+                <h3 class="text-2xl font-bold text-white mb-3">No matching records found</h3>
+                <button onclick="resetAllFilters()" class="mt-6 bg-cyan-600 hover:bg-cyan-500 text-white px-8 py-3 rounded-xl transition-colors font-bold">Show All Records</button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-auto border-t border-slate-800 bg-slate-950/50 py-16 px-6 text-center">
+        <div class="max-w-4xl mx-auto">
+            <p class="text-slate-500 text-sm mb-6 leading-relaxed">
+                Photos sourced from public domain archives. This tool is designed for educational purposes and to honor the memory of those listed.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const rawData = [
+            { name: "Oscar Grant", date: "January 1, 2009", loc: "Oakland, California", photo: "https://upload.wikimedia.org/wikipedia/en/4/4d/Oscargrantkilledbypolice2.JPG", desc: "Fatally shot in the back by a transit police officer while lying unarmed on a platform.", aftermath: "Sparked intense protests and the film 'Fruitvale Station'. Officer convicted of involuntary manslaughter." },
+            { name: "Trayvon Martin", date: "February 26, 2012", loc: "Sanford, Florida", photo: "https://upload.wikimedia.org/wikipedia/en/9/95/Trayvon_Martin_at_aviation_camp.jpg", desc: "An unarmed 17-year-old pursued and shot by a neighborhood watch volunteer.", aftermath: "Acquittal of the shooter sparked the birth of the #BlackLivesMatter movement." },
+            { name: "Rekia Boyd", date: "March 21, 2012", loc: "Chicago, Illinois", photo: "https://exhibits.stanford.edu/images/6749-13ca7e0f2a9f837551a852c21974dc8a/full/!400,400/0/default.jpg", desc: "Unarmed 22-year-old fatally shot in the head by an off-duty Chicago police officer firing blindly into a crowd.", aftermath: "The officer was found not guilty on a legal technicality; the city later settled for $4.5 million." },
+            { name: "Eric Garner", date: "July 17, 2014", loc: "Staten Island, New York", photo: "https://exhibits.stanford.edu/images/6732-607835ff9da4be13c444a424efe617a6/full/!400,400/0/default.jpg", desc: "Died in a police chokehold while being arrested for selling loose cigarettes.", aftermath: "His plea 'I can't breathe' became a rallying cry for the global movement." },
+            { name: "Michael Brown", date: "August 9, 2014", loc: "Ferguson, Missouri", photo: "https://upload.wikimedia.org/wikipedia/en/5/5e/Michael_Brown_Jr.jpg", desc: "Unarmed 18-year-old fatally shot by a police officer following a brief interaction.", aftermath: "Led to the Ferguson Uprising and national focus on police body cameras." },
+            { name: "Akai Gurley", date: "November 20, 2014", loc: "Brooklyn, New York", photo: "https://blackpast.org/wp-content/uploads/2024/09/1547745209-9865-akai-gurley.jpg", desc: "Unarmed man shot in an unlit stairwell during a 'vertical patrol' by a rookie officer.", aftermath: "Officer convicted of manslaughter; city paid settlement to the family." },
+            { name: "Tamir Rice", date: "November 22, 2014", loc: "Cleveland, Ohio", photo: "https://upload.wikimedia.org/wikipedia/en/d/d3/Tamir_Rice_family_photo.jpg", desc: "12-year-old holding a toy gun shot by police within seconds of their arrival.", aftermath: "No officers were charged; Cleveland police underwent major court-ordered reforms." },
+            { name: "Walter Scott", date: "April 4, 2015", loc: "North Charleston, South Carolina", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Walter_L._Scott%2C_USCG.jpg/500px-Walter_L._Scott%2C_USCG.jpg", desc: "Shot in the back while running away unarmed from a traffic stop for a broken light.", aftermath: "The officer was sentenced to 20 years in federal prison for murder." },
+            { name: "Freddie Gray", date: "April 19, 2015", loc: "Baltimore, Maryland", photo: "https://upload.wikimedia.org/wikipedia/en/d/da/Freddie_Gray.jpg", desc: "Died from spinal injuries sustained during transport in a police van while shackled.", aftermath: "Sparked massive unrest in Baltimore and federal oversight of the police department." },
+            { name: "Sandra Bland", date: "July 13, 2015", loc: "Waller County, Texas", photo: "https://upload.wikimedia.org/wikipedia/en/6/63/Sandra_Bland_re-crop.jpg", desc: "Found dead in a jail cell three days after a contentious arrest during a routine stop.", aftermath: "Her case fueled the #SayHerName movement, highlighting risks to Black women." },
+            { name: "Philando Castile", date: "July 6, 2016", loc: "Falcon Heights, Minnesota", photo: "https://exhibits.stanford.edu/images/6665-da74740ca7a746956257cbeb300b4dab/full/!400,400/0/default.jpg", desc: "Shot during a traffic stop after informing the officer he had a licensed firearm.", aftermath: "Acquittal of the officer led to massive protests. The aftermath was live-streamed by his girlfriend." },
+            { name: "Botham Jean", date: "September 6, 2018", loc: "Dallas, Texas", photo: "https://exhibits.stanford.edu/images/6673-32f6610493edc63972bc35312bf92f68/full/!400,400/0/default.jpg", desc: "Shot in his own apartment by an off-duty officer who claimed she entered the wrong unit.", aftermath: "Officer Amber Guyger was convicted of murder and sentenced to 10 years." },
+            { name: "Elijah McClain", date: "August 30, 2019", loc: "Aurora, Colorado", photo: "https://upload.wikimedia.org/wikipedia/en/a/a7/Elijah_McClain_with_checkered_shirt_and_glasses.jpg", desc: "Unarmed 23-year-old man died after being pinned by police and injected with ketamine.", aftermath: "Initially no charges; a later re-investigation led to convictions of officers and paramedics." },
+            { name: "Ahmaud Arbery", date: "February 23, 2020", loc: "Brunswick, Georgia", photo: "https://upload.wikimedia.org/wikipedia/en/4/4a/AHMAUD-ARBERY-1.jpg", desc: "Unarmed man chased and fatally shot by three armed residents while jogging.", aftermath: "All three men convicted of murder and hate crimes. GA repealed its citizen's arrest law." },
+            { name: "Breonna Taylor", date: "March 13, 2020", loc: "Louisville, Kentucky", photo: "https://upload.wikimedia.org/wikipedia/en/f/fa/Breonna_Taylor_%28graduation_photo%29.jpg", desc: "Shot in her apartment during a botched 'no-knock' search warrant execution.", aftermath: "Led to 'Breonna's Law' banning no-knock warrants in several cities." },
+            { name: "George Floyd", date: "May 25, 2020", loc: "Minneapolis, Minnesota", photo: "https://upload.wikimedia.org/wikipedia/en/9/9c/George_Floyd.png", desc: "Murdered by a police officer kneeling on his neck for over 9 minutes.", aftermath: "Triggered the largest global civil rights protests in history. Officer Derek Chauvin convicted of murder." },
+            { name: "Daunte Wright", date: "April 11, 2021", loc: "Brooklyn Center, Minnesota", photo: "https://upload.wikimedia.org/wikipedia/en/3/3b/Daunte_Wright_image.jpeg", desc: "Shot during a traffic stop by an officer who claimed she mistook her firearm for a Taser.", aftermath: "Officer convicted of first and second-degree manslaughter." },
+            { name: "Tyre Nichols", date: "January 10, 2023", loc: "Memphis, Tennessee", photo: "https://media.cnn.com/api/v1/images/stellar/prod/ef1e72e0-45d4-4048-abe8-003b778a8cc1.jpg?c=original&q=w_860,c_fill/f_avif", desc: "Died following a brutal beating by five police officers after being pulled over for an alleged traffic violation.", aftermath: "The officers were fired and charged with murder; the specialized SCORPION unit was disbanded." }
+        ];
+
+        const registryData = rawData.map((item, index) => {
+            const yearMatch = item.date.match(/\d{4}$/);
+            const year = yearMatch ? parseInt(yearMatch[0]) : 0;
+            const state = item.loc.split(',').pop().trim();
+            return { ...item, id: index + 1, year, state };
+        });
+
+        let currentFilter = { year: 'All', state: 'All', search: '' };
+        let timelineChart = null;
+        let geographyChart = null;
+
+        function init() {
+            populateFilterOptions();
+            renderRegistry();
+            initCharts();
+            setupListeners();
+        }
+
+        function populateFilterOptions() {
+            const years = [...new Set(registryData.map(d => d.year))].sort();
+            const states = [...new Set(registryData.map(d => d.state))].sort();
+            const yrSel = document.getElementById('year-filter');
+            const stSel = document.getElementById('state-filter');
+            years.forEach(y => yrSel.innerHTML += `<option value="${y}">${y}</option>`);
+            states.forEach(s => stSel.innerHTML += `<option value="${s}">${s}</option>`);
+        }
+
+        function renderRegistry() {
+            const grid = document.getElementById('registry-grid');
+            const empty = document.getElementById('empty-state');
+            
+            const filtered = registryData.filter(d => {
+                const matchesSearch = d.name.toLowerCase().includes(currentFilter.search.toLowerCase());
+                const matchesYear = currentFilter.year === 'All' || d.year.toString() === currentFilter.year;
+                const matchesState = currentFilter.state === 'All' || d.state === currentFilter.state;
+                return matchesSearch && matchesYear && matchesState;
+            });
+
+            grid.innerHTML = '';
+            if (filtered.length === 0) {
+                grid.classList.add('hidden');
+                empty.classList.remove('hidden');
+            } else {
+                grid.classList.remove('hidden');
+                empty.classList.add('hidden');
+                filtered.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = "glass-card rounded-2xl overflow-hidden hover:border-cyan-400 border border-transparent transition-all duration-300 hover:-translate-y-2 cursor-pointer fade-in flex flex-col shadow-lg";
+                    card.onclick = () => showModal(item.id);
+                    card.innerHTML = `
+                        <div class="h-64 bg-slate-800 overflow-hidden relative">
+                            <img src="${item.photo}" alt="${item.name}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x800/1e293b/ffffff?text=${item.name.replace(' ', '+')}';">
+                            <div class="absolute bottom-4 left-4">
+                                <span class="text-[10px] font-mono bg-slate-900/80 text-cyan-400 px-2 py-1 rounded-full border border-cyan-500/30 uppercase tracking-widest">${item.year}</span>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h4 class="text-xl font-bold text-white mb-2">${item.name}</h4>
+                            <p class="text-cyan-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-3">📍 ${item.location}</p>
+                            <p class="text-slate-400 text-xs line-clamp-2 leading-relaxed">${item.desc}</p>
+                        </div>`;
+                    grid.appendChild(card);
+                });
+            }
+            
+            document.getElementById('kpi-total').textContent = filtered.length;
+            document.getElementById('record-count').textContent = filtered.length;
+        }
+
+        function showModal(id) {
+            const item = registryData.find(d => d.id === id);
+            if (!item) return;
+
+            document.getElementById('modal-name').textContent = item.name;
+            document.getElementById('modal-year').textContent = item.year;
+            document.getElementById('modal-location').textContent = `📍 ${item.location}`;
+            document.getElementById('modal-desc').textContent = item.desc;
+            document.getElementById('modal-aftermath').textContent = item.aftermath;
+            document.getElementById('modal-img').src = item.photo;
+            
+            const shareBtn = document.getElementById('share-btn');
+            shareBtn.onclick = () => {
+                if (navigator.share) {
+                    navigator.share({
+                        title: `Remembering ${item.name}`,
+                        text: item.desc,
+                        url: window.location.href
+                    });
+                } else {
+                    alert("Sharing is not supported on this browser, but you can copy the URL.");
+                }
+            };
+
+            document.getElementById('info-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideModal() {
+            document.getElementById('info-modal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeModal(e) { if (e.target.id === 'info-modal') hideModal(); }
+
+        function initCharts() {
+            const years = [...new Set(registryData.map(d => d.year.toString()))].sort();
+            const yearData = years.map(y => registryData.filter(d => d.year.toString() === y).length);
+
+            timelineChart = new Chart(document.getElementById('timelineChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: years,
+                    datasets: [{
+                        data: yearData,
+                        backgroundColor: '#22d3ee',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    onClick: (e, els) => {
+                        if (els.length) {
+                            const val = years[els[0].index];
+                            document.getElementById('year-filter').value = val;
+                            updateFilters('year', val);
+                        }
+                    },
+                    scales: {
+                        y: { ticks: { color: '#64748b' }, grid: { color: 'rgba(51, 65, 85, 0.2)' } },
+                        x: { ticks: { color: '#64748b' }, grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            const stateCounts = {};
+            registryData.forEach(d => stateCounts[d.state] = (stateCounts[d.state] || 0) + 1);
+            const sorted = Object.entries(stateCounts).sort((a,b) => b[1] - a[1]);
+            const labels = sorted.slice(0, 6).map(s => s[0]);
+            const data = sorted.slice(0, 6).map(s => s[1]);
+
+            geographyChart = new Chart(document.getElementById('geographyChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: ['#f59e0b', '#22d3ee', '#f43f5e', '#a855f7', '#3b82f6', '#10b981'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, cutout: '70%',
+                    onClick: (e, els) => {
+                        if (els.length) {
+                            const val = labels[els[0].index];
+                            document.getElementById('state-filter').value = val;
+                            updateFilters('state', val);
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'right', labels: { color: '#cbd5e1', font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        function setupListeners() {
+            document.getElementById('year-filter').addEventListener('change', (e) => updateFilters('year', e.target.value));
+            document.getElementById('state-filter').addEventListener('change', (e) => updateFilters('state', e.target.value));
+            document.getElementById('name-search').addEventListener('input', (e) => updateFilters('search', e.target.value));
+            
+            window.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideModal(); });
+        }
+
+        function updateFilters(type, val) {
+            currentFilter[type] = val;
+            renderRegistry();
+            if (type !== 'search') document.getElementById('registry-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetAllFilters() {
+            document.getElementById('year-filter').value = 'All';
+            document.getElementById('state-filter').value = 'All';
+            document.getElementById('name-search').value = '';
+            currentFilter = { year: 'All', state: 'All', search: '' };
+            renderRegistry();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

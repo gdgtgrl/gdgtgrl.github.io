@@ -6,15 +6,25 @@ The site uses `favicon.ico` as the browser favicon and as the visual mark on the
 
 ## Projects
 
+### 2026–2027 DMV Regional Theatre Season
+**File:** `dmv_theater_season.html`
+
+An interactive season briefing and production guide for theatres across Washington, D.C., Maryland, and Northern Virginia.
+
+### Master Grocery List App
+**File:** `master_grocery_list_app.html`
+
+An interactive grocery-planning tool for organizing a reusable master list and making shopping preparation easier.
+
 ### Air Traveler Rights & Advocacy Tool
 **File:** `air_traveler_rights.html`
 
 A practical guide to airline passenger rights, responsibilities, complaint options, and consumer advocacy.
 
-### Black American Origins, Identity, and Evidence
-**File:** `black_american_identity.html`
+### Federal Audit Intelligence Platform
+**File:** `federal_is_audit_guide.html`
 
-An evidence-focused examination of Black American identity claims through history, genomics, archaeology, and documented sources.
+A reference platform connecting federal information-systems audit concepts, FISCAM, FISMA, NIST SP 800-53, and related control analysis.
 
 ### Cyber Security Awareness 2026
 **File:** `cyber_security_awareness_2026.html`
@@ -26,30 +36,20 @@ A fundamentals resource and AI lab for exploring common threats, defensive pract
 
 A practical introduction to the online, account, device, and behavioral traces that can inform digital investigations.
 
-### 2026–2027 DMV Regional Theatre Season
-**File:** `dmv_theater_season.html`
+### NFR Studio
+**File:** `nfr_assistant.html`
 
-An interactive season briefing and production guide for theatres across Washington, D.C., Maryland, and Northern Virginia.
+A Notice of Findings & Recommendations assistant designed to support clear, structured audit finding development and writing.
 
-### Federal Audit Intelligence Platform
-**File:** `federal_is_audit_guide.html`
+### Black American Origins, Identity, and Evidence
+**File:** `black_american_identity.html`
 
-A reference platform connecting federal information-systems audit concepts, FISCAM, FISMA, NIST SP 800-53, and related control analysis.
+An evidence-focused examination of Black American identity claims through history, genomics, archaeology, and documented sources.
 
 ### Lives Lost, Movements Born
 **File:** `lives_lost.html`
 
 An interactive remembrance connecting high-profile tragedies with the movements, advocacy, and public responses that followed.
-
-### Master Grocery List App
-**File:** `master_grocery_list_app.html`
-
-An interactive grocery-planning tool for organizing a reusable master list and making shopping preparation easier.
-
-### NFR Studio
-**File:** `nfr_assistant.html`
-
-A Notice of Findings & Recommendations assistant designed to support clear, structured audit finding development and writing.
 
 ## Using the Repository
 

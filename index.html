@@ -3,101 +3,327 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="GDGTGRL collection of interactive guides, research tools, dashboards, utilities, and supporting project files.">
+  <meta name="description" content="A collection of interactive guides, research tools, dashboards, and educational resources.">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <title>GDGTGRL Interactive Projects</title>
   <style>
     :root {
       color-scheme: dark;
       --bg: #08111f;
-      --panel: rgba(18,31,51,.9);
-      --panel-hover: rgba(25,43,69,.98);
+      --panel: rgba(18, 31, 51, 0.88);
+      --panel-hover: rgba(25, 43, 69, 0.96);
       --text: #edf4ff;
       --muted: #a9b8ca;
       --accent: #6ee7f9;
-      --accent2: #a78bfa;
-      --border: rgba(169,184,202,.2);
-      --shadow: 0 18px 45px rgba(0,0,0,.28);
+      --accent-2: #a78bfa;
+      --border: rgba(169, 184, 202, 0.2);
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
     }
+
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
       min-height: 100vh;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 12% 15%, rgba(110,231,249,.13), transparent 32rem),
-        radial-gradient(circle at 88% 4%, rgba(167,139,250,.15), transparent 30rem),
-        linear-gradient(145deg,#07101c 0%,#0c1728 55%,#0a1220 100%);
+        radial-gradient(circle at 12% 15%, rgba(110, 231, 249, 0.13), transparent 32rem),
+        radial-gradient(circle at 88% 4%, rgba(167, 139, 250, 0.15), transparent 30rem),
+        linear-gradient(145deg, #07101c 0%, #0c1728 55%, #0a1220 100%);
     }
+
     a { color: inherit; }
-    .shell { width: min(1180px, calc(100% - 36px)); margin: 0 auto; padding: 72px 0 48px; }
-    .hero { max-width: 860px; margin-bottom: 44px; }
-    .eyebrow { display:inline-flex; align-items:center; gap:8px; margin:0 0 16px; color:var(--accent); font-size:.78rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
-    .eyebrow::before { content:""; width:28px; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); }
-    h1 { margin:0; font-size:clamp(2.6rem,7vw,5.5rem); line-height:.98; letter-spacing:-.055em; }
-    .intro { max-width:760px; margin:24px 0 0; color:var(--muted); font-size:clamp(1rem,2vw,1.18rem); line-height:1.75; }
-    .meta { display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
-    .pill { padding:8px 12px; border:1px solid var(--border); border-radius:999px; background:rgba(255,255,255,.035); color:#cbd7e6; font-size:.83rem; }
-    .section-title { margin: 50px 0 18px; font-size:1.05rem; text-transform:uppercase; letter-spacing:.12em; color:#cbd7e6; }
-    .grid { display:grid; grid-template-columns:repeat(12,1fr); gap:18px; }
-    .card { grid-column:span 6; position:relative; display:flex; flex-direction:column; min-height:250px; padding:26px; overflow:hidden; text-decoration:none; border:1px solid var(--border); border-radius:22px; background:var(--panel); box-shadow:var(--shadow); backdrop-filter:blur(14px); transition:transform 180ms ease,border-color 180ms ease,background 180ms ease; }
-    .card:hover,.card:focus-visible { transform:translateY(-5px); border-color:rgba(110,231,249,.6); background:var(--panel-hover); outline:none; }
-    .card::after { content:""; position:absolute; right:-55px; bottom:-75px; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle,rgba(110,231,249,.12),transparent 67%); pointer-events:none; }
-    .number { color:var(--accent); font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.8rem; letter-spacing:.08em; }
-    .card h2 { margin:18px 0 12px; font-size:clamp(1.3rem,3vw,1.9rem); line-height:1.12; letter-spacing:-.025em; }
-    .card p { margin:0; max-width:62ch; color:var(--muted); line-height:1.65; }
-    .card-footer { display:flex; align-items:center; justify-content:space-between; gap:14px; margin-top:auto; padding-top:24px; }
-    .tag { color:#cbd7e6; font-size:.79rem; text-transform:uppercase; letter-spacing:.09em; }
-    .arrow { display:grid; place-items:center; width:38px; height:38px; flex:0 0 auto; border:1px solid var(--border); border-radius:50%; color:var(--accent); font-size:1.2rem; transition:transform 180ms ease; }
-    .card:hover .arrow { transform:translateX(3px); }
-    .files { display:grid; gap:12px; }
-    .file-row { display:grid; grid-template-columns:minmax(220px,.8fr) 1.7fr auto; gap:18px; align-items:center; padding:17px 19px; border:1px solid var(--border); border-radius:15px; background:rgba(18,31,51,.72); text-decoration:none; }
-    .file-row:hover,.file-row:focus-visible { border-color:rgba(110,231,249,.55); outline:none; }
-    .filename { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.88rem; color:var(--accent); overflow-wrap:anywhere; }
-    .file-desc { color:var(--muted); line-height:1.45; }
-    .file-type { color:#cbd7e6; font-size:.76rem; letter-spacing:.08em; text-transform:uppercase; }
-    footer { display:flex; flex-wrap:wrap; justify-content:space-between; gap:14px; margin-top:44px; padding-top:24px; border-top:1px solid var(--border); color:var(--muted); font-size:.88rem; }
-    footer a { color:var(--accent); text-underline-offset:3px; }
-    @media (max-width:800px) { .shell{padding-top:48px}.card{grid-column:1/-1}.file-row{grid-template-columns:1fr}.file-type{display:none} }
-    @media (prefers-reduced-motion:reduce) { *,*::before,*::after{scroll-behavior:auto!important;transition:none!important} }
+
+    .shell {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 64px 0 48px;
+    }
+
+    .hero {
+      max-width: 850px;
+      margin-bottom: 42px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .brand img {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.6rem, 7vw, 5.5rem);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+    }
+
+    .intro {
+      max-width: 720px;
+      margin: 24px 0 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.18rem);
+      line-height: 1.75;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.035);
+      color: #cbd7e6;
+      font-size: 0.83rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      grid-column: span 6;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 270px;
+      padding: 26px;
+      overflow: hidden;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .card:nth-child(1), .card:nth-child(5), .card:nth-child(9) { grid-column: span 7; }
+    .card:nth-child(2), .card:nth-child(6), .card:nth-child(8) { grid-column: span 5; }
+
+    .card:hover,
+    .card:focus-visible {
+      transform: translateY(-5px);
+      border-color: rgba(110, 231, 249, 0.6);
+      background: var(--panel-hover);
+      outline: none;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      right: -55px;
+      bottom: -75px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(110, 231, 249, 0.12), transparent 67%);
+      pointer-events: none;
+    }
+
+    .number {
+      color: var(--accent);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+    }
+
+    .card h2 {
+      margin: 18px 0 12px;
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+    }
+
+    .card p {
+      margin: 0;
+      max-width: 62ch;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: auto;
+      padding-top: 24px;
+    }
+
+    .tag {
+      color: #cbd7e6;
+      font-size: 0.79rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+    }
+
+    .arrow {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      flex: 0 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      color: var(--accent);
+      font-size: 1.2rem;
+      transition: transform 180ms ease;
+    }
+
+    .card:hover .arrow { transform: translateX(3px); }
+
+    footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: 44px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    footer a { color: var(--accent); text-underline-offset: 3px; }
+
+    @media (max-width: 800px) {
+      .shell { padding-top: 42px; }
+      .card,
+      .card:nth-child(n) { grid-column: 1 / -1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
   </style>
 </head>
 <body>
   <main class="shell">
     <header class="hero">
-      <p class="eyebrow">Interactive Collection</p>
+      <div class="brand">
+        <img src="favicon.ico" alt="GDGTGRL project icon">
+        <p class="eyebrow">Interactive Collection</p>
+      </div>
       <h1>Research, resources, and digital tools.</h1>
-      <p class="intro">A collection of standalone interactive guides, data-driven explainers, professional references, and personal utilities. Open a project below, or browse the supporting source and data files.</p>
+      <p class="intro">
+        A collection of standalone interactive guides, data-driven explainers, educational resources,
+        planning tools, and professional reference materials. Select a project below to open it.
+      </p>
       <div class="meta" aria-label="Collection details">
-        <span class="pill">9 interactive HTML projects</span>
-        <span class="pill">Research + professional tools</span>
+        <span class="pill">9 projects</span>
+        <span class="pill">Standalone HTML</span>
         <span class="pill">Responsive layouts</span>
       </div>
     </header>
 
-    <h2 class="section-title">Interactive projects</h2>
-    <section class="grid" aria-label="Interactive project index">
-      <a class="card" href="air_traveler_rights.html"><span class="number">01 / TRAVEL</span><h2>Air Traveler Rights &amp; Advocacy Tool</h2><p>A practical guide to airline passenger rights, responsibilities, complaint options, and traveler advocacy.</p><div class="card-footer"><span class="tag">Consumer guide</span><span class="arrow" aria-hidden="true">→</span></div></a>
-      <a class="card" href="black_american_identity.html"><span class="number">02 / HISTORY</span><h2>Black American Origins, Identity, and Evidence</h2><p>An evidence-focused examination of Black American origins and alternative identity claims through history, genomics, and archaeology.</p><div class="card-footer"><span class="tag">Research explainer</span><span class="arrow" aria-hidden="true">→</span></div></a>
-      <a class="card" href="cyber_security_awareness_2026.html"><span class="number">03 / SECURITY</span><h2>Cyber Security Awareness 2026</h2><p>An interactive fundamentals resource and AI lab covering modern cyber threats, defensive practices, and security awareness.</p><div class="card-footer"><span class="tag">Training resource</span><span class="arrow" aria-hidden="true">→</span></div></a>
-      <a class="card" href="digital_footprint_infographic.html"><span class="number">04 / INVESTIGATION</span><h2>Digital Footprint Tracking: A Primer</h2><p>A practical introduction to online and device-generated data trails, with an investigative and privacy-aware perspective.</p><div class="card-footer"><span class="tag">Investigation primer</span><span class="arrow" aria-hidden="true">→</span></div></a>
-      <a class="card" href="dmv_theater_season.html"><span class="number">05 / THEATRE</span><h2>2026–2027 Regional Theatre Season</h2><p>An interactive briefing and production guide for theatres across Washington, D.C., Maryland, and Northern Virginia.</p><div class="card-footer"><span class="tag">Season guide</span><span class="arrow" aria-hidden="true">→</span></div></a>
-      <a class="card" href="federal_is_audit_guide.html"><span class="number">06 / AUDIT</span><h2>Federal Audit Intelligence Platform</h2><p>A professional reference connecting federal IT audit concepts, FISCAM, FISMA, NIST SP 800-53, compliance analysis, and threat information.</p><div class="card-footer"><span class="tag">Audit reference</span><span class="arrow" aria-hidden="true">→</span></div></a>
-      <a class="card" href="lives_lost.html"><span class="number">07 / REMEMBRANCE</span><h2>Lives Lost, Movements Born</h2><p>An interactive remembrance documenting high-profile tragedies and the movements for change associated with them.</p><div class="card-footer"><span class="tag">Interactive memorial</span><span class="arrow" aria-hidden="true">→</span></div></a>
-      <a class="card" href="master_grocery_list_app.html"><span class="number">08 / HOME</span><h2>Master Grocery List App</h2><p>A browser-based grocery planning tool built around a master list organized by storage location and category.</p><div class="card-footer"><span class="tag">Planning utility</span><span class="arrow" aria-hidden="true">→</span></div></a>
-      <a class="card" href="nfr_assistant.html"><span class="number">09 / AUDIT WRITING</span><h2>NFR Studio</h2><p>A Notice of Findings &amp; Recommendations assistant for structuring and drafting audit findings and recommendations.</p><div class="card-footer"><span class="tag">Audit writing tool</span><span class="arrow" aria-hidden="true">→</span></div></a>
+    <section class="grid" aria-label="Project index">
+      <a class="card" href="air_traveler_rights.html">
+        <span class="number">01 / TRAVEL</span>
+        <h2>Air Traveler Rights &amp; Advocacy Tool</h2>
+        <p>A practical guide to airline passenger rights, responsibilities, complaint options, and consumer advocacy.</p>
+        <div class="card-footer"><span class="tag">Consumer guide</span><span class="arrow" aria-hidden="true">→</span></div>
+      </a>
+
+      <a class="card" href="black_american_identity.html">
+        <span class="number">02 / HISTORY</span>
+        <h2>Black American Origins, Identity, and Evidence</h2>
+        <p>An evidence-focused examination of Black American identity claims through history, genomics, archaeology, and documented sources.</p>
+        <div class="card-footer"><span class="tag">Research explainer</span><span class="arrow" aria-hidden="true">→</span></div>
+      </a>
+
+      <a class="card" href="cyber_security_awareness_2026.html">
+        <span class="number">03 / SECURITY</span>
+        <h2>Cyber Security Awareness 2026</h2>
+        <p>A fundamentals resource and AI lab for exploring common threats, defensive practices, and modern cybersecurity guidance.</p>
+        <div class="card-footer"><span class="tag">Interactive training</span><span class="arrow" aria-hidden="true">→</span></div>
+      </a>
+
+      <a class="card" href="digital_footprint_infographic.html">
+        <span class="number">04 / INVESTIGATIONS</span>
+        <h2>Digital Footprint Tracking: A Primer</h2>
+        <p>A practical introduction to the online, account, device, and behavioral traces that can inform digital investigations.</p>
+        <div class="card-footer"><span class="tag">Professional primer</span><span class="arrow" aria-hidden="true">→</span></div>
+      </a>
+
+      <a class="card" href="dmv_theater_season.html">
+        <span class="number">05 / ARTS</span>
+        <h2>2026–2027 DMV Regional Theatre Season</h2>
+        <p>An interactive season briefing and production guide for theatres across Washington, D.C., Maryland, and Northern Virginia.</p>
+        <div class="card-footer"><span class="tag">Season guide</span><span class="arrow" aria-hidden="true">→</span></div>
+      </a>
+
+      <a class="card" href="federal_is_audit_guide.html">
+        <span class="number">06 / AUDIT</span>
+        <h2>Federal Audit Intelligence Platform</h2>
+        <p>A reference platform connecting federal information-systems audit concepts, FISCAM, FISMA, NIST SP 800-53, and related control analysis.</p>
+        <div class="card-footer"><span class="tag">Audit reference</span><span class="arrow" aria-hidden="true">→</span></div>
+      </a>
+
+      <a class="card" href="lives_lost.html">
+        <span class="number">07 / REMEMBRANCE</span>
+        <h2>Lives Lost, Movements Born</h2>
+        <p>An interactive remembrance connecting high-profile tragedies with the movements, advocacy, and public responses that followed.</p>
+        <div class="card-footer"><span class="tag">Data &amp; narratives</span><span class="arrow" aria-hidden="true">→</span></div>
+      </a>
+
+      <a class="card" href="master_grocery_list_app.html">
+        <span class="number">08 / PLANNING</span>
+        <h2>Master Grocery List App</h2>
+        <p>An interactive grocery-planning tool for organizing a reusable master list and making shopping preparation easier.</p>
+        <div class="card-footer"><span class="tag">Planning tool</span><span class="arrow" aria-hidden="true">→</span></div>
+      </a>
+
+      <a class="card" href="nfr_assistant.html">
+        <span class="number">09 / AUDIT WRITING</span>
+        <h2>NFR Studio</h2>
+        <p>A Notice of Findings &amp; Recommendations assistant designed to support clear, structured audit finding development and writing.</p>
+        <div class="card-footer"><span class="tag">Writing assistant</span><span class="arrow" aria-hidden="true">→</span></div>
+      </a>
     </section>
 
-    <h2 class="section-title">Source, data &amp; project files</h2>
-    <section class="files" aria-label="Supporting files">
-      <a class="file-row" href="master_grocery_list.csv"><span class="filename">master_grocery_list.csv</span><span class="file-desc">Source grocery inventory used for planning, with item, storage-location, category, and meal-planning fields.</span><span class="file-type">CSV data</span></a>
-      <a class="file-row" href="nist_sp_800_53_rev_5_explorer_infographic%20(3).tsx"><span class="filename">nist_sp_800_53_rev_5_explorer_infographic (3).tsx</span><span class="file-desc">React/TypeScript source for a NIST SP 800-53 Rev. 5 control explorer with FISCAM mappings and interactive control-family content.</span><span class="file-type">TSX source</span></a>
-      <a class="file-row" href="manifest.json"><span class="filename">manifest.json</span><span class="file-desc">Web-app manifest metadata currently configured for the Remembrance Registry experience.</span><span class="file-type">JSON manifest</span></a>
-      <a class="file-row" href="README.md"><span class="filename">README.md</span><span class="file-desc">Repository documentation, project directory, file descriptions, and local/GitHub Pages viewing notes.</span><span class="file-type">Documentation</span></a>
-    </section>
-
-    <footer><span>GDGTGRL Interactive Projects</span><span>Relative links keep the collection portable for GitHub Pages or local use.</span></footer>
+    <footer>
+      <span>GDGTGRL Interactive Projects</span>
+      <span>See <a href="README.md">README.md</a> for project descriptions.</span>
+    </footer>
   </main>
 </body>
 </html>

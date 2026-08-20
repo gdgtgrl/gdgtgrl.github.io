@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Master Grocery List App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Hide scrollbar for a cleaner mobile look, but allow scrolling */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased pb-24">
+    
+    <!-- Sticky Header -->
+    <header class="glass-header sticky top-0 z-30 border-b border-slate-200 shadow-sm px-4 py-3">
+        <div class="max-w-5xl mx-auto flex items-center justify-between">
+            <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-500">
+                Master Grocery List
+            </h1>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-6">
+        <!-- Grocery List Container -->
+        <div id="listContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Categories and checkboxes will populate here -->
+        </div>
+    </main>
+
+    <!-- Sticky Bottom Bar -->
+    <div id="bottomBar" class="fixed bottom-0 left-0 right-0 p-4 glass-header border-t border-slate-200 transform translate-y-full transition-transform duration-300 ease-in-out z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <div class="max-w-5xl mx-auto flex gap-3">
+            <button id="clearBtn" class="px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400">
+                Clear
+            </button>
+            <button id="downloadBtn" disabled class="flex-1 flex justify-center items-center gap-2 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                <span>Download .md</span>
+                <span id="selectedBadge" class="hidden ml-1 bg-white text-indigo-700 py-0.5 px-2 rounded-full text-xs font-bold shadow-sm">0</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let groceryData = [
+            { "Category": "Sugar & Sweeteners", "Item": "Agave syrup" },
+            { "Category": "Dried Fruit/Nuts", "Item": "Almonds" },
+            { "Category": "Canned Goods", "Item": "Anchovy fillets or paste" },
+            { "Category": "Basics", "Item": "Apple cider vinegar" },
+            { "Category": "Fresh Produce", "Item": "Apples" },
+            { "Category": "Snacks and Cereals", "Item": "Applesauce" },
+            { "Category": "Condiments", "Item": "Asian fish sauce" },
+            { "Category": "Fresh Produce", "Item": "Avocados" },
+            { "Category": "Meat", "Item": "Bacon" },
+            { "Category": "Condiments", "Item": "Barbecue sauce" },
+            { "Category": "Baking", "Item": "Baking powder" },
+            { "Category": "Baking", "Item": "Baking soda" },
+            { "Category": "Basics", "Item": "Balsamic or sherry vinegar" },
+            { "Category": "Fresh Produce", "Item": "Bananas" },
+            { "Category": "Dried Herbs and Spices", "Item": "Bay leaves" },
+            { "Category": "Dry Goods", "Item": "Beans, 15-bean soup" },
+            { "Category": "Dry Goods", "Item": "Beans, Northern" },
+            { "Category": "Dry Goods", "Item": "Beans, Navy" },
+            { "Category": "Dry Goods", "Item": "Beans, Kidney" },
+            { "Category": "Fresh Produce", "Item": "Bell peppers" },
+            { "Category": "Frozen Produce", "Item": "Frozen berries" },
+            { "Category": "Dried Herbs and Spices", "Item": "Black peppercorns" },
+            { "Category": "Frozen Produce", "Item": "Frozen blueberries" },
+            { "Category": "Meat", "Item": "Boneless, skinless chicken breasts" },
+            { "Category": "Bread", "Item": "Bread, loaf" },
+            { "Category": "Bread", "Item": "Bagels" },
+            { "Category": "Bread", "Item": "Pita" },
+            { "Category": "Rice and Grains", "Item": "Breadcrumbs: plain or panko" },
+            { "Category": "Snacks and Cereals", "Item": "Breakfast cereal" },
+            { "Category": "Fresh Produce", "Item": "Fresh broccoli or cauliflower" },
+            { "Category": "Fresh Produce", "Item": "Fresh cauliflower" },
+            { "Category": "Frozen Produce", "Item": "Frozen broccoli" },
+            { "Category": "Rice and Grains", "Item": "Brown rice" },
+            { "Category": "Frozen Produce", "Item": "Frozen cauliflower" },
+            { "Category": "Sugar & Sweeteners", "Item": "Brown sugar" },
+            { "Category": "Fresh Produce", "Item": "Brussels sprouts" },
+            { "Category": "Fresh Produce", "Item": "Cabbage" },
+            { "Category": "Dried Herbs and Spices", "Item": "Cajun seasoning" },
+            { "Category": "Fresh Produce", "Item": "Carrots" },
+            { "Category": "Dried Fruit/Nuts", "Item": "Cashews" },
+            { "Category": "Dried Herbs and Spices", "Item": "Cayenne pepper" },
+            { "Category": "Fresh Produce", "Item": "Celery" },
+            { "Category": "Dairy and Eggs", "Item": "Cheese, Cheddar" },
+            { "Category": "Dairy and Eggs", "Item": "Cheese, Mozzarella" },
+            { "Category": "Canned Goods", "Item": "Chicken broth" },
+            { "Category": "Meat", "Item": "Chicken legs" },
+            { "Category": "Dried Herbs and Spices", "Item": "Chile powder" },
+            { "Category": "Canned Goods", "Item": "Chiles: chipotles in adobo or pickled jalapenos" },
+            { "Category": "Baking", "Item": "Chocolate: chips or bar" },
+            { "Category": "Fresh Produce", "Item": "Cilantro" },
+            { "Category": "Baking", "Item": "Cocoa powder (unsweetened)" },
+            { "Category": "Water", "Item": "Coconut Water" },
+            { "Category": "Drinks", "Item": "Coffee" },
+            { "Category": "Sugar & Sweeteners", "Item": "Confectioners' sugar" },
+            { "Category": "Snacks and Cereals", "Item": "Cookies or biscuits" },
+            { "Category": "Rice and Grains", "Item": "Couscous" },
+            { "Category": "Snacks and Cereals", "Item": "Crackers" },
+            { "Category": "Dried Fruit/Nuts", "Item": "Dried cranberries" },
+            { "Category": "Baking", "Item": "Cream of tartar" },
+            { "Category": "Dried Herbs and Spices", "Item": "Crushed red pepper" },
+            { "Category": "Fresh Produce", "Item": "Cucumbers" },
+            { "Category": "Dried Herbs and Spices", "Item": "Curry powder" },
+            { "Category": "Dairy and Eggs", "Item": "Eggs" },
+            { "Category": "Baking", "Item": "Evaporated milk" },
+            { "Category": "Basics", "Item": "Extra virgin olive oil" },
+            { "Category": "Rice and Grains", "Item": "Farro" },
+            { "Category": "Dried Herbs and Spices", "Item": "Fennel or dill seed" },
+            { "Category": "Dried Herbs and Spices", "Item": "Fine salt" },
+            { "Category": "Fresh Produce", "Item": "Flat-leaf parsley" },
+            { "Category": "Baking", "Item": "Flour: all purpose, whole wheat or pastry" },
+            { "Category": "Fresh Produce", "Item": "Garlic" },
+            { "Category": "Fresh Produce", "Item": "Ginger" },
+            { "Category": "Dairy and Eggs", "Item": "Goat cheese" },
+            { "Category": "Dried Herbs and Spices", "Item": "Granulated garlic" },
+            { "Category": "Sugar & Sweeteners", "Item": "Granulated sugar" },
+            { "Category": "Fresh Produce", "Item": "Grapes" },
+            { "Category": "Fresh Produce", "Item": "Green beans" },
+            { "Category": "Meat", "Item": "Ground beef" },
+            { "Category": "Meat", "Item": "Ground beef, ground turkey or Italian sausage" },
+            { "Category": "Dried Herbs and Spices", "Item": "Ground cinnamon" },
+            { "Category": "Dried Herbs and Spices", "Item": "Ground cloves" },
+            { "Category": "Dried Herbs and Spices", "Item": "Ground cumin" },
+            { "Category": "Dried Herbs and Spices", "Item": "Ground ginger" },
+            { "Category": "Meat", "Item": "Ground turkey" },
+            { "Category": "Sugar & Sweeteners", "Item": "Honey" },
+            { "Category": "Condiments", "Item": "Hot sauce: Tabasco, Sriracha or sambal" },
+            { "Category": "Condiments", "Item": "Jelly, jam or preserves" },
+            { "Category": "Fresh Produce", "Item": "Kale" },
+            { "Category": "Condiments", "Item": "Ketchup" },
+            { "Category": "Dried Herbs and Spices", "Item": "Kosher salt" },
+            { "Category": "Fresh Produce", "Item": "Lemons" },
+            { "Category": "Fresh Produce", "Item": "Lettuce" },
+            { "Category": "Fresh Produce", "Item": "Limes" },
+            { "Category": "Rice and Grains", "Item": "Long-grain white rice" },
+            { "Category": "Frozen Produce", "Item": "Frozen mango" },
+            { "Category": "Dried Fruit/Nuts", "Item": "Dried mango" },
+            { "Category": "Sugar & Sweeteners", "Item": "Maple syrup" },
+            { "Category": "Snacks and Cereals", "Item": "Marshmallows" },
+            { "Category": "Condiments", "Item": "Mayonnaise" },
+            { "Category": "Dairy and Eggs", "Item": "Milk" },
+            { "Category": "Condiments", "Item": "Mustard: Dijon or whole grain" },
+            { "Category": "Snacks and Cereals", "Item": "Old-fashioned rolled oats" },
+            { "Category": "Canned Goods", "Item": "Olives or capers" },
+            { "Category": "Fresh Produce", "Item": "Onions" },
+            { "Category": "Drinks", "Item": "Orange juice" },
+            { "Category": "Fresh Produce", "Item": "Oranges" },
+            { "Category": "Dried Herbs and Spices", "Item": "Oregano" },
+            { "Category": "Dried Fruit/Nuts", "Item": "Dried papaya" },
+            { "Category": "Dried Herbs and Spices", "Item": "Paprika: sweet and smoked" },
+            { "Category": "Dairy and Eggs", "Item": "Parmesan (wedge)" },
+            { "Category": "Rice and Grains", "Item": "Pasta" },
+            { "Category": "Frozen Produce", "Item": "Frozen peaches" },
+            { "Category": "Snacks and Cereals", "Item": "Peanut butter or almond butter" },
+            { "Category": "Dried Fruit/Nuts", "Item": "Pecans" },
+            { "Category": "Condiments", "Item": "Pickles" },
+            { "Category": "Dried Fruit/Nuts", "Item": "Dried pineapple" },
+            { "Category": "Dairy and Eggs", "Item": "Plain yogurt: regular or Greek" },
+            { "Category": "Rice and Grains", "Item": "Polenta" },
+            { "Category": "Snacks and Cereals", "Item": "Popcorn kernels" },
+            { "Category": "Fresh Produce", "Item": "Potatoes, New" },
+            { "Category": "Fresh Produce", "Item": "Potatoes, Sweet" },
+            { "Category": "Fresh Produce", "Item": "Potatoes, White" },
+            { "Category": "Snacks and Cereals", "Item": "Pretzels" },
+            { "Category": "Baking", "Item": "Pure vanilla extract" },
+            { "Category": "Rice and Grains", "Item": "Quinoa" },
+            { "Category": "Dried Fruit/Nuts", "Item": "Raisins" },
+            { "Category": "Rice and Grains", "Item": "Ramen noodles" },
+            { "Category": "Basics", "Item": "Red wine vinegar" },
+            { "Category": "Basics", "Item": "Rice vinegar (unseasoned)" },
+            { "Category": "Canned Goods", "Item": "Roasted red peppers" },
+            { "Category": "Dried Herbs and Spices", "Item": "Rosemary" },
+            { "Category": "Seafood", "Item": "Salmon" },
+            { "Category": "Canned Goods", "Item": "Salsa" },
+            { "Category": "Meat", "Item": "Sausage, Turkey Breakfast" },
+            { "Category": "Meat", "Item": "Sausage, Chorizo" },
+            { "Category": "Meat", "Item": "Sausage, Red Hot" },
+            { "Category": "Fresh Produce", "Item": "Scallions" },
+            { "Category": "Dried Fruit/Nuts", "Item": "Seeds: chia" },
+            { "Category": "Dried Fruit/Nuts", "Item": "Seeds: flax" },
+            { "Category": "Dried Fruit/Nuts", "Item": "Seeds: sunflower" },
+            { "Category": "Dried Herbs and Spices", "Item": "Sesame seeds" },
+            { "Category": "Seafood", "Item": "Shrimp" },
+            { "Category": "Condiments", "Item": "Soy sauce or tamari" },
+            { "Category": "Fresh Produce", "Item": "Fresh spinach" },
+            { "Category": "Frozen Produce", "Item": "Frozen spinach" },
+            { "Category": "Frozen Produce", "Item": "Frozen stir-fry vegetables" },
+            { "Category": "Baking", "Item": "Sweeteners" },
+            { "Category": "Drinks", "Item": "Tea" },
+            { "Category": "Dried Herbs and Spices", "Item": "Dried thyme" },
+            { "Category": "Fresh Produce", "Item": "Fresh thyme" },
+            { "Category": "Condiments", "Item": "Toasted sesame oil" },
+            { "Category": "Canned Goods", "Item": "Tomato paste" },
+            { "Category": "Canned Goods", "Item": "Canned tomatoes" },
+            { "Category": "Fresh Produce", "Item": "Fresh tomatoes" },
+            { "Category": "Snacks and Cereals", "Item": "Tortillas" },
+            { "Category": "Canned Goods", "Item": "Tuna" },
+            { "Category": "Dairy and Eggs", "Item": "Unsalted butter" },
+            { "Category": "Frozen Dessert", "Item": "Vanilla ice cream" },
+            { "Category": "Basics", "Item": "Vegetable oil" },
+            { "Category": "Dried Fruit/Nuts", "Item": "Walnuts" },
+            { "Category": "Water", "Item": "Water" },
+            { "Category": "Rice and Grains", "Item": "White rice (jasmine or basmati)" },
+            { "Category": "Dried Herbs and Spices", "Item": "Whole nutmeg" },
+            { "Category": "Condiments", "Item": "Worcestershire sauce" }
+        ];
+
+        // DOM Elements
+        const listContainer = document.getElementById('listContainer');
+        const bottomBar = document.getElementById('bottomBar');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const selectedBadge = document.getElementById('selectedBadge');
+
+        // Initialize App on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderList();
+            bottomBar.classList.remove('translate-y-full');
+        });
+
+        // Render the Checkboxes Grouped by Category
+        function renderList() {
+            listContainer.innerHTML = '';
+            const grouped = {};
+            
+            // Group items by their Category
+            groceryData.forEach(row => {
+                const category = row.Category || row.category || 'Uncategorized';
+                const item = row.Item || row.item || row.Name || row.name; 
+                
+                if (!item) return;
+
+                if (!grouped[category]) grouped[category] = [];
+                grouped[category].push(item);
+            });
+
+            // Build the UI
+            for (const [category, items] of Object.entries(grouped).sort()) {
+                const catDiv = document.createElement('div');
+                catDiv.className = 'bg-white p-3 rounded-2xl border border-slate-200 shadow-sm overflow-hidden';
+
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'flex justify-between items-center mb-2 border-b border-indigo-50 pb-2';
+
+                const title = document.createElement('h2');
+                title.className = 'text-sm font-bold text-indigo-800 uppercase tracking-wider';
+                title.textContent = category;
+
+                const selectAllBtn = document.createElement('button');
+                selectAllBtn.className = 'text-[11px] font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 rounded-md transition-colors focus:outline-none active:bg-indigo-200';
+                selectAllBtn.textContent = 'Select All';
+
+                headerDiv.appendChild(title);
+                headerDiv.appendChild(selectAllBtn);
+                catDiv.appendChild(headerDiv);
+
+                const itemWrapper = document.createElement('div');
+                itemWrapper.className = 'flex flex-col space-y-0.5';
+
+                // Remove duplicates and sort items alphabetically
+                const uniqueItems = [...new Set(items)].sort();
+
+                uniqueItems.forEach(item => {
+                    const label = document.createElement('label');
+                    // Super compact layout with large tap target for mobile
+                    label.className = 'flex items-center space-x-3 py-2 px-1 -mx-1 rounded-lg hover:bg-slate-50 active:bg-slate-100 cursor-pointer transition-colors';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.className = 'item-checkbox w-5 h-5 text-indigo-600 bg-slate-100 border-slate-300 rounded focus:ring-indigo-500 focus:ring-2 focus:ring-offset-1 transition duration-150 ease-in-out';
+                    checkbox.value = item;
+
+                    const span = document.createElement('span');
+                    span.className = 'text-slate-700 text-sm font-medium select-none';
+                    span.textContent = item;
+
+                    label.appendChild(checkbox);
+                    label.appendChild(span);
+                    itemWrapper.appendChild(label);
+                });
+
+                // Add Select All / Clear All functionality for this specific category
+                selectAllBtn.addEventListener('click', () => {
+                    const checkboxes = itemWrapper.querySelectorAll('.item-checkbox');
+                    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                    
+                    checkboxes.forEach(cb => cb.checked = !allChecked);
+                    selectAllBtn.textContent = allChecked ? 'Select All' : 'Clear All';
+                    
+                    updateDownloadState();
+                });
+
+                // Update Select All button text if user manually changes checkboxes
+                itemWrapper.addEventListener('change', () => {
+                    const checkboxes = itemWrapper.querySelectorAll('.item-checkbox');
+                    const allChecked = checkboxes.length > 0 && Array.from(checkboxes).every(cb => cb.checked);
+                    selectAllBtn.textContent = allChecked ? 'Clear All' : 'Select All';
+                });
+
+                catDiv.appendChild(itemWrapper);
+                listContainer.appendChild(catDiv);
+            }
+
+            // Setup event delegation for checkboxes to update the download button state
+            listContainer.addEventListener('change', updateDownloadState);
+        }
+
+        // Update the state of the sticky bottom bar
+        function updateDownloadState() {
+            const checkedBoxes = document.querySelectorAll('.item-checkbox:checked');
+            const count = checkedBoxes.length;
+
+            if (count > 0) {
+                downloadBtn.removeAttribute('disabled');
+                selectedBadge.textContent = count;
+                selectedBadge.classList.remove('hidden');
+                downloadBtn.classList.add('shadow-lg');
+            } else {
+                downloadBtn.setAttribute('disabled', 'true');
+                selectedBadge.classList.add('hidden');
+                downloadBtn.classList.remove('shadow-lg');
+            }
+        }
+
+        // Clear all selections
+        clearBtn.addEventListener('click', () => {
+            const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+            checkboxes.forEach(cb => {
+                cb.checked = false;
+                // Dispatch change event to trigger the section-level "Clear All" buttons to reset
+                cb.dispatchEvent(new Event('change', { bubbles: true })); 
+            });
+            updateDownloadState();
+        });
+
+        // Handle Markdown Generation and Download
+        downloadBtn.addEventListener('click', function() {
+            const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+            if (checkboxes.length === 0) return; // Failsafe
+
+            let markdownContent = '# Grocery List\n\n';
+            
+            const categoryContainers = document.querySelectorAll('#listContainer > div');
+            
+            categoryContainers.forEach(container => {
+                const checkedItems = container.querySelectorAll('.item-checkbox:checked');
+                
+                if (checkedItems.length > 0) {
+                    const categoryName = container.querySelector('h2').textContent;
+                    markdownContent += `## ${categoryName}\n`;
+                    
+                    checkedItems.forEach(cb => {
+                        markdownContent += `- [ ] ${cb.value}\n`;
+                    });
+                    
+                    markdownContent += '\n'; 
+                }
+            });
+
+            // Accurate timezone date handling
+            const today = new Date();
+            const offset = today.getTimezoneOffset() * 60000;
+            const localISOTime = (new Date(today - offset)).toISOString().split('T')[0];
+
+            const blob = new Blob([markdownContent], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            
+            a.download = `Grocery_List_${localISOTime}.md`;
+            
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>

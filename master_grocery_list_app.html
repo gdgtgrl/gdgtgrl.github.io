@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Master Grocery List App</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -32,7 +33,6 @@
 </head>
 <body class="text-slate-800 antialiased pb-24">
     
-    <!-- Sticky Header -->
     <header class="glass-header sticky top-0 z-30 border-b border-slate-200 shadow-sm px-4 py-3">
         <div class="max-w-5xl mx-auto flex items-center justify-between">
             <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-500">
@@ -42,14 +42,24 @@
     </header>
 
     <main class="max-w-5xl mx-auto px-4 py-6">
-        <!-- Grocery List Container -->
-        <div id="listContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        
+        <div class="mb-6 bg-indigo-50/70 border border-indigo-100 rounded-xl p-4 shadow-sm">
+            <p class="text-sm text-indigo-900/80 leading-relaxed font-medium">
+                Interactive grocery planning tool for organizing a reusable master list and making shopping preparation easier.
+            </p>
+        </div>
+        
+        <!-- Loading Indicator / Error Message -->
+        <div id="statusMessage" class="text-center py-8">
+            <p class="text-slate-500 text-sm font-medium animate-pulse">Attempting to load master_grocery_list.csv...</p>
+        </div>
+
+        <div id="listContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 hidden">
             <!-- Categories and checkboxes will populate here -->
         </div>
     </main>
 
-    <!-- Sticky Bottom Bar -->
-    <div id="bottomBar" class="fixed bottom-0 left-0 right-0 p-4 glass-header border-t border-slate-200 transform translate-y-full transition-transform duration-300 ease-in-out z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+    <div id="bottomBar" class="fixed bottom-0 left-0 right-0 p-4 glass-header border-t border-slate-200 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] transform translate-y-full transition-transform duration-300">
         <div class="max-w-5xl mx-auto flex gap-3">
             <button id="clearBtn" class="px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400">
                 Clear
@@ -63,203 +73,59 @@
     </div>
 
     <script>
-        let groceryData = [
-            { "Category": "Sugar & Sweeteners", "Item": "Agave syrup" },
-            { "Category": "Dried Fruit/Nuts", "Item": "Nuts, Almonds" },
-            { "Category": "Basics", "Item": "Apple cider vinegar" },
-            { "Category": "Fresh Produce - Fruits", "Item": "Apples" },
-            { "Category": "Snacks and Cereals", "Item": "Applesauce" },
-            { "Category": "Condiments", "Item": "Asian fish sauce" },
-            { "Category": "Fresh Produce - Vegetable", "Item": "Avocados" },
-            { "Category": "Meat", "Item": "Bacon" },
-            { "Category": "Condiments", "Item": "Barbecue sauce" },
-            { "Category": "Baking", "Item": "Baking powder" },
-            { "Category": "Baking", "Item": "Baking soda" },
-            { "Category": "Basics", "Item": "Balsamic or sherry vinegar" },
-            { "Category": "Fresh Produce - Fruits", "Item": "Bananas" },
-            { "Category": "Dried Herbs and Spices", "Item": "Bay leaves" },
-            { "Category": "Dry Goods", "Item": "Beans, 15-bean soup" },
-            { "Category": "Dry Goods", "Item": "Beans, Northern" },
-            { "Category": "Dry Goods", "Item": "Beans, Navy" },
-            { "Category": "Dry Goods", "Item": "Beans, Kidney " },
-            { "Category": "Fresh Produce - Aromatics", "Item": "Bell peppers" },
-            { "Category": "Frozen Produce", "Item": "Frozen berries" },
-            { "Category": "Dried Herbs and Spices", "Item": "Black peppercorns" },
-            { "Category": "Frozen Produce", "Item": "Frozen blueberries" },
-            { "Category": "Meat", "Item": "Chicken Breasts, boneless" },
-            { "Category": "Bread", "Item": "Bread, loaf" },
-            { "Category": "Bread", "Item": "Bagels" },
-            { "Category": "Bread", "Item": "Pita" },
-            { "Category": "Rice and Grains", "Item": "Breadcrumbs: plain or panko" },
-            { "Category": "Snacks and Cereals", "Item": "Breakfast cereal" },
-            { "Category": "Fresh Produce - Vegetable", "Item": "Fresh broccoli or cauliflower" },
-            { "Category": "Fresh Produce - Vegetable", "Item": "Fresh cauliflower" },
-            { "Category": "Frozen Produce", "Item": "Frozen broccoli" },
-            { "Category": "Rice and Grains", "Item": "Brown rice" },
-            { "Category": "Frozen Produce", "Item": "Frozen cauliflower" },
-            { "Category": "Sugar & Sweeteners", "Item": "Brown sugar" },
-            { "Category": "Fresh Produce - Vegetable", "Item": "Brussels sprouts" },
-            { "Category": "Fresh Produce - Vegetable", "Item": "Cabbage" },
-            { "Category": "Dried Herbs and Spices", "Item": "Cajun seasoning" },
-            { "Category": "Fresh Produce - Vegetable", "Item": "Carrots" },
-            { "Category": "Dried Fruit/Nuts", "Item": "Nuts, Cashews" },
-            { "Category": "Dried Herbs and Spices", "Item": "Cayenne pepper" },
-            { "Category": "Fresh Produce - Aromatics", "Item": "Celery" },
-            { "Category": "Dairy and Eggs", "Item": "Cheese, Cheddar" },
-            { "Category": "Dairy and Eggs", "Item": "Cheese, Mozzarella" },
-            { "Category": "Canned Goods", "Item": "Chicken broth" },
-            { "Category": "Meat", "Item": "Chicken legs" },
-            { "Category": "Dried Herbs and Spices", "Item": "Chile powder" },
-            { "Category": "Canned Goods", "Item": "Chiles: chipotles in adobo or pickled jalapenos" },
-            { "Category": "Baking", "Item": "Chocolate: chips or bar" },
-            { "Category": "Fresh Produce - Herbs", "Item": "Cilantro" },
-            { "Category": "Baking", "Item": "Cocoa powder (unsweetened)" },
-            { "Category": "Water", "Item": "Coconut Water" },
-            { "Category": "Drinks", "Item": "Coffee" },
-            { "Category": "Sugar & Sweeteners", "Item": "Confectioners' sugar" },
-            { "Category": "Snacks and Cereals", "Item": "Cookies or biscuits" },
-            { "Category": "Rice and Grains", "Item": "Couscous" },
-            { "Category": "Snacks and Cereals", "Item": "Crackers" },
-            { "Category": "Dried Fruit/Nuts", "Item": "Dried cranberries" },
-            { "Category": "Baking", "Item": "Cream of tartar" },
-            { "Category": "Dried Herbs and Spices", "Item": "Crushed red pepper" },
-            { "Category": "Fresh Produce - Vegetable", "Item": "Cucumbers" },
-            { "Category": "Dried Herbs and Spices", "Item": "Curry powder" },
-            { "Category": "Dairy and Eggs", "Item": "Eggs" },
-            { "Category": "Baking", "Item": "Evaporated milk" },
-            { "Category": "Basics", "Item": "Extra virgin olive oil" },
-            { "Category": "Rice and Grains", "Item": "Farro" },
-            { "Category": "Dried Herbs and Spices", "Item": "Fennel or dill seed" },
-            { "Category": "Dried Herbs and Spices", "Item": "Fine salt" },
-            { "Category": "Fresh Produce - Herbs", "Item": "Flat-leaf parsley" },
-            { "Category": "Baking", "Item": "Flour: all purpose, whole wheat or pastry" },
-            { "Category": "Fresh Produce - Aromatics", "Item": "Garlic" },
-            { "Category": "Fresh Produce - Vegetable", "Item": "Ginger" },
-            { "Category": "Dairy and Eggs", "Item": "Goat cheese" },
-            { "Category": "Dried Herbs and Spices", "Item": "Granulated garlic" },
-            { "Category": "Sugar & Sweeteners", "Item": "Granulated sugar" },
-            { "Category": "Fresh Produce - Fruits", "Item": "Grapes" },
-            { "Category": "Fresh Produce - Vegetable", "Item": "Green beans" },
-            { "Category": "Meat", "Item": "Ground beef" },
-            { "Category": "Meat", "Item": "Ground beef, ground turkey or Italian sausage" },
-            { "Category": "Dried Herbs and Spices", "Item": "Ground cinnamon" },
-            { "Category": "Dried Herbs and Spices", "Item": "Ground cloves" },
-            { "Category": "Dried Herbs and Spices", "Item": "Ground cumin" },
-            { "Category": "Dried Herbs and Spices", "Item": "Ground ginger" },
-            { "Category": "Meat", "Item": "Ground turkey" },
-            { "Category": "Sugar & Sweeteners", "Item": "Honey" },
-            { "Category": "Condiments", "Item": "Hot sauce: Tabasco, Sriracha or sambal" },
-            { "Category": "Condiments", "Item": "Jelly, jam or preserves" },
-            { "Category": "Fresh Produce - Vegetable", "Item": "Kale" },
-            { "Category": "Condiments", "Item": "Ketchup" },
-            { "Category": "Dried Herbs and Spices", "Item": "Kosher salt" },
-            { "Category": "Fresh Produce - Fruits", "Item": "Lemons" },
-            { "Category": "Fresh Produce - Vegetable", "Item": "Lettuce" },
-            { "Category": "Fresh Produce - Fruits", "Item": "Limes" },
-            { "Category": "Rice and Grains", "Item": "Long-grain white rice" },
-            { "Category": "Frozen Produce", "Item": "Frozen mango" },
-            { "Category": "Dried Fruit/Nuts", "Item": "Dried mango" },
-            { "Category": "Sugar & Sweeteners", "Item": "Maple syrup" },
-            { "Category": "Snacks and Cereals", "Item": "Marshmallows" },
-            { "Category": "Condiments", "Item": "Mayonnaise" },
-            { "Category": "Dairy and Eggs", "Item": "Milk, 2% Lactose-Free", "Note": "Prefer the Walmart brand." },
-            { "Category": "Dairy and Eggs", "Item": "Milk, Coconut" },
-            { "Category": "Dairy and Eggs", "Item": "Milk, Soy" },
-            { "Category": "Condiments", "Item": "Mustard: Dijon or whole grain" },
-            { "Category": "Snacks and Cereals", "Item": "Oats, Stone Cut" },
-            { "Category": "Snacks and Cereals", "Item": "Oats, Instant" },
-            { "Category": "Snacks and Cereals", "Item": "Oats, Quick" },
-            { "Category": "Canned Goods", "Item": "Olives or capers" },
-            { "Category": "Fresh Produce - Aromatics", "Item": "Onions" },
-            { "Category": "Drinks", "Item": "Orange juice" },
-            { "Category": "Fresh Produce - Fruits", "Item": "Oranges" },
-            { "Category": "Dried Herbs and Spices", "Item": "Oregano" },
-            { "Category": "Dried Fruit/Nuts", "Item": "Dried papaya" },
-            { "Category": "Dried Herbs and Spices", "Item": "Paprika: sweet and smoked" },
-            { "Category": "Dairy and Eggs", "Item": "Parmesan (wedge)" },
-            { "Category": "Pasta", "Item": "Pasta" },
-            { "Category": "Frozen Produce", "Item": "Frozen peaches" },
-            { "Category": "Snacks and Cereals", "Item": "Peanut butter or almond butter" },
-            { "Category": "Dried Fruit/Nuts", "Item": "Pecans" },
-            { "Category": "Condiments", "Item": "Pickles" },
-            { "Category": "Dried Fruit/Nuts", "Item": "Dried pineapple" },
-            { "Category": "Dairy and Eggs", "Item": "Yogurt" },
-            { "Category": "Rice and Grains", "Item": "Grits" },
-            { "Category": "Rice and Grains", "Item": "Polenta" },
-            { "Category": "Snacks and Cereals", "Item": "Popcorn kernels" },
-            { "Category": "Fresh Produce - Vegetable", "Item": "Potatoes, New" },
-            { "Category": "Fresh Produce - Vegetable", "Item": "Potatoes, Sweet" },
-            { "Category": "Fresh Produce - Vegetable", "Item": "Potatoes, White" },
-            { "Category": "Snacks and Cereals", "Item": "Pretzels" },
-            { "Category": "Baking", "Item": "Pure vanilla extract" },
-            { "Category": "Rice and Grains", "Item": "Quinoa" },
-            { "Category": "Dried Fruit/Nuts", "Item": "Raisins" },
-            { "Category": "Pasta", "Item": "Ramen noodles" },
-            { "Category": "Basics", "Item": "Red wine vinegar" },
-            { "Category": "Basics", "Item": "Rice vinegar (unseasoned)" },
-            { "Category": "Canned Goods", "Item": "Roasted red peppers" },
-            { "Category": "Dried Herbs and Spices", "Item": "Rosemary" },
-            { "Category": "Seafood", "Item": "Salmon" },
-            { "Category": "Canned Goods", "Item": "Salsa" },
-            { "Category": "Meat", "Item": "Sausage, Turkey Breakfast" },
-            { "Category": "Meat", "Item": "Sausage, Chorizo" },
-            { "Category": "Meat", "Item": "Sausage, Red Hot" },
-            { "Category": "Fresh Produce - Aromatics", "Item": "Scallions" },
-            { "Category": "Dried Fruit/Nuts", "Item": "Seeds: chia" },
-            { "Category": "Dried Fruit/Nuts", "Item": "Seeds: flax" },
-            { "Category": "Dried Fruit/Nuts", "Item": "Seeds: sunflower" },
-            { "Category": "Dried Herbs and Spices", "Item": "Sesame seeds" },
-            { "Category": "Seafood", "Item": "Crab Meat" },
-            { "Category": "Seafood", "Item": "Shrimp" },
-            { "Category": "Condiments", "Item": "Soy sauce or tamari" },
-            { "Category": "Fresh Produce - Vegetable", "Item": "Fresh spinach" },
-            { "Category": "Frozen Produce", "Item": "Frozen spinach" },
-            { "Category": "Frozen Produce", "Item": "Frozen stir-fry vegetables" },
-            { "Category": "Baking", "Item": "Sweeteners" },
-            { "Category": "Drinks", "Item": "Tea, Chai" },
-            { "Category": "Drinks", "Item": "Tea, Matcha" },
-            { "Category": "Drinks", "Item": "Tea, Hibiscus", "Note": "Whole flower is best." },
-            { "Category": "Drinks", "Item": "Tea, Green" },
-            { "Category": "Dried Herbs and Spices", "Item": "Dried thyme" },
-            { "Category": "Fresh Produce - Herbs", "Item": "Fresh thyme" },
-            { "Category": "Condiments", "Item": "Toasted sesame oil" },
-            { "Category": "Canned Goods", "Item": "Tomato paste" },
-            { "Category": "Canned Goods", "Item": "Canned tomatoes" },
-            { "Category": "Fresh Produce - Vegetable", "Item": "Fresh tomatoes" },
-            { "Category": "Snacks and Cereals", "Item": "Tortillas" },
-            { "Category": "Canned Goods", "Item": "Tuna" },
-            { "Category": "Dairy and Eggs", "Item": "Unsalted butter" },
-            { "Category": "Frozen Dessert", "Item": "Vanilla ice cream" },
-            { "Category": "Basics", "Item": "Vegetable oil" },
-            { "Category": "Dried Fruit/Nuts", "Item": "Nuts, Walnuts" },
-            { "Category": "Water", "Item": "Water" },
-            { "Category": "Rice and Grains", "Item": "White rice (jasmine or basmati)" },
-            { "Category": "Dried Herbs and Spices", "Item": "Nutmeg" },
-            { "Category": "Condiments", "Item": "Worcestershire sauce" },
-            { "Category": "Dried Herbs and Spices", "Item": "Harissa" },
-            { "Category": "Dried Fruit/Nuts", "Item": "Trail Mix" }
-        ];
+        let groceryData = [];
 
-        // DOM Elements
         const listContainer = document.getElementById('listContainer');
         const bottomBar = document.getElementById('bottomBar');
         const downloadBtn = document.getElementById('downloadBtn');
         const clearBtn = document.getElementById('clearBtn');
         const selectedBadge = document.getElementById('selectedBadge');
+        const statusMessage = document.getElementById('statusMessage');
 
-        // Initialize App on Load
-        document.addEventListener('DOMContentLoaded', () => {
-            renderList();
-            bottomBar.classList.remove('translate-y-full');
-        });
+        document.addEventListener('DOMContentLoaded', loadCSV);
 
-        // Render the Checkboxes Grouped by Category
+        function loadCSV() {
+            // Use PapaParse to fetch the file from the same directory
+            Papa.parse('master_grocery_list.csv', {
+                download: true,
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    if (results.errors.length > 0 && results.data.length === 0) {
+                        showError("Failed to load or parse 'master_grocery_list.csv'. Ensure the file is in the exact same folder as this HTML file.");
+                        console.error("PapaParse errors:", results.errors);
+                        return;
+                    }
+                    groceryData = results.data;
+                    renderList();
+                    statusMessage.classList.add('hidden');
+                    listContainer.classList.remove('hidden');
+                    bottomBar.classList.remove('translate-y-full'); // Show bottom bar
+                },
+                error: function(error) {
+                    showError("Could not find 'master_grocery_list.csv'. Note: Most browsers block loading local files dynamically for security reasons (CORS). You may need to run this on a local web server.");
+                    console.error("Fetch error:", error);
+                }
+            });
+        }
+
+        function showError(msg) {
+            statusMessage.innerHTML = `
+                <div class="bg-red-50 text-red-600 p-4 rounded-xl border border-red-200 text-sm text-left shadow-sm">
+                    <p class="font-bold mb-1">Error Loading File</p>
+                    <p>${msg}</p>
+                </div>
+            `;
+            statusMessage.classList.remove('animate-pulse');
+        }
+
         function renderList() {
             listContainer.innerHTML = '';
             const grouped = {};
             
             // Group items by their Category
             groceryData.forEach(row => {
+                // Handle variations in column headers just in case
                 const category = row.Category || row.category || 'Uncategorized';
                 const item = row.Item || row.item || row.Name || row.name; 
                 const note = row.Note || row.note || '';
@@ -396,7 +262,6 @@
             if (checkboxes.length === 0) return; // Failsafe
 
             let markdownContent = '# Grocery List\n\n';
-            markdownContent += 'Interactive grocery planning tool for organizing a reusable master list and making shopping preparation easier.\n\n';
             
             const categoryContainers = document.querySelectorAll('#listContainer > div');
             
